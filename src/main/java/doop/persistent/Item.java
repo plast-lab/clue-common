@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by saiko on 24/8/2015.
  */
-interface Item {
+public interface Item {
 
     String getId();
 
