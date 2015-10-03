@@ -11,8 +11,8 @@ abstract class Symbol extends ItemImpl {
 
     Symbol() {}
 
-    Symbol(String compilationUnit, Position position) {
-        this.compilationUnit = compilationUnit;
+    Symbol(Position position, String compilationUnit) {
         this.position = position;
+        this.compilationUnit = compilationUnit;
     }
 }

@@ -8,4 +8,15 @@ class Field extends Symbol {
     private String type;
     private Class enclosingClass;
     private boolean isStatic;
+
+public Field() {}
+
+public Field(Position position, String compilationUnit, String signature, String type, Class enclosingClass, boolean isStatic) {
+    super(position, compilationUnit);
+    this.signature = signature;
+    this.type = type;
+    this.enclosingClass = enclosingClass;
+    this.isStatic = isStatic;
+}
+
 }

@@ -7,12 +7,15 @@ public class Occurrence<T> {
     private Position position;
     private T symbol;
     private OccurrenceType occurrenceType;
+    private String compilationUnit;
 
-    public Occurrence(Position position, T symbol, OccurrenceType occurrenceType) {
+    public Occurrence() {}
+
+    public Occurrence(Position position, String compilationUnit, T symbol, OccurrenceType occurrenceType) {
         this.position = position;
         this.symbol = symbol;
         this.occurrenceType = occurrenceType;
+        this.compilationUnit = compilationUnit;
     }
-
 }
 

@@ -11,6 +11,8 @@ class Position extends ItemImpl{
     private long endLine;
     private long endColumn;
 
+    public Position() {}
+
     public Position(long startLine, long startColumn, long endColumn) {
         this.startLine = startLine;
         this.startColumn = startColumn;

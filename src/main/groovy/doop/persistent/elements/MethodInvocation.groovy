@@ -9,12 +9,9 @@ class MethodInvocation extends Symbol {
 
     public MethodInvocation() {}
 
-    public MethodInvocation(String methodInvocationID) {
+    public MethodInvocation(Position position, String compilationUnit, String methodInvocationID, Method invokingMethod) {
+        super(position, compilationUnit);
         this.methodInvocationID = methodInvocationID;
-    }
-
-    public MethodInvocation(String methodInvocationID, Position position) {
-        super(position);
-        this.methodInvocationID = methodInvocationID;
+        this.invokingMethod = invokingMethod;
     }
 }

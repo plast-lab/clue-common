@@ -15,37 +15,11 @@ class Method extends Symbol {
 
     public Method() {}
 
-    public Method(Position position) {
-        this(position, null, null, null, null, null, null, null, null);
-    }
+    public Method(Position position, String compilationUnit, String name, Class enclosingClass, String returnType,
+                  String signature, String doopSignature, String doopCompactName, String[] args, String[] argTypes)
+    {
 
-    public Method(Position position, String name) {
-        this(position, name, null, null, null, null, null, null, null);
-    }
-
-    public Method(Position position, String name, Class enclosingClass) {
-        this(position, name, enclosingClass, null, null, null, null, null, null);
-    }
-
-    public Method(Position position, String name, Class enclosingClass, String returnType) {
-        this(position, name, enclosingClass, returnType, null, null, null, null, null);
-    }
-
-    public Method(Position position, String name, Class enclosingClass, String returnType, String doopSignature) {
-        this(position, name, enclosingClass, returnType, doopSignature, null, null, null, null);
-    }
-
-    public Method(Position position, String name, Class enclosingClass, String returnType, String doopSignature, String doopCompactName) {
-        this(position, name, enclosingClass, returnType, doopSignature, doopCompactName, null, null, null);
-    }
-
-    public Method(Position position, String name, Class enclosingClass, String returnType, String doopSignature, String doopCompactName, String[] args) {
-        this(position, name, enclosingClass, returnType, doopSignature, doopSignature, doopCompactName, args, null);
-    }
-
-    public Method(Position position, String name, Class enclosingClass, String returnType, String signature, String doopSignature,
-                  String doopCompactName, String[] args, String[] argTypes) {
-        super(position);
+        super(position, compilationUnit);
         this.name = name;
         this.enclosingClass = enclosingClass;
         this.returnType = returnType;
