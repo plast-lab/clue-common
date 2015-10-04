@@ -4,14 +4,15 @@ package doop.persistent.elements
  * Created by anantoni on 2/10/2015.
  */
 class Method extends Symbol {
-    private String name;
-    private Class enclosingClass;
-    private String returnType;
-    private String signature;
-    private String doopSignature;
-    private String doopCompactName;
-    private String[] args;
-    private String[] argTypes;
+
+    String name;
+    Class enclosingClass;
+    String returnType;
+    String signature;
+    String doopSignature;
+    String doopCompactName;
+    String[] args;
+    String[] argTypes;
 
     public Method() {}
 
@@ -19,7 +20,7 @@ class Method extends Symbol {
                   String signature, String doopSignature, String doopCompactName, String[] args, String[] argTypes)
     {
 
-        super(position, compilationUnit, null);
+        super(position, compilationUnit);
         this.name = name;
         this.enclosingClass = enclosingClass;
         this.returnType = returnType;

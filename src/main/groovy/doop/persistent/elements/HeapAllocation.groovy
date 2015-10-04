@@ -5,14 +5,14 @@ package doop.persistent.elements
  */
 class HeapAllocation extends Symbol {
 
-    private String type;
-    private Method enclosingMethod;
-    private String doopAllocationID;
+    String type;
+    Method enclosingMethod;
+    String doopAllocationID;
 
     public HeapAllocation() {}
 
     private HeapAllocation(Position position, String compilationUnit, String doopAllocationID, String type, Method enclosingMethod) {
-        super(position, compilationUnit, null);
+        super(position, compilationUnit);
         this.doopAllocationID = doopAllocationID;
         this.type = type;
         this.enclosingMethod = enclosingMethod;
