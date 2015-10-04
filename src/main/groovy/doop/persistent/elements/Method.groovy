@@ -19,7 +19,7 @@ class Method extends Symbol {
                   String signature, String doopSignature, String doopCompactName, String[] args, String[] argTypes)
     {
 
-        super(position, compilationUnit);
+        super(position, compilationUnit, null);
         this.name = name;
         this.enclosingClass = enclosingClass;
         this.returnType = returnType;

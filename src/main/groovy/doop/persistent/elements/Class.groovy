@@ -9,7 +9,7 @@ public class Class extends Symbol {
     public Class() {}
 
     public Class(Position position, String compilationUnit, String name) {
-        super(position, compilationUnit);
+        super(position, compilationUnit, null);
         this.name = name;
     }
 }
