@@ -11,7 +11,7 @@ class HeapAllocation extends Symbol {
 
     public HeapAllocation() {}
 
-    private HeapAllocation(Position position, String compilationUnit, String doopAllocationID, String type, Method enclosingMethod) {
+    public HeapAllocation(Position position, String compilationUnit, String doopAllocationID, String type, Method enclosingMethod) {
         super(position, compilationUnit);
         this.doopAllocationID = doopAllocationID;
         this.type = type;

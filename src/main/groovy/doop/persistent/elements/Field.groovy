@@ -12,6 +12,7 @@ class Field extends Symbol {
     public Field() {}
 
     public Field(Position position, String compilationUnit, String signature, String type, Class enclosingClass, boolean isStatic) {
+
         super(position, compilationUnit);
         this.signature = signature;
         this.type = type;
