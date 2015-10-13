@@ -9,13 +9,13 @@ import static java.util.UUID.*
 abstract class Symbol extends ItemImpl {
     String id;
     Position position;
-    String compilationUnit;
+    String sourceFIleName;
 
     Symbol() {}
 
-    Symbol(Position position, String compilationUnit) {
+    Symbol(Position position, String sourceFIleName) {
         this.position = position;
-        this.compilationUnit = compilationUnit;
+        this.sourceFIleName = sourceFIleName;
         this.id = randomUUID().toString();
     }
 }

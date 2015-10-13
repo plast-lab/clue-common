@@ -8,8 +8,8 @@ class Class extends Symbol {
 
     public Class() {}
 
-    public Class(Position position, String compilationUnit, String name) {
-        super(position, compilationUnit);
+    public Class(Position position, String sourceFileName, String name) {
+        super(position, sourceFileName);
         this.name = name;
     }
 }

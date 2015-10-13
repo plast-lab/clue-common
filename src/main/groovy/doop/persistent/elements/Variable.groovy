@@ -12,8 +12,8 @@ class Variable extends Symbol{
 
     Variable() {}
 
-    Variable(Position position, String compilationUnit, String name, String doopName, String type, Method declaringMethod) {
-        super(position, compilationUnit);
+    Variable(Position position, String sourceFileName, String name, String doopName, String type, Method declaringMethod) {
+        super(position, sourceFileName);
         this.name = name;
         this.doopName = doopName;
         this.type = type;

@@ -12,11 +12,11 @@ class Occurrence<T> {
 
     public Occurrence() {}
 
-    public Occurrence(Position position, String compilationUnit, T symbol, OccurrenceType occurrenceType) {
+    public Occurrence(Position position, String sourceFileName, T symbol, OccurrenceType occurrenceType) {
         this.position = position;
         this.symbol = symbol;
         this.occurrenceType = occurrenceType;
-        this.compilationUnit = compilationUnit;
+        this.compilationUnit = sourceFileName;
     }
 }
 

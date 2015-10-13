@@ -8,26 +8,23 @@ class Method extends Symbol {
     String name;
     Class enclosingClass;
     String returnType;
-    String signature;
     String doopSignature;
     String doopCompactName;
-    String[] args;
-    String[] argTypes;
+    String[] params;
+    String[] paramTypes;
 
     public Method() {}
 
-    public Method(Position position, String compilationUnit, String name, Class enclosingClass, String returnType,
-                  String signature, String doopSignature, String doopCompactName, String[] args, String[] argTypes)
+    public Method(Position position, String sourceFileName, String name, Class enclosingClass, String returnType,
+                  String doopSignature, String doopCompactName, String[] params, String[] paramTypes)
     {
-
-        super(position, compilationUnit);
+        super(position, sourceFileName);
         this.name = name;
         this.enclosingClass = enclosingClass;
         this.returnType = returnType;
-        this.signature = signature;
         this.doopSignature = doopSignature;
         this.doopCompactName = doopCompactName;
-        this.args = args;
-        this.argTypes = argTypes;
+        this.params = params;
+        this.paramTypes = paramTypes;
     }
 }
