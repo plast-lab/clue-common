@@ -18,6 +18,10 @@ interface DataStore {
 
     public void delete(Item item, Closure callback)
 
-    public void search(Map<String, Object> constraints, SearchLimits limits, Closure resultProcessor)
+    public void search(String freeText,
+                       Map<String, Object> filters,
+                       List<String> fields,
+                       SearchLimits limits,
+                       Closure resultProcessor)
 
 }
