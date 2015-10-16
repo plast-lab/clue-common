@@ -6,7 +6,7 @@ package doop.persistent.elements
 class Method extends Symbol {
 
     String name;
-    Class enclosingClass;
+    String enclosingClassUUID;
     String returnType;
     String doopSignature;
     String doopCompactName;
@@ -15,12 +15,12 @@ class Method extends Symbol {
 
     public Method() {}
 
-    public Method(Position position, String sourceFileName, String name, Class enclosingClass, String returnType,
+    public Method(Position position, String sourceFileName, String name, String enclosingClassUUID, String returnType,
                   String doopSignature, String doopCompactName, String[] params, String[] paramTypes)
     {
         super(position, sourceFileName);
         this.name = name;
-        this.enclosingClass = enclosingClass;
+        this.enclosingClassUUID = enclosingClassUUID;
         this.returnType = returnType;
         this.doopSignature = doopSignature;
         this.doopCompactName = doopCompactName;

@@ -6,13 +6,13 @@ package doop.persistent.elements
 class MethodInvocation extends Symbol {
 
     String methodInvocationID;
-    Method invokingMethod;
+    String invokingMethodUUID;
 
     public MethodInvocation() {}
 
-    public MethodInvocation(Position position, String sourceFileName, String methodInvocationID, Method invokingMethod) {
+    public MethodInvocation(Position position, String sourceFileName, String methodInvocationID, String invokingMethodUUID) {
         super(position, sourceFileName);
         this.methodInvocationID = methodInvocationID;
-        this.invokingMethod = invokingMethod;
+        this.invokingMethodUUID = invokingMethodUUID;
     }
 }
