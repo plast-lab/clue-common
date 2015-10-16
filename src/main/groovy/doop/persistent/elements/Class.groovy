@@ -5,11 +5,23 @@ package doop.persistent.elements
  */
 class Class extends Symbol {
     String name;
+    String packageName;
+    boolean isInterface;
+    boolean isEnum;
+    boolean isStatic;
+    boolean isInner;
+    boolean isAnonymous;
 
     public Class() {}
 
-    public Class(Position position, String sourceFileName, String name) {
+    public Class(Position position, String sourceFileName, String name, String packageName, boolean isInterface, boolean isEnum, boolean isStatic, boolean isInner, boolean isAnonymous) {
         super(position, sourceFileName);
         this.name = name;
+        this.packageName = packageName;
+        this.isInterface = isInterface;
+        this.isEnum = isEnum;
+        this.isStatic = isStatic;
+        this.isInner = isInner;
+        this.isAnonymous = isAnonymous;
     }
 }
