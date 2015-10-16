@@ -6,17 +6,17 @@ package doop.persistent.elements
 class Field extends Symbol {
     String signature;
     String type;
-    String enclosingClassUUID;
+    String declaringClassID;
     boolean isStatic;
 
     public Field() {}
 
-    public Field(Position position, String sourceFileName, String signature, String type, String enclosingClassUUID, boolean isStatic) {
+    public Field(Position position, String sourceFileName, String signature, String type, String declaringClassID, boolean isStatic) {
 
         super(position, sourceFileName);
         this.signature = signature;
         this.type = type;
-        this.enclosingClassUUID = enclosingClassUUID;
+        this.declaringClassID = declaringClassID;
         this.isStatic = isStatic;
     }
 

@@ -8,15 +8,15 @@ class Variable extends Symbol{
     String name;
     String doopName;
     String type;
-    String declaringMethodUUID;
+    String declaringMethodID;
 
     Variable() {}
 
-    Variable(Position position, String sourceFileName, String name, String doopName, String type, String declaringMethodUUID) {
+    Variable(Position position, String sourceFileName, String name, String doopName, String type, String declaringMethodID) {
         super(position, sourceFileName);
         this.name = name;
         this.doopName = doopName;
         this.type = type;
-        this.declaringMethodUUID = declaringMethodUUID;
+        this.declaringMethodID = declaringMethodID;
     }
 }
