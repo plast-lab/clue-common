@@ -12,11 +12,12 @@ class Method extends Symbol {
     String doopCompactName;
     String[] params;
     String[] paramTypes;
+    boolean isStatic;
 
     public Method() {}
 
     public Method(Position position, String sourceFileName, String name, String declaringClassID, String returnType,
-                  String doopSignature, String doopCompactName, String[] params, String[] paramTypes)
+                  String doopSignature, String doopCompactName, String[] params, String[] paramTypes, boolean isStatic)
     {
         super(position, sourceFileName);
         this.name = name;
@@ -26,5 +27,6 @@ class Method extends Symbol {
         this.doopCompactName = doopCompactName;
         this.params = params;
         this.paramTypes = paramTypes;
+        this.isStatic = isStatic;
     }
 }

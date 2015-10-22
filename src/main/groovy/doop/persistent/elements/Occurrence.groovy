@@ -8,7 +8,7 @@ class Occurrence<T extends Symbol> {
     Position position;
     T symbol;
     OccurrenceType occurrenceType;
-    String compilationUnit;
+    String sourceFileName;
 
     public Occurrence() {}
 
@@ -16,7 +16,7 @@ class Occurrence<T extends Symbol> {
         this.position = position;
         this.symbol = symbol;
         this.occurrenceType = occurrenceType;
-        this.compilationUnit = sourceFileName;
+        this.sourceFileName = sourceFileName;
     }
 }
 

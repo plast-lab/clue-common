@@ -6,6 +6,9 @@ package doop.persistent.elements
 class Class extends Symbol {
     String name;
     String packageName;
+    /**
+     * Possibly change this to bitmap.
+     */
     boolean isInterface;
     boolean isEnum;
     boolean isStatic;
