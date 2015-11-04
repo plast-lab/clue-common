@@ -7,13 +7,13 @@ class HeapAllocation extends Symbol {
 
     String type;
     String allocatingMethodID;
-    String doopAllocationID;
+    String doopID;
 
     public HeapAllocation() {}
 
-    public HeapAllocation(Position position, String sourceFileName, String doopAllocationID, String type, String allocatingMethodID) {
+    public HeapAllocation(Position position, String sourceFileName, String doopID, String type, String allocatingMethodID) {
         super(position, sourceFileName);
-        this.doopAllocationID = doopAllocationID;
+        this.doopID = doopID;
         this.type = type;
         this.allocatingMethodID = allocatingMethodID;
     }
