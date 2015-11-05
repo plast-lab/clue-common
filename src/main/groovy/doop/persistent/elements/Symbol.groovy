@@ -11,6 +11,10 @@ abstract class Symbol extends ItemImpl {
     Position position;
     String sourceFileName;
 
+    //required by the server side (safe to ignore them in the plugin)
+    String an_id;
+    String userId;
+
     Symbol() {}
 
     Symbol(Position position, String sourceFileName) {
