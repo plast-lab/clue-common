@@ -1,19 +1,14 @@
 package doop.persistent.elements
 
-import doop.persistent.ItemImpl
-import static java.util.UUID.*
+import static java.util.UUID.randomUUID
 
 /**
  * Created by anantoni on 1/10/2015.
  */
-abstract class Symbol extends ItemImpl {
-    String id;
+abstract class Symbol extends Element {
+
     Position position;
     String sourceFileName;
-
-    //required by the server side (safe to ignore them in the plugin)
-    String an_id;
-    String userId;
 
     Symbol() {}
 
