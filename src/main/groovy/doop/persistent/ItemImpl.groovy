@@ -2,15 +2,14 @@ package doop.persistent
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import groovy.transform.EqualsAndHashCode
 
 /**
  * Created by saiko on 24/8/2015.
  */
-abstract class ItemImpl implements Item {
+@EqualsAndHashCode abstract class ItemImpl implements Item {
 
     static final String ID_FIELD = "id"
-
-    Date created, modified
 
     @Override
     String getId() {
@@ -27,10 +26,15 @@ abstract class ItemImpl implements Item {
 
     @Override
     String toJSON() {
+        /*
         def map = [:]
         this.class.declaredFields.findAll { !it.synthetic }.each {
             map[it.name] = this[it.name]
         }
         return JsonOutput.toJson(map)
+        */
+        return JsonOutput.toJson(properties.findAll{ String key, Object value ->
+            value != null && key != "class" && key != "ID_FIELD"
+        })
     }
 }
