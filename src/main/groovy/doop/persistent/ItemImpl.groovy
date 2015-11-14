@@ -20,7 +20,9 @@ import groovy.transform.EqualsAndHashCode
     void fromJSON(String json) {
         def map = new JsonSlurper().parseText(json)
         map.each { String key, Object value ->
-            this[key] = value
+            if (this.properties.containsKey(key)) {
+                this[key] = value
+            }
         }
     }
 
