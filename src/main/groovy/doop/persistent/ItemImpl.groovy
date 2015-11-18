@@ -17,6 +17,13 @@ import groovy.transform.EqualsAndHashCode
     }
 
     @Override
+    Map<String, Object> toMap() {
+        return properties.findAll{ String key, Object value ->
+            value != null && key != "class" && key != "ID_FIELD"
+        }
+    }
+
+    @Override
     void fromJSON(String json) {
         def map = new JsonSlurper().parseText(json)
         map.each { String key, Object value ->
@@ -28,15 +35,6 @@ import groovy.transform.EqualsAndHashCode
 
     @Override
     String toJSON() {
-        /*
-        def map = [:]
-        this.class.declaredFields.findAll { !it.synthetic }.each {
-            map[it.name] = this[it.name]
-        }
-        return JsonOutput.toJson(map)
-        */
-        return JsonOutput.toJson(properties.findAll{ String key, Object value ->
-            value != null && key != "class" && key != "ID_FIELD"
-        })
+        return JsonOutput.toJson(toMap())
     }
 }
