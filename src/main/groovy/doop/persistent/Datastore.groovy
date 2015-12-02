@@ -24,4 +24,6 @@ interface DataStore {
                        SearchLimits limits,
                        Closure resultProcessor)
 
+    public void deleteItems(Map<String, Object> filters)
+
 }
