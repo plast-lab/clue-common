@@ -26,4 +26,6 @@ interface DataStore {
 
     public void deleteItems(Map<String, Object> filters)
 
+    public Map<String, Long> groupBy(String text, Map<String, Object> filters, String field)
+
 }
