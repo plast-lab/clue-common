@@ -4,11 +4,11 @@ apply plugin: 'ivy-publish'
 //sourceCompatibility = "1.7"
 //targetCompatibility = "1.7"
 
-group = 'plast-lab'
+group = 'org.clyze'
 version = '1.0-SNAPSHOT'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.8'
+    gradleVersion = '2.14'
 }
 
 repositories {
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:2.3.10"            // Groovy
+    compile "org.codehaus.groovy:groovy-all:2.4.7"             // Groovy
     testCompile "org.spockframework:spock-core:1.0-groovy-2.3" // Spock
 }
 
