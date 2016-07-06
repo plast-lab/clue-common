@@ -1,4 +1,4 @@
-package doop.persistent
+package org.clyze.doop.persistent
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper

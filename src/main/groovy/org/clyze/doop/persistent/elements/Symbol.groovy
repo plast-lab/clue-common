@@ -1,4 +1,4 @@
-package doop.persistent.elements
+package org.clyze.doop.persistent.elements
 
 import static java.util.UUID.randomUUID
 

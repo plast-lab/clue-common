@@ -1,6 +1,6 @@
-package doop.persistent.elements
+package org.clyze.doop.persistent.elements
 
-import doop.persistent.ItemImpl
+import org.clyze.doop.persistent.ItemImpl
 
 /**
  * A persistent element of a doop analysis.

@@ -1,4 +1,4 @@
-package doop.persistent.elements
+package org.clyze.doop.persistent.elements
 /**
  * Created by anantoni on 1/10/2015.
  */
