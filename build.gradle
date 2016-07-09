@@ -1,5 +1,18 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+    }
+}
+
 apply plugin: 'groovy'
 apply plugin: 'ivy-publish'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
 
 //sourceCompatibility = "1.7"
 //targetCompatibility = "1.7"
@@ -13,9 +26,6 @@ task wrapper(type: Wrapper) {
 
 repositories {
     mavenCentral()
-    ivy {
-        url "../ivy-repo"
-    }
 }
 
 dependencies {
@@ -24,20 +34,25 @@ dependencies {
 }
 
 publishing {
-    repositories {
-        ivy {
-            name "local-ivy-repo"
-            url "../ivy-repo"
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
+}
 
-    publications {
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"
+    publish {
+        repository {
+            repoKey = 'libs-snapshot-local'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
 
-        jar(IvyPublication) {
-            organisation "$group"
-            module "doop-persistent"
-            revision "$version"
-            from components.java
+        }
+        defaults {
+            publications 'mavenJava'
         }
     }
 }
