@@ -1,4 +1,4 @@
-package doop.persistent
+package org.clyze.doop.persistent
 
 import groovy.json.JsonSlurper
 import spock.lang.Shared
