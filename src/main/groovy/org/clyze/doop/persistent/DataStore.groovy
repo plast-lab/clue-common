@@ -24,6 +24,14 @@ interface DataStore {
                        SearchLimits limits,
                        Closure resultProcessor)
 
+    public void search(String freeText,
+                       Map<String, Object> filters,
+                       List<String> fields,
+                       List<OrderBy> orderByList,
+                       SearchLimits limits,
+                       Closure resultProcessor)
+
+
     public void deleteItems(Map<String, Object> filters)
 
     public Map<String, Long> groupBy(String text, Map<String, Object> filters, String field)
