@@ -1,8 +1,11 @@
 package org.clyze.doop.persistent.elements
 
+import groovy.transform.EqualsAndHashCode
+
 /**
  * Created by anantoni on 2/10/2015.
  */
+//@EqualsAndHashCode
 class Occurrence extends Symbol {
 
     String symbolID;

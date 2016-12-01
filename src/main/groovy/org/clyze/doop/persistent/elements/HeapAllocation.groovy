@@ -5,7 +5,7 @@ import groovy.transform.EqualsAndHashCode
 /**
  * Created by anantoni on 2/10/2015.
  */
-@EqualsAndHashCode
+//@EqualsAndHashCode
 class HeapAllocation extends Symbol {
 
     String type
