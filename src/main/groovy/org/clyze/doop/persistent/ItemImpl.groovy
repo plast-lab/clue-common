@@ -7,7 +7,7 @@ import groovy.transform.EqualsAndHashCode
 /**
  * Created by saiko on 24/8/2015.
  */
-@EqualsAndHashCode abstract class ItemImpl implements Item {
+abstract class ItemImpl implements Item {
 
     static final String ID_FIELD = "id"
 

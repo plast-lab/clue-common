@@ -1,26 +1,29 @@
 package org.clyze.doop.persistent.elements
 
+import groovy.transform.EqualsAndHashCode
+
 /**
  * Created by anantoni on 1/10/2015.
  */
+@EqualsAndHashCode
 class Variable extends Symbol{
 
-    String name;
-    String doopName;
-    String type;
-    String declaringMethodID;
-    boolean isLocal;
-    boolean isParameter;
+    String name
+    String doopName
+    String type
+    String declaringMethodID
+    boolean isLocal
+    boolean isParameter
 
     Variable() {}
 
     Variable(Position position, String sourceFileName, String name, String doopName, String type, String declaringMethodID, boolean isLocal, boolean isParameter) {
-        super(position, sourceFileName);
-        this.name = name;
-        this.doopName = doopName;
-        this.type = type;
-        this.declaringMethodID = declaringMethodID;
-        this.isLocal = isLocal;
-        this.isParameter = isParameter;
+        super(position, sourceFileName)
+        this.name = name
+        this.doopName = doopName
+        this.type = type
+        this.declaringMethodID = declaringMethodID
+        this.isLocal = isLocal
+        this.isParameter = isParameter
     }
 }
