@@ -1,9 +1,0 @@
-#doop persistent ingore list
-
-#gradle dirs
-^.gradle
-^build/
-
-#intellij idea files
-^.idea
-^doop-persistent.iml
