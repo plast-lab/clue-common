@@ -22,6 +22,11 @@ abstract class Analysis implements Runnable {
 	Map<String, AnalysisOption> options
 
 	/**
+	 * The output dir for the analysis
+	 */
+	File outDir
+
+	/**
 	 * The input filepaths of the analysis
 	 */
 	List<File> inputFiles
@@ -30,11 +35,13 @@ abstract class Analysis implements Runnable {
 	                   String id,
 	                   String name,
 	                   Map<String, AnalysisOption> options,
+	                   File outDir,
 	                   List<File> inputFiles) {
 		this.family = family
 		this.id = id
 		this.name = name
 		this.options = options
+		this.outDir = outDir
 		this.inputFiles = inputFiles
 	}
 
