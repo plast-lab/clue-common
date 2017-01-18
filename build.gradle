@@ -31,8 +31,10 @@ repositories {
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:2.4.7"             // Groovy
-    testCompile "org.spockframework:spock-core:1.0-groovy-2.4" // Spock
+    compile 'org.codehaus.groovy:groovy-all:2.4.7',             // Groovy
+            'commons-logging:commons-logging:1.1',              // Logging wrapper
+            'log4j:log4j:1.2.14'                                // Logging implementation
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'  // Spock
 }
 
 publishing {
