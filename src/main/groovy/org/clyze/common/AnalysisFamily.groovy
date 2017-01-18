@@ -54,6 +54,12 @@ enum AnalysisFamily {
 					value:null,
 					webUI:true
 				),
+				new AnalysisOption<String>(
+					id:"CFG_ANALYSIS",
+					name:"cfg",
+					description:"Run a control flow graph analysis.",
+					webUI:true
+				),
 				/* TODO: deprecated? */
 				new AnalysisOption<String>(
 					id:"MUST",

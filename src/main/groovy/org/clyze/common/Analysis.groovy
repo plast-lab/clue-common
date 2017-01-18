@@ -24,18 +24,18 @@ abstract class Analysis implements Runnable {
 	/**
 	 * The input filepaths of the analysis
 	 */
-	List<String> inputFiles
+	List<File> inputFiles
 
 	protected Analysis(AnalysisFamily family,
 	                   String id,
 	                   String name,
 	                   Map<String, AnalysisOption> options,
-	                   List<String> inputFiles) {
+	                   List<File> inputFiles) {
 		this.family = family
 		this.id = id
 		this.name = name
 		this.options = options
-		this.inputFiles
+		this.inputFiles = inputFiles
 	}
 
 	/**
