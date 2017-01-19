@@ -1,4 +1,6 @@
-package org.clyze.doop.persistent
+package org.clyze.persistent
+
+import org.clyze.persistent.ItemImpl
 
 /**
  * Created by saiko on 9/11/2015.
