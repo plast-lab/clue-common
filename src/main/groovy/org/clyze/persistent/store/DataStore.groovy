@@ -1,4 +1,7 @@
-package org.clyze.doop.persistent
+package org.clyze.persistent.store
+
+import org.clyze.persistent.Item
+
 /**
  * Created by saiko on 24/8/2015.
  */
@@ -36,6 +39,6 @@ interface DataStore {
 
     public Map<String, Long> groupBy(String text, Map<String, Object> filters, String field)
 
-    Bulk createBulk()
+    public Bulk createBulk()
 
 }

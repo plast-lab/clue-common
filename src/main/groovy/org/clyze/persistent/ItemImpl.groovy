@@ -1,8 +1,7 @@
-package org.clyze.doop.persistent
+package org.clyze.persistent
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import groovy.transform.EqualsAndHashCode
 
 /**
  * Created by saiko on 24/8/2015.

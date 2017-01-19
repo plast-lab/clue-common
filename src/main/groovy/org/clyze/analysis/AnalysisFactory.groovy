@@ -1,4 +1,4 @@
-package org.clyze.common
+package org.clyze.analysis
 
 interface AnalysisFactory {
 	Analysis newAnalysis(AnalysisFamily family,

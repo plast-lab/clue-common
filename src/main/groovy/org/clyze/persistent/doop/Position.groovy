@@ -1,4 +1,4 @@
-package org.clyze.doop.persistent.elements
+package org.clyze.persistent.doop
 
 import groovy.transform.EqualsAndHashCode
 

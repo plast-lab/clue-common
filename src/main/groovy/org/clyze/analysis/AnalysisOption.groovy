@@ -1,4 +1,4 @@
-package org.clyze.common
+package org.clyze.analysis
 
 class AnalysisOption<T> {
 	/**

@@ -1,4 +1,4 @@
-package org.clyze.common
+package org.clyze.analysis
 
 //import java.io.IOException;
 //import java.io.File;

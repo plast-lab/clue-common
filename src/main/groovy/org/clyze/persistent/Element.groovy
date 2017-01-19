@@ -1,9 +1,9 @@
-package org.clyze.doop.persistent.elements
+package org.clyze.persistent
 
-import org.clyze.doop.persistent.ItemImpl
+import org.clyze.persistent.ItemImpl
 
 /**
- * A persistent element of a doop analysis.
+ * A persistent element of a clue analysis.
  * Created by saiko on 9/11/2015.
  */
 abstract class Element extends ItemImpl {

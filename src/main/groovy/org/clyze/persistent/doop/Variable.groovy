@@ -1,6 +1,7 @@
-package org.clyze.doop.persistent.elements
+package org.clyze.persistent.doop
 
 import groovy.transform.EqualsAndHashCode
+import org.clyze.persistent.Symbol
 
 /**
  * Created by anantoni on 1/10/2015.

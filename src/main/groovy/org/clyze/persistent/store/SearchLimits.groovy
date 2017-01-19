@@ -1,4 +1,4 @@
-package org.clyze.doop.persistent
+package org.clyze.persistent.store
 
 /**
  * Created by saiko on 27/8/2015.
