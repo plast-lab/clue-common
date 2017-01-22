@@ -97,6 +97,7 @@ enum AnalysisFamily {
 				new AnalysisOption<Boolean>(
 					id:"DISTINGUISH_ALL_STRING_BUFFERS",
 					name:"distinguish-all-string-buffers",
+                    description:"Avoids merging string buffer objects (not recommended).",
 					value:false,
 					webUI:true,
 					forPreprocessor: true,
@@ -105,6 +106,7 @@ enum AnalysisFamily {
 				new AnalysisOption<Boolean>(
 					id:"DISTINGUISH_STRING_BUFFERS_PER_PACKAGE",
 					name:"distinguish-string-buffers-per-package",
+                    description:"Merges string buffer objects only on a per-package basis (default behavior for reflection-classic).",
 					value:false,
 					webUI:true,
 					forPreprocessor: true,
@@ -118,6 +120,15 @@ enum AnalysisFamily {
 					forPreprocessor:true,
 					isAdvanced:true
 				),
+                new AnalysisOption<Boolean>(
+                    id:"COARSE_GRAINED_ALLOCATION",
+                    name:"coarse-grained-allocation-sites",
+                    description:"Aggressively merge allocation sites for all regular object types, in lib and app alike.",
+                    value:false,
+                    webUI:true,
+                    forPreprocessor: true,
+                    isAdvanced:true
+                ),
 				new AnalysisOption<Boolean>(
 					id:"MERGE_LIBRARY_OBJECTS_PER_METHOD",
 					name:"no-merge-library-objects",
@@ -152,6 +163,7 @@ enum AnalysisFamily {
 				new AnalysisOption<Boolean>(
 					id:"REFLECTION_SUBSTRING_ANALYSIS",
 					name:"reflection-substring-analysis",
+                    description:"Allows reasoning on what substrings may yield reflection objects.",
 					value:false,
 					webUI:true,
 					forPreprocessor: true,
