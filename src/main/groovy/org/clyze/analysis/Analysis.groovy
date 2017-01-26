@@ -46,7 +46,7 @@ abstract class Analysis implements Runnable {
 	}
 
 	/**
-	 * The phases of the analysis
+	 * The phases of the analysis (to be determined if needed).
 	 */
-	abstract Iterable<AnalysisPhase> phases()
+	Iterable<AnalysisPhase> phases() { return [] }
 }
