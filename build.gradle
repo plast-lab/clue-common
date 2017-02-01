@@ -16,8 +16,6 @@ task wrapper(type: Wrapper) {
 
 repositories {
 
-    mavenLocal()
-
     mavenCentral()
 
     maven {
@@ -57,3 +55,9 @@ publishing {
         }
     }
 }
+
+release {
+    //use defaults, see https://github.com/researchgate/gradle-release
+}
+
+afterReleaseBuild.dependsOn publish
