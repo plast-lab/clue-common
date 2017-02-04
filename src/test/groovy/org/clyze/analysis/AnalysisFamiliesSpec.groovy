@@ -16,15 +16,13 @@ class AnalysisFamiliesSpec extends Specification {
     }
 
     def "AnalysisFamilies lookup works"() {
-        setup:
-        Helper.registerFamily(new TestAnalysisFamily())
-
         expect:
-        AnalysisFamilies.get(family).supportedOptions().find { it.id == option}
+        AnalysisOption o = AnalysisFamilies.supportedOptionsOf('test').find { it.id == option}
+        assert o.value == value
 
         where:
-        family | option
-        'test' | 'option1'
-        'test' | 'option2'
+        family | option   | value
+        'test' | 'option1'| 'option1'
+        'test' | 'option2'| true
     }
 }
