@@ -45,4 +45,16 @@ class Helper {
 		root.setLevel(Level.toLevel(logLevel, Level.WARN))
 		root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
 	}
+
+    /**
+     * Registers the analysis families without failing if a family is already registered.
+     */
+    static void registerFamilies(AnalysisFamily... families) {
+        def manager = AnalysisFamily.Manager
+        families?.each { AnalysisFamily af ->
+            if (! manager.isRegistered(af?.name)) {
+                manager.register(af)
+            }
+        }
+    }
 }

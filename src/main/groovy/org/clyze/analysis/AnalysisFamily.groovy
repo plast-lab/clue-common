@@ -22,7 +22,8 @@ interface AnalysisFamily {
 	/**
 	 * The manager for Analysis Families, placed here for convenience.
 	 *
-	 * The manager supports family registration and lookup in a case-insensitive fashion.
+	 * The manager is thread-safe and supports family registration and lookup in a case-insensitive fashion.
+     * 
 	 **/
 	static class Manager {
 
@@ -31,9 +32,9 @@ interface AnalysisFamily {
 		/**
 		 * Registers the given family, performing its initialization.
 		 * This method throws an exception if the given family or its name is null, if a family with the same name already exists,
-		 * or the initialization the given family fails.
+		 * or the initialization of the given family fails.
 		 */
-		void register(AnalysisFamily family) throws RuntimeException {
+		synchronized void register(AnalysisFamily family) throws RuntimeException {
 			if (!family) {
 				throw new RuntimeException("Cannot register a null family")
 			}
@@ -55,9 +56,16 @@ interface AnalysisFamily {
 		 * @param name - the case insensitive name of the analysis family.
 		 * @return an AnalysisFamily object or null if none was found
 		 */
-		AnalysisFamily get(String name) {
+		synchronized AnalysisFamily get(String name) {
 			String lookup = name?.toLowerCase()
 			return families.get(lookup)
 		}
+
+        /**
+         * Returns true if a family with the given name is already registered.
+         */
+        synchronized boolean isRegistered(String name) {
+            return get(name)
+        }
 	}
 }
