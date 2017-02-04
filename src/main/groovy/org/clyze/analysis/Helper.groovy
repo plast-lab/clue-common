@@ -3,10 +3,12 @@ package org.clyze.analysis
 //import java.io.IOException;
 //import java.io.File;
 import org.apache.log4j.*
+import groovy.transform.CompileStatic
 
 /**
  * Various helper methods.
  */
+@CompileStatic
 class Helper {
 
 	/**
@@ -19,20 +21,20 @@ class Helper {
 	 */
 	static void initLogging(String logLevel, String logDir, boolean console) throws IOException {
 		def dir = new File(logDir)
-			if (!dir.exists())
-				dir.mkdir()
+        if (!dir.exists())
+            dir.mkdir()
 
-					def logFile = logDir + "/doop.log"
+        def logFile = logDir + "/doop.log"
 
-					Logger root = Logger.getRootLogger()
-					root.setLevel(Level.toLevel(logLevel, Level.WARN))
-					PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n")
-					DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd")
-					root.addAppender(appender)
+        Logger root = Logger.getRootLogger()
+        root.setLevel(Level.toLevel(logLevel, Level.WARN))
+        PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n")
+        DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd")
+        root.addAppender(appender)
 
-					if (console) {
-						root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
-					}
+        if (console) {
+            root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
+        }
 	}
 
 	/**
@@ -45,16 +47,4 @@ class Helper {
 		root.setLevel(Level.toLevel(logLevel, Level.WARN))
 		root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
 	}
-
-    /**
-     * Registers the analysis families without failing if a family is already registered.
-     */
-    static void registerFamilies(AnalysisFamily... families) {
-        def manager = AnalysisFamily.Manager
-        families?.each { AnalysisFamily af ->
-            if (! manager.isRegistered(af?.name)) {
-                manager.register(af)
-            }
-        }
-    }
 }
