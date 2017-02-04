@@ -8,7 +8,6 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 project.group = 'org.clyze'
-version = '1.0-SNAPSHOT'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.1'
