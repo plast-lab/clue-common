@@ -5,7 +5,6 @@ import org.clyze.persistent.Symbol
 /**
  * Created by anantoni on 2/10/2015.
  */
-//@EqualsAndHashCode
 class HeapAllocation extends Symbol {
 
     String type

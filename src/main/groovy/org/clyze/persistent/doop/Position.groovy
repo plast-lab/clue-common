@@ -1,6 +1,5 @@
 package org.clyze.persistent.doop
 
-import groovy.transform.EqualsAndHashCode
 
 /**
  * Created by anantoni on 1/10/2015.

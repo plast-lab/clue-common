@@ -1,12 +1,10 @@
 package org.clyze.persistent.doop
 
-import groovy.transform.EqualsAndHashCode
 import org.clyze.persistent.Symbol
 
 /**
  * Created by anantoni on 2/10/2015.
  */
-@EqualsAndHashCode
 class Class extends Symbol {
     String name
     String packageName
