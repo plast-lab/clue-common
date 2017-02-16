@@ -2,19 +2,35 @@ package org.clyze.persistent
 
 import groovy.transform.EqualsAndHashCode
 
+
 /**
- * A persistent element of a clue analysis.
- * Created by saiko on 9/11/2015.
+ * A persistent element of a clue analysis
  */
 @EqualsAndHashCode(includes = 'id')
 abstract class Element extends ItemImpl {
 
-    //the element's id
+    /**
+     * The element's id. Set by either a subclass or by external code
+     */
     String id
 
-    //required by the server side (safe to ignore them in the plugin)
+    /**
+     * The analysis id this element belong to.
+     * (required by clue-server, safe to ignore in doop-jcplugin)
+     */
     String anId
+
+    /**
+     * The id of the user that created the analysis of id "anId"
+     * (required by clue-server, safe to ignore in doop-jcplugin)
+     */
     String userId
 
-    Element () {}
+    /**
+     *
+     */
+    Element() {
+
+    }
+
 }

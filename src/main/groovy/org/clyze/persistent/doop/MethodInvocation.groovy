@@ -2,19 +2,42 @@ package org.clyze.persistent.doop
 
 import org.clyze.persistent.Symbol
 
+
 /**
- * Created by anantoni on 2/10/2015.
+ *
  */
 class MethodInvocation extends Symbol {
 
-    String doopID
+    /**
+     * A "Method" symbol id
+     */
     String invokingMethodID
 
-    MethodInvocation() {}
+    /**
+     * doop id
+     */
+    String doopID
 
+    /**
+     *
+     */
+    MethodInvocation() {
+
+    }
+
+    /**
+     *
+     * @param position
+     * @param sourceFileName
+     * @param doopID
+     * @param invokingMethodID
+     */
     MethodInvocation(Position position, String sourceFileName, String doopID, String invokingMethodID) {
+
         super(position, sourceFileName)
+
         this.doopID = doopID
         this.invokingMethodID = invokingMethodID
     }
+
 }

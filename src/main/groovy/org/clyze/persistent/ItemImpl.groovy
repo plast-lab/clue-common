@@ -3,25 +3,30 @@ package org.clyze.persistent
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
+
 /**
- * Created by saiko on 24/8/2015.
+ *
  */
 abstract class ItemImpl implements Item {
 
+    /**
+     *
+     */
     static final String ID_FIELD = "id"
 
+    /**
+     *
+     * @return
+     */
     @Override
     String getId() {
         return this[ID_FIELD]
     }
 
-    @Override
-    Map<String, Object> toMap() {
-        return properties.findAll{ String key, Object value ->
-            value != null && key != "class" && key != "ID_FIELD"
-        }
-    }
-
+    /**
+     *
+     * @param json
+     */
     @Override
     void fromJSON(String json) {
         def map = new JsonSlurper().parseText(json)
@@ -32,8 +37,26 @@ abstract class ItemImpl implements Item {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     String toJSON() {
+
         return JsonOutput.toJson(toMap())
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    Map<String, Object> toMap() {
+
+        return properties.findAll{ String key, Object value ->
+            value != null && key != "class" && key != "ID_FIELD"
+        }
+    }
+
 }

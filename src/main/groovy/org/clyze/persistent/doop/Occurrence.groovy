@@ -2,20 +2,42 @@ package org.clyze.persistent.doop
 
 import org.clyze.persistent.Symbol
 
+
 /**
- * Created by anantoni on 2/10/2015.
+ *
  */
 class Occurrence extends Symbol {
 
-    String symbolID;
-    OccurrenceType occurrenceType;
+    /**
+     *
+     */
+    OccurrenceType occurrenceType
 
-    public Occurrence() {}
+    /**
+     * A "Symbol" id
+     */
+    String symbolID
 
-    public Occurrence(Position position, String sourceFileName, String symbolID, OccurrenceType occurrenceType) {
-        super(position, sourceFileName);
-        this.symbolID = symbolID;
-        this.occurrenceType = occurrenceType;
+    /**
+     *
+     */
+    public Occurrence() {
+
     }
-}
 
+    /**
+     *
+     * @param position
+     * @param sourceFileName
+     * @param symbolID
+     * @param occurrenceType
+     */
+    public Occurrence(Position position, String sourceFileName, String symbolID, OccurrenceType occurrenceType) {
+
+        super(position, sourceFileName)
+
+        this.symbolID = symbolID
+        this.occurrenceType = occurrenceType
+    }
+
+}

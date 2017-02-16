@@ -1,23 +1,33 @@
 package org.clyze.persistent
 
+
+/**
+ *
+ */
 interface Item {
 
-    String getId();
+    /**
+     *
+     * @return      The item id
+     */
+    String getId()
 
-    void fromJSON(String json);
+    /**
+     *
+     * @param json  The json data to populate the object
+     */
+    void fromJSON(String json)
 
-    String toJSON();
+    /**
+     *
+     * @return      The object state in json representation
+     */
+    String toJSON()
 
-    Map<String, Object> toMap();
+    /**
+     *
+     * @return      The object state as a map [item property => property value]
+     */
+    Map<String, Object> toMap()
 
-    //We don't need creation and modification dates to be analysis
-    /*
-    Date getCreated();
-
-    Date getModified();
-
-    void setCreated(Date created);
-
-    void setModified(Date modified);
-    */
 }

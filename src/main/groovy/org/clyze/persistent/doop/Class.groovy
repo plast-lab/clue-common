@@ -2,14 +2,22 @@ package org.clyze.persistent.doop
 
 import org.clyze.persistent.Symbol
 
+
 /**
- * Created by anantoni on 2/10/2015.
+ * Symbol used for classes, interfaces and enums
  */
 class Class extends Symbol {
-    String name
-    String packageName
+
     /**
-     * Possibly change this to bitmap.
+     * The symbol name (package name not included)
+     */
+    String name
+
+    String packageName
+
+    /**
+     * Various flags determining the symbol type
+     * (possibly change this to bitmap)
      */
     boolean isInterface
     boolean isEnum
@@ -17,10 +25,30 @@ class Class extends Symbol {
     boolean isInner
     boolean isAnonymous
 
-    Class() {}
+    /**
+     *
+     */
+    Class() {
 
-    Class(Position position, String sourceFileName, String name, String packageName, boolean isInterface, boolean isEnum, boolean isStatic, boolean isInner, boolean isAnonymous) {
+    }
+
+    /**
+     *
+     * @param position
+     * @param sourceFileName
+     * @param name
+     * @param packageName
+     * @param isInterface
+     * @param isEnum
+     * @param isStatic
+     * @param isInner
+     * @param isAnonymous
+     */
+    Class(Position position, String sourceFileName, String name, String packageName, boolean isInterface, boolean isEnum,
+          boolean isStatic, boolean isInner, boolean isAnonymous) {
+
         super(position, sourceFileName)
+
         this.name = name
         this.packageName = packageName
         this.isInterface = isInterface
@@ -29,4 +57,5 @@ class Class extends Symbol {
         this.isInner = isInner
         this.isAnonymous = isAnonymous
     }
+
 }
