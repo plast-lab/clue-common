@@ -1,4 +1,4 @@
-package org.clyze.persistent.doop
+package org.clyze.persistent
 
 
 /**

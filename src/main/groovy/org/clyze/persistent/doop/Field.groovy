@@ -1,5 +1,6 @@
 package org.clyze.persistent.doop
 
+import org.clyze.persistent.Position
 import org.clyze.persistent.Symbol
 
 

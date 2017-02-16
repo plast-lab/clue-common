@@ -1,7 +1,5 @@
 package org.clyze.persistent
 
-import org.clyze.persistent.doop.Position
-
 import static java.util.UUID.randomUUID
 
 
