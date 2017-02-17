@@ -34,11 +34,6 @@ class Method extends Symbol {
     String doopId
 
     /**
-     * TODO: deprecated; to be removed
-     */
-    String doopCompactName
-
-    /**
      *
      */
     public Method() {
@@ -53,7 +48,6 @@ class Method extends Symbol {
      * @param declaringClassId
      * @param returnType
      * @param doopId
-     * @param doopCompactName
      * @param params
      * @param paramTypes
      * @param isStatic
@@ -61,8 +55,8 @@ class Method extends Symbol {
      * @param totalAllocations
      */
     public Method(Position position, String sourceFileName, String name, String declaringClassId, String returnType,
-                  String doopId, String doopCompactName, String[] params, String[] paramTypes, boolean isStatic,
-                  totalInvocations, totalAllocations) {
+                  String doopId, String[] params, String[] paramTypes, boolean isStatic, totalInvocations,
+                  totalAllocations) {
 
         super(position, sourceFileName)
 
@@ -70,7 +64,6 @@ class Method extends Symbol {
         this.declaringClassId = declaringClassId
         this.returnType = returnType
         this.doopId = doopId
-        this.doopCompactName = doopCompactName
         this.params = params
         this.paramTypes = paramTypes
         this.isStatic = isStatic
