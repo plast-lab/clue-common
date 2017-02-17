@@ -9,15 +9,12 @@ import org.clyze.persistent.Symbol
  */
 class Occurrence extends Symbol {
 
-    /**
-     *
-     */
     OccurrenceType occurrenceType
 
     /**
      * A "Symbol" id
      */
-    String symbolID
+    String symbolId
 
     /**
      *
@@ -30,14 +27,14 @@ class Occurrence extends Symbol {
      *
      * @param position
      * @param sourceFileName
-     * @param symbolID
+     * @param symbolId
      * @param occurrenceType
      */
-    public Occurrence(Position position, String sourceFileName, String symbolID, OccurrenceType occurrenceType) {
+    public Occurrence(Position position, String sourceFileName, String symbolId, OccurrenceType occurrenceType) {
 
         super(position, sourceFileName)
 
-        this.symbolID = symbolID
+        this.symbolId = symbolId
         this.occurrenceType = occurrenceType
     }
 

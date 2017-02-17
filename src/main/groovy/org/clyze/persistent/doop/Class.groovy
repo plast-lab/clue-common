@@ -26,10 +26,7 @@ class Class extends Symbol {
     boolean isInner
     boolean isAnonymous
 
-    /**
-     * doop id
-     */
-    String doopID
+    String doopId
 
     /**
      *

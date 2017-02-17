@@ -12,12 +12,9 @@ class MethodInvocation extends Symbol {
     /**
      * A "Method" symbol id
      */
-    String invokingMethodID
+    String invokingMethodId
 
-    /**
-     * doop id
-     */
-    String doopID
+    String doopId
 
     /**
      *
@@ -30,15 +27,15 @@ class MethodInvocation extends Symbol {
      *
      * @param position
      * @param sourceFileName
-     * @param doopID
-     * @param invokingMethodID
+     * @param doopId
+     * @param invokingMethodId
      */
-    MethodInvocation(Position position, String sourceFileName, String doopID, String invokingMethodID) {
+    MethodInvocation(Position position, String sourceFileName, String doopId, String invokingMethodId) {
 
         super(position, sourceFileName)
 
-        this.doopID = doopID
-        this.invokingMethodID = invokingMethodID
+        this.doopId = doopId
+        this.invokingMethodId = invokingMethodId
     }
 
 }

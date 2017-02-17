@@ -14,12 +14,9 @@ class HeapAllocation extends Symbol {
     /**
      * A "Method" symbol id
      */
-    String allocatingMethodID
+    String allocatingMethodId
 
-    /**
-     * doop id
-     */
-    String doopID
+    String doopId
 
     /**
      *
@@ -30,17 +27,17 @@ class HeapAllocation extends Symbol {
      *
      * @param position
      * @param sourceFileName
-     * @param doopID
+     * @param doopId
      * @param type
-     * @param allocatingMethodID
+     * @param allocatingMethodId
      */
-    HeapAllocation(Position position, String sourceFileName, String doopID, String type, String allocatingMethodID) {
+    HeapAllocation(Position position, String sourceFileName, String doopId, String type, String allocatingMethodId) {
 
         super(position, sourceFileName)
 
-        this.doopID = doopID
+        this.doopId = doopId
         this.type = type
-        this.allocatingMethodID = allocatingMethodID
+        this.allocatingMethodId = allocatingMethodId
     }
 
 }

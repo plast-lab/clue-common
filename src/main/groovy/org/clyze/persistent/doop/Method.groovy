@@ -25,21 +25,18 @@ class Method extends Symbol {
     /**
      * A "Class" symbol id
      */
-    String declaringClassID
+    String declaringClassId
 
-    /**
-     * doop id
-     */
-    String doopSignature
+    int totalInvocations
+
+    int totalAllocations
+
+    String doopId
 
     /**
      * TODO: deprecated; to be removed
      */
     String doopCompactName
-
-    int totalInvocations
-
-    int totalAllocations
 
     /**
      *
@@ -53,9 +50,9 @@ class Method extends Symbol {
      * @param position
      * @param sourceFileName
      * @param name
-     * @param declaringClassID
+     * @param declaringClassId
      * @param returnType
-     * @param doopSignature
+     * @param doopId
      * @param doopCompactName
      * @param params
      * @param paramTypes
@@ -63,16 +60,16 @@ class Method extends Symbol {
      * @param totalInvocations
      * @param totalAllocations
      */
-    public Method(Position position, String sourceFileName, String name, String declaringClassID, String returnType,
-                  String doopSignature, String doopCompactName, String[] params, String[] paramTypes, boolean isStatic,
+    public Method(Position position, String sourceFileName, String name, String declaringClassId, String returnType,
+                  String doopId, String doopCompactName, String[] params, String[] paramTypes, boolean isStatic,
                   totalInvocations, totalAllocations) {
 
         super(position, sourceFileName)
 
         this.name = name
-        this.declaringClassID = declaringClassID
+        this.declaringClassId = declaringClassId
         this.returnType = returnType
-        this.doopSignature = doopSignature
+        this.doopId = doopId
         this.doopCompactName = doopCompactName
         this.params = params
         this.paramTypes = paramTypes
