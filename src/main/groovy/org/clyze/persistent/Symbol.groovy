@@ -1,11 +1,13 @@
 package org.clyze.persistent
 
+import groovy.transform.EqualsAndHashCode
 import static java.util.UUID.randomUUID
 
 
 /**
  * A symbol element that exists in source code
  */
+@EqualsAndHashCode
 abstract class Symbol extends Element {
 
     /**

@@ -1,5 +1,6 @@
 package org.clyze.persistent.doop
 
+import groovy.transform.EqualsAndHashCode
 import org.clyze.persistent.Position
 import org.clyze.persistent.Symbol
 
@@ -7,6 +8,7 @@ import org.clyze.persistent.Symbol
 /**
  *
  */
+@EqualsAndHashCode(callSuper = true)
 class Method extends Symbol {
 
     String name
