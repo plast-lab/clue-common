@@ -1,9 +1,12 @@
 package org.clyze.persistent
 
+import groovy.transform.EqualsAndHashCode
+
 
 /**
  *
  */
+@EqualsAndHashCode
 class Position {
 
     long startLine

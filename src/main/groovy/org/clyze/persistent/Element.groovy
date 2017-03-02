@@ -1,12 +1,9 @@
 package org.clyze.persistent
 
-import groovy.transform.EqualsAndHashCode
-
 
 /**
  * A persistent element of a clue analysis
  */
-@EqualsAndHashCode(includes = 'id')
 abstract class Element extends ItemImpl {
 
     /**

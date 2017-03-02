@@ -1,5 +1,6 @@
 package org.clyze.persistent.doop
 
+import groovy.transform.EqualsAndHashCode
 import org.clyze.persistent.Position
 import org.clyze.persistent.Symbol
 
@@ -7,6 +8,7 @@ import org.clyze.persistent.Symbol
 /**
  * Symbol used for classes, interfaces and enums
  */
+@EqualsAndHashCode(callSuper = true)
 class Class extends Symbol {
 
     /**
