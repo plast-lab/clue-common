@@ -13,10 +13,7 @@ class Occurrence extends Symbol {
 
     OccurrenceType occurrenceType
 
-    /**
-     * A "Symbol" id
-     */
-    String symbolId
+    String doopId
 
     /**
      *
@@ -32,11 +29,11 @@ class Occurrence extends Symbol {
      * @param symbolId
      * @param occurrenceType
      */
-    public Occurrence(Position position, String sourceFileName, String symbolId, OccurrenceType occurrenceType) {
+    public Occurrence(Position position, String sourceFileName, String doopId, OccurrenceType occurrenceType) {
 
         super(position, sourceFileName)
 
-        this.symbolId = symbolId
+        this.doopId = doopId
         this.occurrenceType = occurrenceType
     }
 
