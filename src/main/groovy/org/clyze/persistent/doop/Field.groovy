@@ -17,10 +17,7 @@ class Field extends Symbol {
 
     boolean isStatic
 
-    /**
-     * A "Class" symbol id
-     */
-    String declaringClassId
+    String declaringClassDoopId
 
     String doopId
 
@@ -38,10 +35,10 @@ class Field extends Symbol {
      * @param name
      * @param doopId
      * @param type
-     * @param declaringClassId
+     * @param declaringClassDoopId
      * @param isStatic
      */
-    Field(Position position, String sourceFileName, String name, String doopId, String type, String declaringClassId,
+    Field(Position position, String sourceFileName, String name, String doopId, String type, String declaringClassDoopId,
           boolean isStatic) {
 
         super(position, sourceFileName)
@@ -49,7 +46,7 @@ class Field extends Symbol {
         this.name = name
         this.doopId = doopId
         this.type = type
-        this.declaringClassId = declaringClassId
+        this.declaringClassDoopId = declaringClassDoopId
         this.isStatic = isStatic
     }
 

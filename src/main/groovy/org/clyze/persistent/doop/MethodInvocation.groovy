@@ -11,10 +11,7 @@ import org.clyze.persistent.Symbol
 @EqualsAndHashCode(callSuper = true)
 class MethodInvocation extends Symbol {
 
-    /**
-     * A "Method" symbol id
-     */
-    String invokingMethodId
+    String invokingMethodDoopId
 
     String doopId
 
@@ -30,14 +27,14 @@ class MethodInvocation extends Symbol {
      * @param position
      * @param sourceFileName
      * @param doopId
-     * @param invokingMethodId
+     * @param invokingMethodDoopId
      */
-    MethodInvocation(Position position, String sourceFileName, String doopId, String invokingMethodId) {
+    MethodInvocation(Position position, String sourceFileName, String doopId, String invokingMethodDoopId) {
 
         super(position, sourceFileName)
 
         this.doopId = doopId
-        this.invokingMethodId = invokingMethodId
+        this.invokingMethodDoopId = invokingMethodDoopId
     }
 
 }

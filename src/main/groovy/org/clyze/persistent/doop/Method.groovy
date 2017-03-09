@@ -24,10 +24,7 @@ class Method extends Symbol {
 
     boolean isStatic
 
-    /**
-     * A "Class" symbol id
-     */
-    String declaringClassId
+    String declaringClassDoopId
 
     int totalInvocations
 
@@ -47,7 +44,7 @@ class Method extends Symbol {
      * @param position
      * @param sourceFileName
      * @param name
-     * @param declaringClassId
+     * @param declaringClassDoopId
      * @param returnType
      * @param doopId
      * @param params
@@ -56,14 +53,14 @@ class Method extends Symbol {
      * @param totalInvocations
      * @param totalAllocations
      */
-    public Method(Position position, String sourceFileName, String name, String declaringClassId, String returnType,
+    public Method(Position position, String sourceFileName, String name, String declaringClassDoopId, String returnType,
                   String doopId, String[] params, String[] paramTypes, boolean isStatic, totalInvocations,
                   totalAllocations) {
 
         super(position, sourceFileName)
 
         this.name = name
-        this.declaringClassId = declaringClassId
+        this.declaringClassDoopId = declaringClassDoopId
         this.returnType = returnType
         this.doopId = doopId
         this.params = params

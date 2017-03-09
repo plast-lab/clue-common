@@ -19,10 +19,7 @@ class Variable extends Symbol {
 
     boolean isParameter
 
-    /**
-     * A "Method" symbol id
-     */
-    String declaringMethodId
+    String declaringMethodDoopId
 
     String doopId
 
@@ -40,11 +37,11 @@ class Variable extends Symbol {
      * @param name
      * @param doopId
      * @param type
-     * @param declaringMethodId
+     * @param declaringMethodDoopId
      * @param isLocal
      * @param isParameter
      */
-    Variable(Position position, String sourceFileName, String name, String doopId, String type, String declaringMethodId,
+    Variable(Position position, String sourceFileName, String name, String doopId, String type, String declaringMethodDoopId,
              boolean isLocal, boolean isParameter) {
 
         super(position, sourceFileName)
@@ -52,7 +49,7 @@ class Variable extends Symbol {
         this.name = name
         this.doopId = doopId
         this.type = type
-        this.declaringMethodId = declaringMethodId
+        this.declaringMethodDoopId = declaringMethodDoopId
         this.isLocal = isLocal
         this.isParameter = isParameter
     }
