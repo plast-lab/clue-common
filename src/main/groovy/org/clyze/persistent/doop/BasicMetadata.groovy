@@ -1,7 +1,4 @@
 package org.clyze.persistent.doop
-
-import org.clyze.persistent.doop.Class
-
 /**
  * A simple class for offering a common container of the basic doop metadata.
  * 
@@ -15,5 +12,5 @@ class BasicMetadata {
     public final Set<Variable> variables = [] as Set<Variable>
     public final Set<MethodInvocation> invocations = [] as Set<MethodInvocation>
     public final Set<HeapAllocation> heapAllocations = [] as Set<HeapAllocation>
-    public final Set<Occurrence> occurrences = [] as Set<Occurrence>
+    public final Set<Usage> usages = [] as Set<Usage>
 }

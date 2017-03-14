@@ -9,16 +9,16 @@ import org.clyze.persistent.Symbol
  *
  */
 @EqualsAndHashCode(callSuper = true)
-class Occurrence extends Symbol {
+class Usage extends Symbol {
 
-    OccurrenceType occurrenceType
+    UsageKind usageKind
 
     String doopId
 
     /**
      *
      */
-    public Occurrence() {
+    public Usage() {
 
     }
 
@@ -27,14 +27,14 @@ class Occurrence extends Symbol {
      * @param position
      * @param sourceFileName
      * @param symbolId
-     * @param occurrenceType
+     * @param usageKind
      */
-    public Occurrence(Position position, String sourceFileName, String doopId, OccurrenceType occurrenceType) {
+    public Usage(Position position, String sourceFileName, String doopId, UsageKind usageKind) {
 
         super(position, sourceFileName)
 
         this.doopId = doopId
-        this.occurrenceType = occurrenceType
+        this.usageKind = usageKind
     }
 
 }
