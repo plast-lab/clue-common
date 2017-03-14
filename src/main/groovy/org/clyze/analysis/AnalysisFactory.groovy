@@ -1,7 +1,7 @@
 package org.clyze.analysis
 
-interface AnalysisFactory {
-	Analysis newAnalysis(AnalysisFamily family,
+interface AnalysisFactory<A extends Analysis> {
+	A newAnalysis(AnalysisFamily family,
 	                     String id,
 	                     String name,
 	                     Map<String, AnalysisOption> options,
