@@ -44,7 +44,7 @@ class Position {
      */
     Position(long startLine, long endLine, long startColumn, long endColumn) {
 
-        assert startLine <= endLine && startColumn <= endColumn : "Invalid symbol position"
+        assert startLine < endLine || (startLine == endLine && startColumn <= endColumn) : "Invalid symbol position"
 
         this.startLine = startLine
         this.endLine = endLine
