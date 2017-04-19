@@ -35,6 +35,10 @@ interface DataStore {
                        Closure resultProcessor)
 
 
+    public void scan(Closure resultProcessor)
+
+    public void scan(Map<String, Object> filters, Closure resultProcessor)
+
     public void deleteItems(Map<String, Object> filters)
 
     public Map<String, Long> groupBy(String text, Map<String, Object> filters, String field)
