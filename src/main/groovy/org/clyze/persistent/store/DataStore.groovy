@@ -37,7 +37,7 @@ interface DataStore {
 
     public void scan(Closure resultProcessor)
 
-    public void scan(Map<String, Object> filters, Closure resultProcessor)
+    public void scan(String text, Map<String, Object> filters, List<OrderBy> orderByList, Closure resultProcessor)
 
     public void deleteItems(Map<String, Object> filters)
 
