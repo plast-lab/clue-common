@@ -15,6 +15,8 @@ class Export {
 
     void export() {
         OrderBy orderById = new OrderBy(field:'_doc', ordering:Ordering.ASC)
+        exporter.start()
         store.scan(null, filters, [orderById], exporter.&export)
+        exporter.end()
     }
 }
