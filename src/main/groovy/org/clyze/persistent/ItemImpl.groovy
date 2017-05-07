@@ -3,10 +3,6 @@ package org.clyze.persistent
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-
-/**
- *
- */
 abstract class ItemImpl implements Item {
 
     /**
@@ -15,7 +11,6 @@ abstract class ItemImpl implements Item {
     static final String ID_FIELD = "id"
 
     /**
-     *
      * @return
      */
     @Override
@@ -24,7 +19,6 @@ abstract class ItemImpl implements Item {
     }
 
     /**
-     *
      * @param json
      */
     @Override
@@ -38,22 +32,18 @@ abstract class ItemImpl implements Item {
     }
 
     /**
-     *
      * @return
      */
     @Override
     String toJSON() {
-
-        return JsonOutput.toJson(toMap())
+        JsonOutput.toJson(toMap())
     }
 
     /**
-     *
      * @return
      */
     @Override
     Map<String, Object> toMap() {
-
         return properties.findAll{ String key, Object value ->
             value != null && key != "class" && key != "ID_FIELD"
         }

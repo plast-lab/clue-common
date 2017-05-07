@@ -1,9 +1,5 @@
 package org.clyze.persistent.doop
 
-
-/**
- *
- */
 enum UsageKind {
     PACKAGE,
     TYPE,

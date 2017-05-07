@@ -1,14 +1,12 @@
 package org.clyze.persistent.doop
 
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.InheritConstructors
 import org.clyze.persistent.Position
 import org.clyze.persistent.Symbol
 
-
-/**
- *
- */
 @EqualsAndHashCode(callSuper = true)
+@InheritConstructors
 class Method extends Symbol {
 
     String name
@@ -33,14 +31,6 @@ class Method extends Symbol {
     String doopId
 
     /**
-     *
-     */
-    public Method() {
-
-    }
-
-    /**
-     *
      * @param position
      * @param sourceFileName
      * @param name
@@ -56,9 +46,7 @@ class Method extends Symbol {
     public Method(Position position, String sourceFileName, String name, String declaringClassDoopId, String returnType,
                   String doopId, String[] params, String[] paramTypes, boolean isStatic, totalInvocations,
                   totalAllocations) {
-
         super(position, sourceFileName)
-
         this.name = name
         this.declaringClassDoopId = declaringClassDoopId
         this.returnType = returnType
@@ -69,5 +57,4 @@ class Method extends Symbol {
         this.totalInvocations = totalInvocations
         this.totalAllocations = totalAllocations
     }
-
 }

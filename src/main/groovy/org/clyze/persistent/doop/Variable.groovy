@@ -1,14 +1,12 @@
 package org.clyze.persistent.doop
 
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.InheritConstructors
 import org.clyze.persistent.Position
 import org.clyze.persistent.Symbol
 
-
-/**
- *
- */
 @EqualsAndHashCode(callSuper = true)
+@InheritConstructors
 class Variable extends Symbol {
 
     String name
@@ -24,14 +22,6 @@ class Variable extends Symbol {
     String doopId
 
     /**
-     *
-     */
-    Variable() {
-
-    }
-
-    /**
-     *
      * @param position
      * @param sourceFileName
      * @param name
@@ -43,9 +33,7 @@ class Variable extends Symbol {
      */
     Variable(Position position, String sourceFileName, String name, String doopId, String type, String declaringMethodDoopId,
              boolean isLocal, boolean isParameter) {
-
         super(position, sourceFileName)
-
         this.name = name
         this.doopId = doopId
         this.type = type
@@ -53,5 +41,4 @@ class Variable extends Symbol {
         this.isLocal = isLocal
         this.isParameter = isParameter
     }
-
 }

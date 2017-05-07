@@ -1,4 +1,5 @@
 package org.clyze.persistent.doop
+
 /**
  * A simple class for offering a common container of the basic doop metadata.
  * 

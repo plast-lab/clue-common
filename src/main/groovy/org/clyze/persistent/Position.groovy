@@ -2,10 +2,6 @@ package org.clyze.persistent
 
 import groovy.transform.EqualsAndHashCode
 
-
-/**
- *
- */
 @EqualsAndHashCode
 class Position {
 
@@ -14,12 +10,7 @@ class Position {
     long endLine
     long endColumn
 
-    /**
-     *
-     */
-    Position() {
-
-    }
+    Position() {}
 
     /**
      * May be used when the symbol exists only in one line in the source code.
@@ -31,19 +22,16 @@ class Position {
      * @param endColumn
      */
     Position(long line, long startColumn, long endColumn) {
-
         this(line, line, startColumn, endColumn)
     }
 
     /**
-     *
      * @param startLine
      * @param endLine
      * @param startColumn
      * @param endColumn
      */
     Position(long startLine, long endLine, long startColumn, long endColumn) {
-
         assert startLine < endLine || (startLine == endLine && startColumn <= endColumn) : "Invalid symbol position"
 
         this.startLine = startLine
@@ -51,5 +39,4 @@ class Position {
         this.startColumn = startColumn
         this.endColumn = endColumn
     }
-
 }

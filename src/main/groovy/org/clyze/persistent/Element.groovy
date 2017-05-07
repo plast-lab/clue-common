@@ -1,6 +1,5 @@
 package org.clyze.persistent
 
-
 /**
  * A persistent element of a clue analysis
  */
@@ -23,11 +22,9 @@ abstract class Element extends ItemImpl {
      */
     String userId
 
-    /**
-     *
-     */
-    Element() {
+    Element() {}
 
+    Element(String json) {
+        fromJSON(json)
     }
-
 }
