@@ -32,7 +32,8 @@ class Method extends Symbol {
 
     /**
      * The place where the method definition begins (including any annotations and modifiers) and ends (i.e. right after
-     * the closing brace)
+     * the closing brace). If the starting or ending line contain nothing else except the method definition and whitespaces,
+     * then the corresponding column is set to zero
      *
      * Note: Differs from the "position" field inherited from "Symbol" in that the latter refers to the starting and
      *       ending positions of the method name inside its definition
