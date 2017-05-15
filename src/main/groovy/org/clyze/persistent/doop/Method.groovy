@@ -31,6 +31,17 @@ class Method extends Symbol {
     String doopId
 
     /**
+     * The place where the method definition begins (including any annotations and modifiers) and ends (i.e. right after
+     * the closing brace)
+     *
+     * Note: Differs from the "position" field inherited from "Symbol" in that the latter refers to the starting and
+     *       ending positions of the method name inside its definition
+     *
+     * todo: Add a constructor parameter for this field too. For now we simply set its value with the auto-produced setter
+     */
+    Position outerPosition
+
+    /**
      * @param position
      * @param sourceFileName
      * @param name
