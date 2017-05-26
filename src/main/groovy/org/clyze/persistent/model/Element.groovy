@@ -1,4 +1,4 @@
-package org.clyze.persistent
+package org.clyze.persistent.model
 
 /**
  * A persistent element of a clue analysis

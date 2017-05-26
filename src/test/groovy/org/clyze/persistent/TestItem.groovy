@@ -1,6 +1,7 @@
 package org.clyze.persistent
 
 import groovy.transform.EqualsAndHashCode
+import org.clyze.persistent.model.ItemImpl
 
 /**
  * Created by saiko on 9/11/2015.

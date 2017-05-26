@@ -1,9 +1,9 @@
-package org.clyze.persistent.doop
+package org.clyze.persistent.model.doop
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.InheritConstructors
-import org.clyze.persistent.Position
-import org.clyze.persistent.Symbol
+import org.clyze.persistent.model.Position
+import org.clyze.persistent.model.Symbol
 
 /**
  * Symbol used for classes, interfaces and enums

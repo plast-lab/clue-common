@@ -1,4 +1,4 @@
-package org.clyze.persistent
+package org.clyze.persistent.model
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.InheritConstructors
