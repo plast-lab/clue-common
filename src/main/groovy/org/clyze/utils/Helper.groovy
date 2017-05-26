@@ -123,4 +123,19 @@ class Helper {
 		}
 		return sb.toString()
 	}
+
+	/**
+	 * Return elapsed time in seconds.
+	 */
+	static long timing(Closure c) {
+		long now = System.currentTimeMillis()
+		try {
+			c.call()
+		}
+		catch(e) {
+			throw e
+		}
+		// We measure time only in error-free cases
+		return ((System.currentTimeMillis() - now) / 1000).longValue()
+	}
 }
