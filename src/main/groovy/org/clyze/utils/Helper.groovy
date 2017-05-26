@@ -1,4 +1,4 @@
-package org.clyze.analysis
+package org.clyze.utils
 
 import groovy.transform.CompileStatic
 import org.apache.log4j.*
