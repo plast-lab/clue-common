@@ -2,6 +2,7 @@ package org.clyze.persistent
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.InheritConstructors
+
 import static java.util.UUID.randomUUID
 
 /**
@@ -11,17 +12,17 @@ import static java.util.UUID.randomUUID
 @InheritConstructors
 abstract class Symbol extends Element {
 
-    Position position
+	Position position
 
-    String sourceFileName
+	String sourceFileName
 
-    /**
-     * @param position          The symbol position in the source code
-     * @param sourceFileName    The source code file name
-     */
-    Symbol(Position position, String sourceFileName) {
-        this.position = position
-        this.sourceFileName = sourceFileName
-        this.id = randomUUID().toString()
-    }
+	/**
+	 * @param position The symbol position in the source code
+	 * @param sourceFileName The source code file name
+	 */
+	Symbol(Position position, String sourceFileName) {
+		this.position = position
+		this.sourceFileName = sourceFileName
+		this.id = randomUUID().toString()
+	}
 }

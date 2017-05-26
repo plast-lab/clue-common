@@ -9,23 +9,23 @@ import org.clyze.persistent.Symbol
 @InheritConstructors
 class HeapAllocation extends Symbol {
 
-    String type
+	String type
 
-    String allocatingMethodDoopId
+	String allocatingMethodDoopId
 
-    String doopId
+	String doopId
 
-    /**
-     * @param position
-     * @param sourceFileName
-     * @param doopId
-     * @param type
-     * @param allocatingMethodDoopId
-     */
-    HeapAllocation(Position position, String sourceFileName, String doopId, String type, String allocatingMethodDoopId) {
-        super(position, sourceFileName)
-        this.doopId = doopId
-        this.type = type
-        this.allocatingMethodDoopId = allocatingMethodDoopId
-    }
+	/**
+	 * @param position
+	 * @param sourceFileName
+	 * @param doopId
+	 * @param type
+	 * @param allocatingMethodDoopId
+	 */
+	HeapAllocation(Position position, String sourceFileName, String doopId, String type, String allocatingMethodDoopId) {
+		super(position, sourceFileName)
+		this.doopId = doopId
+		this.type = type
+		this.allocatingMethodDoopId = allocatingMethodDoopId
+	}
 }

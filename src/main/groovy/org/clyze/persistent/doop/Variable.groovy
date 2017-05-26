@@ -9,36 +9,36 @@ import org.clyze.persistent.Symbol
 @InheritConstructors
 class Variable extends Symbol {
 
-    String name
+	String name
 
-    String type
+	String type
 
-    boolean isLocal
+	boolean isLocal
 
-    boolean isParameter
+	boolean isParameter
 
-    String declaringMethodDoopId
+	String declaringMethodDoopId
 
-    String doopId
+	String doopId
 
-    /**
-     * @param position
-     * @param sourceFileName
-     * @param name
-     * @param doopId
-     * @param type
-     * @param declaringMethodDoopId
-     * @param isLocal
-     * @param isParameter
-     */
-    Variable(Position position, String sourceFileName, String name, String doopId, String type, String declaringMethodDoopId,
-             boolean isLocal, boolean isParameter) {
-        super(position, sourceFileName)
-        this.name = name
-        this.doopId = doopId
-        this.type = type
-        this.declaringMethodDoopId = declaringMethodDoopId
-        this.isLocal = isLocal
-        this.isParameter = isParameter
-    }
+	/**
+	 * @param position
+	 * @param sourceFileName
+	 * @param name
+	 * @param doopId
+	 * @param type
+	 * @param declaringMethodDoopId
+	 * @param isLocal
+	 * @param isParameter
+	 */
+	Variable(Position position, String sourceFileName, String name, String doopId, String type, String declaringMethodDoopId,
+			 boolean isLocal, boolean isParameter) {
+		super(position, sourceFileName)
+		this.name = name
+		this.doopId = doopId
+		this.type = type
+		this.declaringMethodDoopId = declaringMethodDoopId
+		this.isLocal = isLocal
+		this.isParameter = isParameter
+	}
 }

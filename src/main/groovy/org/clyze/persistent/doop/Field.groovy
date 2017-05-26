@@ -9,32 +9,32 @@ import org.clyze.persistent.Symbol
 @InheritConstructors
 class Field extends Symbol {
 
-    String name
+	String name
 
-    String type
+	String type
 
-    boolean isStatic
+	boolean isStatic
 
-    String declaringClassDoopId
+	String declaringClassDoopId
 
-    String doopId
+	String doopId
 
-    /**
-     * @param position
-     * @param sourceFileName
-     * @param name
-     * @param doopId
-     * @param type
-     * @param declaringClassDoopId
-     * @param isStatic
-     */
-    Field(Position position, String sourceFileName, String name, String doopId, String type, String declaringClassDoopId,
-          boolean isStatic) {
-        super(position, sourceFileName)
-        this.name = name
-        this.doopId = doopId
-        this.type = type
-        this.declaringClassDoopId = declaringClassDoopId
-        this.isStatic = isStatic
-    }
+	/**
+	 * @param position
+	 * @param sourceFileName
+	 * @param name
+	 * @param doopId
+	 * @param type
+	 * @param declaringClassDoopId
+	 * @param isStatic
+	 */
+	Field(Position position, String sourceFileName, String name, String doopId, String type, String declaringClassDoopId,
+		  boolean isStatic) {
+		super(position, sourceFileName)
+		this.name = name
+		this.doopId = doopId
+		this.type = type
+		this.declaringClassDoopId = declaringClassDoopId
+		this.isStatic = isStatic
+	}
 }
