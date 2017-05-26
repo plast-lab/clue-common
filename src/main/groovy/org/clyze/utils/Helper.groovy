@@ -1,12 +1,15 @@
 package org.clyze.utils
 
-import groovy.transform.CompileStatic
+import org.apache.commons.io.FilenameUtils
 import org.apache.log4j.*
+
+import java.lang.reflect.Method
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 
 /**
  * Various helper methods.
  */
-@CompileStatic
 class Helper {
 
 	/**
@@ -44,5 +47,80 @@ class Helper {
 		def root = Logger.rootLogger
 		root.setLevel(Level.toLevel(logLevel, Level.WARN))
 		root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
+	}
+
+	/**
+	 * Executes the given Java main class using the supplied class loader.
+	 */
+	static void execJava(ClassLoader cl, String mainClass, String[] params) {
+		//This is a better way to invoke the main method using a different
+		//classloader (the runWithClassLoader/invokeMainMethod methods are
+		//problematic and should be removed).
+		Class theClass = Class.forName(mainClass, true, cl)
+		Method mainMethod = theClass.getMethod("main", [String[].class] as Class[])
+		mainMethod.invoke(null, [params] as Object[])
+	}
+
+	/**
+	 * Runs the closure in the current thread using the specified class loader
+	 * @param cl - the class loader to use
+	 * @param closure - the closure to run
+	 */
+	static void runWithClassLoader(ClassLoader cl, Closure closure) {
+		Thread currentThread = Thread.currentThread()
+		ClassLoader oldLoader = currentThread.getContextClassLoader()
+		currentThread.setContextClassLoader(cl)
+		try {
+			closure.call()
+		} catch (e) {
+			throw new RuntimeException(e.getMessage(), e)
+		}
+		finally {
+			currentThread.setContextClassLoader(oldLoader)
+		}
+	}
+
+	/**
+	 * Invokes the main method of the given mainClass, passing the supplied params.
+	 */
+	static void invokeMainMethod(String mainClass, String[] params) {
+		Class[] parameterTypes = [String[].class]
+		Object[] args = [params]
+		Method main = Class.forName(mainClass).getMethod("main", parameterTypes)
+		main.invoke(null, args)
+	}
+
+	/**
+	 * Returns a set of the packages contained in the given jar.
+	 * Any classes that are not included in packages are also retrieved.
+	 */
+	static Set<String> getPackages(File jar) {
+		ZipFile zip = new ZipFile(jar)
+		Enumeration<? extends ZipEntry> entries = zip.entries()
+		List<ZipEntry> classes = entries?.findAll { ZipEntry entry ->
+			entry.getName().endsWith(".class")
+		}
+		List<String> packages = classes.collect { ZipEntry entry ->
+			String entryName = entry.getName()
+			if (entryName.indexOf("/") > 0)
+				return FilenameUtils.getPath(entry.getName()).replace('/' as char, '.' as char) + '*'
+			else
+				return FilenameUtils.getBaseName(entryName)
+		}
+
+		packages = packages.unique()
+
+		return (packages as Set)
+	}
+
+	/**
+	 * Returns the stack trace of an exception as String.
+	 */
+	static String stackTraceToString(Throwable t) {
+		def sb = new StringBuilder()
+		t.getStackTrace().each { StackTraceElement elem ->
+			sb.append(elem.toString()).append('\n')
+		}
+		return sb.toString()
 	}
 }
