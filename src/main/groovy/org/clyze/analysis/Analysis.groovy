@@ -1,5 +1,8 @@
 package org.clyze.analysis
 
+import groovy.transform.Canonical
+
+@Canonical
 abstract class Analysis implements Runnable {
 	/**
 	 * The family of the analysis (e.g. doop or cclyzer)
@@ -30,23 +33,4 @@ abstract class Analysis implements Runnable {
 	 * The input filepaths of the analysis
 	 */
 	List<File> inputFiles
-
-	protected Analysis(AnalysisFamily family,
-	                   String id,
-	                   String name,
-	                   Map<String, AnalysisOption> options,
-	                   File outDir,
-	                   List<File> inputFiles) {
-		this.family = family
-		this.id = id
-		this.name = name
-		this.options = options
-		this.outDir = outDir
-		this.inputFiles = inputFiles
-	}
-
-	/**
-	 * The phases of the analysis (to be determined if needed).
-	 */
-	Iterable<AnalysisPhase> phases() { return [] }
 }

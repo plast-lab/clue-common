@@ -6,18 +6,18 @@ class AnalysisOption<T> {
 	 */
 	static AnalysisOption<T> newInstance(AnalysisOption<T> option) {
 		return new AnalysisOption<>(
-			id             : option.id,
-			name           : option.name,
-			description    : option.description,
-			value          : option.value,
-			forCacheID     : option.forCacheID,
-			forPreprocessor: option.forPreprocessor,
-			webUI          : option.webUI,
-			cli            : option.cli,
-			argName        : option.argName,
-			isAdvanced     : option.isAdvanced,
-			isFile         : option.isFile,
-			nonStandard    : option.nonStandard
+				id: option.id,
+				name: option.name,
+				description: option.description,
+				value: option.value,
+				forCacheID: option.forCacheID,
+				forPreprocessor: option.forPreprocessor,
+				webUI: option.webUI,
+				cli: option.cli,
+				argName: option.argName,
+				isAdvanced: option.isAdvanced,
+				isFile: option.isFile,
+				nonStandard: option.nonStandard
 		)
 	}
 
@@ -82,7 +82,5 @@ class AnalysisOption<T> {
 	boolean nonStandard = false
 
 	@Override
-	String toString() {
-		return getId() + "=" + getValue()
-	}
+	String toString() { "$id=$value" }
 }
