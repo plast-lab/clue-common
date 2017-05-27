@@ -20,6 +20,8 @@ class CPreprocessor {
 		.collect { AnalysisOption option ->
 			if (option.value instanceof Boolean)
 				return "-D${option.id}"
+			else if (option.value instanceof Integer)
+				return "-D${option.id}=${option.value}"
 			else
 				return "-D${option.id}='\"${option.value}\"'"
 		}
