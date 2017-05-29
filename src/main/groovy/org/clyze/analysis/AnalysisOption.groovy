@@ -14,6 +14,7 @@ class AnalysisOption<T> {
 				description: option.description,
 				value: option.value,
 				validValues: option.validValues,
+				isMandatory: option.isMandatory,
 				forCacheID: option.forCacheID,
 				forPreprocessor: option.forPreprocessor,
 				webUI: option.webUI,
@@ -49,6 +50,11 @@ class AnalysisOption<T> {
 	 * An optional set of valid values
 	 */
 	Set<T> validValues = null
+
+	/**
+	 * Indicates whether the options is a mandatory one
+	 */
+	boolean isMandatory = false
 
 	/**
 	 * Indicates whether the option affects the cacheID generation
