@@ -1,5 +1,8 @@
 package org.clyze.analysis
 
+import groovy.transform.AutoClone
+
+@AutoClone
 class AnalysisOption<T> {
 	/**
 	 * The copy constructor pattern
@@ -10,6 +13,7 @@ class AnalysisOption<T> {
 				name: option.name,
 				description: option.description,
 				value: option.value,
+				validValues: option.validValues,
 				forCacheID: option.forCacheID,
 				forPreprocessor: option.forPreprocessor,
 				webUI: option.webUI,
@@ -40,6 +44,11 @@ class AnalysisOption<T> {
 	 * The value of the option
 	 */
 	T value
+
+	/**
+	 * An optional set of valid values
+	 */
+	Set<T> validValues = null
 
 	/**
 	 * Indicates whether the option affects the cacheID generation
