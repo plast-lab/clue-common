@@ -15,17 +15,24 @@ class HeapAllocation extends Symbol {
 
 	String doopId
 
+	/** is inside instance initializer block */
+	boolean inIIB
+
 	/**
+	 *
 	 * @param position
 	 * @param sourceFileName
 	 * @param doopId
 	 * @param type
 	 * @param allocatingMethodDoopId
+	 * @param inIIB                     is inside instance initializer block
 	 */
-	HeapAllocation(Position position, String sourceFileName, String doopId, String type, String allocatingMethodDoopId) {
+	HeapAllocation(Position position, String sourceFileName, String doopId, String type, String allocatingMethodDoopId,
+				   boolean inIIB = false) {
 		super(position, sourceFileName)
 		this.doopId = doopId
 		this.type = type
 		this.allocatingMethodDoopId = allocatingMethodDoopId
+		this.inIIB = inIIB
 	}
 }

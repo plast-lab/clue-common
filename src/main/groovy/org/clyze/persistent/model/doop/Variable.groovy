@@ -21,7 +21,11 @@ class Variable extends Symbol {
 
 	String doopId
 
+	/** is inside an instance initializer block */
+	boolean inIIB
+
 	/**
+	 *
 	 * @param position
 	 * @param sourceFileName
 	 * @param name
@@ -30,9 +34,10 @@ class Variable extends Symbol {
 	 * @param declaringMethodDoopId
 	 * @param isLocal
 	 * @param isParameter
+	 * @param inIIB                 is inside instance initializer block
 	 */
 	Variable(Position position, String sourceFileName, String name, String doopId, String type, String declaringMethodDoopId,
-			 boolean isLocal, boolean isParameter) {
+			 boolean isLocal, boolean isParameter, boolean inIIB = false) {
 		super(position, sourceFileName)
 		this.name = name
 		this.doopId = doopId
@@ -40,5 +45,6 @@ class Variable extends Symbol {
 		this.declaringMethodDoopId = declaringMethodDoopId
 		this.isLocal = isLocal
 		this.isParameter = isParameter
+		this.inIIB = inIIB
 	}
 }
