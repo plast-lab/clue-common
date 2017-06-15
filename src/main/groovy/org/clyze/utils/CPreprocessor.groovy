@@ -46,7 +46,7 @@ class CPreprocessor {
 		if (new File(input).isFile())
 			preprocess(output, input, includes)
 		else {
-			def tmpFile = Files.createTempFile(FileUtils.getTempDirectory().toPath(), "tmp", "pre").toFile()
+			def tmpFile = createUniqueTmpFile()
 			tmpFile.createNewFile()
 			preprocess(output, tmpFile.getCanonicalPath(), includes)
 			FileUtils.deleteQuietly(tmpFile)
@@ -63,7 +63,7 @@ class CPreprocessor {
 
 	// Preprocess input file and put contents *in the beginning* of the output file.
 	void includeAtStart(String output, String input, String... includes) {
-		def tmpFile = new File(FileUtils.getTempDirectory(), "tmpFile")
+		def tmpFile = createUniqueTmpFile()
 		preprocess(tmpFile.getCanonicalPath(), output, (includes + [input]) as String[])
 		FileUtils.copyFile(tmpFile, new File(output))
 		FileUtils.deleteQuietly(tmpFile)
@@ -80,11 +80,15 @@ class CPreprocessor {
 	// Implementation method called by *includeAtEnd* and *includeAtEndIfExists* with the
 	// appropriate preprocess method (*preprocess* and *preprocessIfExists* respectively) as parameter.
 	private void includeAtEnd0(String output, String input, String... includes, Closure closure) {
-		def tmpFile = new File(FileUtils.getTempDirectory(), "outTmpFile")
+		def tmpFile = createUniqueTmpFile()
 		closure(tmpFile.getCanonicalPath(), input, includes)
 		tmpFile.withInputStream { stream ->
 			new File(output) << stream
 		}
 		FileUtils.deleteQuietly(tmpFile)
+	}
+
+	private static File createUniqueTmpFile() {
+		Files.createTempFile(FileUtils.getTempDirectory().toPath(), "tmp", "pre").toFile()
 	}
 }
