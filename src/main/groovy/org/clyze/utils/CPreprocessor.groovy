@@ -5,6 +5,8 @@ import org.apache.commons.io.FileUtils
 import org.clyze.analysis.Analysis
 import org.clyze.analysis.AnalysisOption
 
+import java.nio.file.Files
+
 @TypeChecked
 class CPreprocessor {
 
@@ -44,7 +46,7 @@ class CPreprocessor {
 		if (new File(input).isFile())
 			preprocess(output, input, includes)
 		else {
-			def tmpFile = new File(FileUtils.getTempDirectory(), "tmpFile")
+			def tmpFile = Files.createTempFile(FileUtils.getTempDirectory().toPath(), "tmp", "pre").toFile()
 			tmpFile.createNewFile()
 			preprocess(output, tmpFile.getCanonicalPath(), includes)
 			FileUtils.deleteQuietly(tmpFile)
