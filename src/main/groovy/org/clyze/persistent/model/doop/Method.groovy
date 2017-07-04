@@ -22,6 +22,10 @@ class Method extends Symbol {
 
 	boolean isStatic
 
+	boolean isInterface
+
+	boolean isAbstract
+
 	String declaringClassDoopId
 
 	int totalInvocations
