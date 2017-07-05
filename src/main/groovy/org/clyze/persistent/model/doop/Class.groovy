@@ -55,8 +55,4 @@ class Class extends Symbol {
 		this.isInner = isInner
 		this.isAnonymous = isAnonymous
 	}
-
-	public boolean isInterface() {
-		return isInterface;
-	}
 }
