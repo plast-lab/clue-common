@@ -22,6 +22,7 @@ class AnalysisOption<T> {
 				argName: option.argName,
 				isAdvanced: option.isAdvanced,
 				isFile: option.isFile,
+				isDir: option.isDir,
 				nonStandard: option.nonStandard
 		)
 	}
@@ -90,6 +91,11 @@ class AnalysisOption<T> {
 	 * Indicates whether the options is a file
 	 */
 	boolean isFile = false
+
+	/**
+	 * Indicates whether the options is a directoy
+	 */
+	boolean isDir = false
 
 	/**
 	 * Indicates whether the options is a non-standard flag
