@@ -28,6 +28,7 @@ class Class extends Symbol {
 	boolean isStatic
 	boolean isInner
 	boolean isAnonymous
+	boolean isAbstract
 
 	String doopId
 
@@ -44,7 +45,7 @@ class Class extends Symbol {
 	 * @param isAnonymous
 	 */
 	Class(Position position, String sourceFileName, String name, String packageName, String doopId,
-		  boolean isInterface, boolean isEnum, boolean isStatic, boolean isInner, boolean isAnonymous) {
+		  boolean isInterface, boolean isEnum, boolean isStatic, boolean isInner, boolean isAnonymous, boolean isAbstract) {
 		super(position, sourceFileName)
 		this.name = name
 		this.packageName = packageName
@@ -54,5 +55,6 @@ class Class extends Symbol {
 		this.isStatic = isStatic
 		this.isInner = isInner
 		this.isAnonymous = isAnonymous
+		this.isAbstract = isAbstract
 	}
 }
