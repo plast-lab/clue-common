@@ -149,17 +149,26 @@ class AndroidDepResolver {
     // TODO: .pom handling.
     private static void resolveExtDep(String depDir, String group, String name,
                                       String version, String classesJar) {
-        // Download AAR file.
-        File localAAR = new File("${depDir}/${name}-${version}.aar")
-        String aarURL = genMavenURL(group, name, version)
-        println "Downloading ${aarURL}..."
-        localAAR.newOutputStream() << new URL(aarURL).openStream()
-        unpackClassesJarFromAAR(localAAR, classesJar)
+        String localArchive = "${depDir}/${name}-${version}"
+        try {
+            // Download AAR file.
+            File localAAR = new File("${localArchive}.aar")
+            String aarURL = genMavenURL(group, name, version, "aar")
+            println "AndroidDepResolver: Downloading ${aarURL}..."
+            localAAR.newOutputStream() << new URL(aarURL).openStream()
+            unpackClassesJarFromAAR(localAAR, classesJar)
+        } catch (FileNotFoundException ex) {
+            println "AndroidDepResolver: AAR not found for ${name}-${version}, looking for JAR..."
+            File localJAR = new File("${localArchive}.jar")
+            String jarURL = genMavenURL(group, name, version, "jar")
+            println "AndroidDepResolver: Downloading ${jarURL}..."
+            localJAR.newOutputStream() << new URL(jarURL).openStream()
+        }
     }
 
-    private static String genMavenURL(String group, String name, String version) {
+    private static String genMavenURL(String group, String name, String version, String ext) {
         String groupPath = group.replaceAll('\\.', '/')
-        return "http://repo1.maven.org/maven2/${groupPath}/${name}/${version}/${name}-${version}.aar"
+        return "http://repo1.maven.org/maven2/${groupPath}/${name}/${version}/${name}-${version}.${ext}"
     }
 
     private static String getExtDepsDir(String appBuildHome) {
