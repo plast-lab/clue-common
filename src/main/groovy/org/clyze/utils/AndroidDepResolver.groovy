@@ -19,7 +19,8 @@ class AndroidDepResolver {
     // the installed Android SDK.
     static final List localAndroidDeps = [
         "com.android.support",
-        "com.android.support.constraint"
+        "com.android.support.constraint",
+        "bitcoin-wallet"
     ]
 
     public static Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
