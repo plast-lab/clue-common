@@ -51,7 +51,7 @@ class AndroidDepResolver {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace()
-                throwRuntimeException("AndroidPlatform: Cannot resolve dependency ${group}:${name}:${version}")
+                throwRuntimeException("AndroidDepResolver: Cannot resolve dependency ${group}:${name}:${version}")
             }
         }
 
