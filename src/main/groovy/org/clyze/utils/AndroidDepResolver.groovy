@@ -25,7 +25,7 @@ class AndroidDepResolver {
 
     public static Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
         if (ignoredGroups.contains(group)) {
-            println "Ignoring dependency group: ${group}"
+            logMessage("Ignoring dependency group: ${group}")
             return null
         }
 
@@ -37,7 +37,7 @@ class AndroidDepResolver {
 
         // If the dependency exists, use it.
         if ((new File(classesJar)).exists()) {
-            println "Using dependency ${group}:${name}:${version}: ${classesJar}"
+            logMessage("Using dependency ${group}:${name}:${version}: ${classesJar}")
         } else {
             // Otherwise, resolve the dependency.
             try {
@@ -60,19 +60,19 @@ class AndroidDepResolver {
 
         // Read pom to resolve the dependencies of this dependency.
         if ((new File(pom)).exists()) {
-            println "Reading ${pom}..."
+            logMessage("Reading ${pom}...")
             def xml = new XmlSlurper().parse(new File(pom))
             xml.dependencies.children().each { dep ->
                 String scope = dep?.scope
                 if (scope == "compile") {
-                    println "Recursively resolving dependency: ${dep.artifactId}"
+                    logMessage("Recursively resolving dependency: ${dep.artifactId}")
                     ret.addAll(resolveDependency(appBuildHome, dep.groupId.text(), dep.artifactId.text(), dep.version.text()))
                 } else {
-                    println "Ignoring ${scope} dependency: ${dep.artifactId}"
+                    logMessage("Ignoring ${scope} dependency: ${dep.artifactId}")
                 }
             }
         } else {
-            println "Warning: no pom file found for dependency: ${name}"
+            logMessage("Warning: no pom file found for dependency: ${name}")
         }
         return ret
     }
@@ -85,7 +85,7 @@ class AndroidDepResolver {
             if (it.getName() == 'classes.jar') {
                 File cj = new File(classesJar)
                 cj.newOutputStream() << zipFile.getInputStream(it)
-                println "Resolved dependency: ${classesJar}"
+                logMessage("Resolved dependency: ${classesJar}")
                 classesJarFound = true
             }
         }
@@ -133,13 +133,13 @@ class AndroidDepResolver {
             throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPath1}, ${aarPath2}, ${jarPath3}")
         }
         copyFile("${pomPath}/${name}-${version}.pom", pom)
-        println "Resolved Android artifact ${group}:${name}:${version}"
+        logMessage("Resolved Android artifact ${group}:${name}:${version}")
     }
 
     private static void copyFile(String src, String dst) {
         File srcFile = new File(src)
         if (srcFile.exists()) {
-            println "Copying ${src} -> ${dst}"
+            logMessage("Copying ${src} -> ${dst}")
             (new File(dst)).newOutputStream() << srcFile.newInputStream()
         } else {
             throwRuntimeException("File to copy does not exist: ${src}")
@@ -156,15 +156,15 @@ class AndroidDepResolver {
             // Download AAR file.
             File localAAR = new File("${depDir}/${name}-${version}.aar")
             String aarURL = genMavenURL(group, name, version, "aar")
-            println "AndroidDepResolver: Downloading ${aarURL}..."
+            logMessage("Downloading ${aarURL}...")
             localAAR.newOutputStream() << new URL(aarURL).openStream()
             unpackClassesJarFromAAR(localAAR, classesJar)
         } catch (FileNotFoundException ex) {
             // Download JAR file.
-            println "AndroidDepResolver: AAR not found for ${name}-${version}, looking for JAR..."
+            logMessage("AAR not found for ${name}-${version}, looking for JAR...")
             File localJAR = new File("${depDir}/classes.jar")
             String jarURL = genMavenURL(group, name, version, "jar")
-            println "AndroidDepResolver: Downloading ${jarURL}..."
+            logMessage("Downloading ${jarURL}...")
             localJAR.newOutputStream() << new URL(jarURL).openStream()
         }
     }
@@ -218,5 +218,9 @@ class AndroidDepResolver {
     static void throwRuntimeException(String errMsg) {
         println errMsg
         throw new RuntimeException(errMsg)
+    }
+
+    private static void logMessage(String msg) {
+        println "AndroidDepResolver: ${msg}"
     }
 }
