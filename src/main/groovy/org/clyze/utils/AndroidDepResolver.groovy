@@ -197,7 +197,7 @@ class AndroidDepResolver {
             def sdkDir = properties.getProperty(property)
             // println("Android SDK = " + sdkDir)
             if (!(new File(sdkDir)).exists()) {
-                println("AndroidPlatform warning: Android SDK directory (${property} in ${localProp}) does not exist: " + sdkDir)
+                logMessage("Warning: Android SDK directory (${property} in ${localProp}) does not exist: " + sdkDir)
             }
             cachedSDK = sdkDir
             return cachedSDK
