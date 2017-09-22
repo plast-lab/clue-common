@@ -22,7 +22,7 @@ class AndroidDepResolver {
         "com.android.support.constraint"
     ]
 
-    public static Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
+    public Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
         if (ignoredGroups.contains(group)) {
             logMessage("Ignoring dependency group: ${group}")
             return null
