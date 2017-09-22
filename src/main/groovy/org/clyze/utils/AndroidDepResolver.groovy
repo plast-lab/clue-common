@@ -146,20 +146,23 @@ class AndroidDepResolver {
         }
     }
 
+    // Resolve an external dependency as a local classes.jar file. AAR
+    // libraries are downloadad and their classes.jar extracted; JARs
+    // are downloaded as classes.jar files.
     // TODO: .pom handling.
     private static void resolveExtDep(String depDir, String group, String name,
                                       String version, String classesJar) {
-        String localArchive = "${depDir}/${name}-${version}"
         try {
             // Download AAR file.
-            File localAAR = new File("${localArchive}.aar")
+            File localAAR = new File("${depDir}/${name}-${version}.aar")
             String aarURL = genMavenURL(group, name, version, "aar")
             println "AndroidDepResolver: Downloading ${aarURL}..."
             localAAR.newOutputStream() << new URL(aarURL).openStream()
             unpackClassesJarFromAAR(localAAR, classesJar)
         } catch (FileNotFoundException ex) {
+            // Download JAR file.
             println "AndroidDepResolver: AAR not found for ${name}-${version}, looking for JAR..."
-            File localJAR = new File("${localArchive}.jar")
+            File localJAR = new File("${depDir}/classes.jar")
             String jarURL = genMavenURL(group, name, version, "jar")
             println "AndroidDepResolver: Downloading ${jarURL}..."
             localJAR.newOutputStream() << new URL(jarURL).openStream()
