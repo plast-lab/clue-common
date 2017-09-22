@@ -31,12 +31,12 @@ class AndroidDepResolver {
         Set<String> ret = [] as Set
         String extDepsDir = getExtDepsDir(appBuildHome)
         String depDir = "${extDepsDir}/${group}/${name}/${version}"
-        String classesJar = "${depDir}/classes.jar"
+        String localJar = "${depDir}/${group}-${name}-${version}-classes.jar"
         String pom = "${depDir}/${name}-${version}.pom"
 
         // If the dependency exists, use it.
-        if ((new File(classesJar)).exists()) {
-            logMessage("Using dependency ${group}:${name}:${version}: ${classesJar}")
+        if ((new File(localJar)).exists()) {
+            logMessage("Using dependency ${group}:${name}:${version}: ${localJar}")
         } else {
             // Otherwise, resolve the dependency.
             try {
@@ -44,18 +44,18 @@ class AndroidDepResolver {
                 (new File(depDir)).mkdirs()
 
                 if (localAndroidDeps.contains(group)) {
-                    resolveAndroidDep(depDir, group, name, version, classesJar, pom)
+                    resolveAndroidDep(depDir, group, name, version, localJar, pom)
                 } else {
                     // TODO: pom.xml for external dependencies
-                    resolveExtDep(depDir, group, name, version, classesJar)
+                    resolveExtDep(depDir, group, name, version, localJar)
                 }
             } catch (Exception ex) {
                 ex.printStackTrace()
-                throwRuntimeException("AndroidDepResolver: Cannot resolve dependency ${group}:${name}:${version}")
+                logMessage("Cannot resolve dependency ${group}:${name}:${version}, you may have to add it via the 'extraInputs' option.")
             }
         }
 
-        ret << classesJar
+        ret << localJar
 
         // Read pom to resolve the dependencies of this dependency.
         if ((new File(pom)).exists()) {
@@ -77,14 +77,14 @@ class AndroidDepResolver {
     }
 
     // Decompress AAR and find its classes.jar.
-    private static void unpackClassesJarFromAAR(File localAAR, String classesJar) {
+    private static void unpackClassesJarFromAAR(File localAAR, String localJar) {
         boolean classesJarFound = false
         def zipFile = new java.util.zip.ZipFile(localAAR)
         zipFile.entries().each {
             if (it.getName() == 'classes.jar') {
-                File cj = new File(classesJar)
+                File cj = new File(localJar)
                 cj.newOutputStream() << zipFile.getInputStream(it)
-                logMessage("Resolved dependency: ${classesJar}")
+                logMessage("Resolved dependency: ${localJar}")
                 classesJarFound = true
             }
         }
@@ -95,11 +95,11 @@ class AndroidDepResolver {
     }
 
     // Resolves an Android dependency by finding its .aar/.jar in the
-    // local Android SDK installation. Parameter 'classesJar' is the
+    // local Android SDK installation. Parameter 'localJar' is the
     // name of the .jar file that will contain the classes of the
     // dependency after this method finishes.
     private void resolveAndroidDep(String depDir, String group, String name,
-                                   String version, String classesJar, String pom) {
+                                   String version, String localJar, String pom) {
         String sdkHome = getSDK()
         String groupPath = group.replaceAll('\\.', '/')
 
@@ -117,16 +117,16 @@ class AndroidDepResolver {
         String jarPath4 = "${path4}/${name}-${version}.jar"
 
         if (aarPath1.exists()) {
-            unpackClassesJarFromAAR(aarPath1, classesJar)
+            unpackClassesJarFromAAR(aarPath1, localJar)
             pomPath = path1
         } else if (aarPath2.exists()) {
-            unpackClassesJarFromAAR(aarPath2, classesJar)
+            unpackClassesJarFromAAR(aarPath2, localJar)
             pomPath = path2
         } else if ((new File(jarPath3)).exists()) {
-            copyFile(jarPath3, classesJar)
+            copyFile(jarPath3, localJar)
             pomPath = path3
         } else if ((new File(jarPath4)).exists()) {
-            copyFile(jarPath4, classesJar)
+            copyFile(jarPath4, localJar)
             pomPath = path4
         } else {
             throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPath1}, ${aarPath2}, ${jarPath3}, ${jarPath4}")
@@ -145,23 +145,23 @@ class AndroidDepResolver {
         }
     }
 
-    // Resolve an external dependency as a local classes.jar file. AAR
-    // libraries are downloadad and their classes.jar extracted; JARs
-    // are downloaded as classes.jar files.
+    // Resolve an external dependency as a local file. AAR libraries
+    // are downloadad and their classes.jar extracted; JARs are
+    // downloaded.
     // TODO: .pom handling.
     private static void resolveExtDep(String depDir, String group, String name,
-                                      String version, String classesJar) {
+                                      String version, String localJar) {
         try {
             // Download AAR file.
             File localAAR = new File("${depDir}/${name}-${version}.aar")
             String aarURL = genMavenURL(group, name, version, "aar")
             logMessage("Downloading ${aarURL}...")
             localAAR.newOutputStream() << new URL(aarURL).openStream()
-            unpackClassesJarFromAAR(localAAR, classesJar)
+            unpackClassesJarFromAAR(localAAR, localJar)
         } catch (FileNotFoundException ex) {
             // Download JAR file.
             logMessage("AAR not found for ${name}-${version}, looking for JAR...")
-            File localJAR = new File("${depDir}/classes.jar")
+            File localJAR = new File(localJar)
             String jarURL = genMavenURL(group, name, version, "jar")
             logMessage("Downloading ${jarURL}...")
             localJAR.newOutputStream() << new URL(jarURL).openStream()
