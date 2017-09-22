@@ -130,7 +130,7 @@ class AndroidDepResolver {
             copyFile(jarPath4, classesJar)
             pomPath = path4
         } else {
-            throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPath1}, ${aarPath2}, ${jarPath3}")
+            throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPath1}, ${aarPath2}, ${jarPath3}, ${jarPath4}")
         }
         copyFile("${pomPath}/${name}-${version}.pom", pom)
         logMessage("Resolved Android artifact ${group}:${name}:${version}")
