@@ -84,7 +84,6 @@ class AndroidDepResolver {
             if (it.getName() == 'classes.jar') {
                 File cj = new File(localJar)
                 cj.newOutputStream() << zipFile.getInputStream(it)
-                logMessage("Resolved dependency: ${localJar}")
                 classesJarFound = true
             }
         }
@@ -132,7 +131,7 @@ class AndroidDepResolver {
             throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPath1}, ${aarPath2}, ${jarPath3}, ${jarPath4}")
         }
         copyFile("${pomPath}/${name}-${version}.pom", pom)
-        logMessage("Resolved Android artifact ${group}:${name}:${version}")
+        logMessage("Resolved Android artifact ${group}:${name}:${version} -> ${localJar}")
     }
 
     private static void copyFile(String src, String dst) {
