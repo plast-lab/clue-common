@@ -72,7 +72,7 @@ class AndroidDepResolver {
                 }
             }
         } else {
-            logMessage("Warning: no pom file found for dependency: ${name}")
+            logMessage("Warning: no pom file found for dependency ${group}:${name}:${version}")
         }
         return ret
     }
