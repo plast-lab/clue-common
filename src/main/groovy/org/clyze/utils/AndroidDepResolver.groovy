@@ -47,7 +47,7 @@ class AndroidDepResolver {
                     resolveAndroidDep(depDir, group, name, version, localJar, pom)
                 } else {
                     // TODO: pom.xml for external dependencies
-                    resolveExtDep(depDir, group, name, version, localJar)
+                    resolveExtDep(depDir, group, name, version, localJar, pom)
                 }
             } catch (Exception ex) {
                 ex.printStackTrace()
@@ -147,29 +147,32 @@ class AndroidDepResolver {
     // Resolve an external dependency as a local file. AAR libraries
     // are downloadad and their classes.jar extracted; JARs are
     // downloaded.
-    // TODO: .pom handling.
     private static void resolveExtDep(String depDir, String group, String name,
-                                      String version, String localJar) {
+                                      String version, String localJar, String pom) {
+        String mavenPrefix = genMavenURLPrefix(group, name, version)
         try {
             // Download AAR file.
-            File localAAR = new File("${depDir}/${name}-${version}.aar")
-            String aarURL = genMavenURL(group, name, version, "aar")
-            logMessage("Downloading ${aarURL}...")
-            localAAR.newOutputStream() << new URL(aarURL).openStream()
+            String localAARName = "${depDir}/${name}-${version}.aar"
+            File localAAR = new File(localAARName)
+            download("${mavenPrefix}.aar", localAARName)
             unpackClassesJarFromAAR(localAAR, localJar)
         } catch (FileNotFoundException ex) {
             // Download JAR file.
             logMessage("AAR not found for ${name}-${version}, looking for JAR...")
-            File localJAR = new File(localJar)
-            String jarURL = genMavenURL(group, name, version, "jar")
-            logMessage("Downloading ${jarURL}...")
-            localJAR.newOutputStream() << new URL(jarURL).openStream()
+            download("${mavenPrefix}.jar", localJar)
         }
+        download("${mavenPrefix}.pom", pom)
     }
 
-    private static String genMavenURL(String group, String name, String version, String ext) {
+    private static void download(String url, String localName) {
+        File localFile = new File(localName)
+        logMessage("Downloading ${url} -> ${localName}...")
+        localFile.newOutputStream() << new URL(url).openStream()
+    }
+
+    private static String genMavenURLPrefix(String group, String name, String version) {
         String groupPath = group.replaceAll('\\.', '/')
-        return "http://repo1.maven.org/maven2/${groupPath}/${name}/${version}/${name}-${version}.${ext}"
+        return "http://repo1.maven.org/maven2/${groupPath}/${name}/${version}/${name}-${version}"
     }
 
     private static String getExtDepsDir(String appBuildHome) {
