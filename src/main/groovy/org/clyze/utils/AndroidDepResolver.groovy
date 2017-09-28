@@ -46,7 +46,6 @@ class AndroidDepResolver {
                 if (localAndroidDeps.contains(group)) {
                     resolveAndroidDep(depDir, group, name, version, localJar, pom)
                 } else {
-                    // TODO: pom.xml for external dependencies
                     resolveExtDep(depDir, group, name, version, localJar, pom)
                 }
             } catch (Exception ex) {
