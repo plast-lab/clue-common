@@ -9,6 +9,93 @@ class AndroidDepResolver {
 
     private String cachedSDK = null
 
+    // If set to true, then the resolver keeps track of resolved
+    // artifacts with the same group/name and different versions and
+    // returns the most recent version. This logic is followed only
+    // for artifacts with groups belonging to 'groupsToKeepUpToDate'.
+    private boolean useLatestVersion = false
+    private static final List<String> groupsToKeepUpToDate = [
+        "com.android.support",
+        "com.google.android.gms"
+    ]
+
+    // The cache of resolved artifacts, from (group, name, version)
+    // tuples to a set of JARs (artifact & its dependencies).
+    private Map<ArtifactDesc, Set<String>> artifacts = new HashMap<>()
+    static class ArtifactDesc {
+        public String group
+        public String name
+        public String version
+        public ArtifactDesc(String group, String name, String version) {
+            this.group   = group
+            this.name    = name
+            this.version = version
+        }
+    }
+
+    public void setUseLatestVersion(boolean u) {
+        this.useLatestVersion = u
+    }
+
+    // Register an artifact given by a group:name:version tuple that
+    // has been resolved to a local JAR and a set of local
+    // dependencies (paths of other JARs). Used to pick latest
+    // versions of resolved artifacts.
+    private void registerArtifact(String group, String name, String version,
+                                  String localJar, Set<String> artDeps) {
+        ArtifactDesc ad = new ArtifactDesc(group, name, version)
+        Map entry = artifacts.get(ad)
+        if (entry == null) {
+            Set<String> jars = new HashSet<>()
+            jars << localJar
+            jars.addAll(artDeps)
+            artifacts.put(ad, jars)
+        }
+    }
+
+    // Return the set of all JAR archives for the latest (already
+    // resolved) version of an artifact (given as group:name:version).
+    private Set<String> getLatestArtifactAndDeps(String group, String name, String version) {
+        String latestVersion
+        Set<String> ret
+        artifacts.collect { ArtifactDesc ad, Set<String> jars ->
+            boolean nameMatches = ad.group == group && ad.name == name
+            if (nameMatches) {
+                if (latestVersion == null ||
+                                     dottedNumLessThan(latestVersion, ad.version,
+                                                       group, name)) {
+                    println "Switching to version ${ad.version} of ${group}:${name}" + (latestVersion == null? "" : " from ${latestVersion}")
+                    latestVersion = ad.version
+                    ret = jars
+                }
+            }
+        }
+        return ret
+    }
+
+    // Compares two version numbers, e.g. "1.2.3" and "1.2.0".
+    private static boolean dottedNumLessThan(String ver1, String ver2,
+                                             String group, String name) {
+        List<String> values1 = ver1.tokenize(".")
+        List<String> values2 = ver2.tokenize(".")
+        int minLength = Math.min(values1.size(), values2.size())
+        for (int i = 0; i < minLength; i++) {
+            try {
+                int i1 = values1[i].toInteger()
+                int i2 = values2[i].toInteger()
+                if (i1 < i2) {
+                    return true
+                } else if (i1 > i2) {
+                    return false
+                }
+            } catch (RuntimeException ex) {
+                println "Warning: could not compare versions ${ver1} and ${ver2} for artifact ${group}:${name}"
+                return false
+            }
+        }
+        return false
+    }
+
     // Some dependencies are ignored.
     static final List ignoredGroups = [
         "com.android.support.test.espresso",
@@ -54,8 +141,6 @@ class AndroidDepResolver {
             }
         }
 
-        ret << localJar
-
         // Read pom to resolve the dependencies of this dependency.
         if ((new File(pom)).exists()) {
             logMessage("Reading ${pom}...")
@@ -72,6 +157,15 @@ class AndroidDepResolver {
         } else {
             logMessage("Warning: no pom file found for dependency ${group}:${name}:${version}")
         }
+
+        final boolean isSpecialAndroidGroup = group in groupsToKeepUpToDate
+        if (useLatestVersion && isSpecialAndroidGroup) {
+            registerArtifact(group, name, version, localJar, ret)
+            ret.addAll(getLatestArtifactAndDeps(group, name, version))
+        } else {
+            ret << localJar
+        }
+
         return ret
     }
 
