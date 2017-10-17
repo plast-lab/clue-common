@@ -147,7 +147,9 @@ class AndroidDepResolver {
                     resolveExtDep(depDir, group, name, version, localJar, pom)
                 }
             } catch (Exception ex) {
-                ex.printStackTrace()
+                if (verbose) {
+                    ex.printStackTrace()
+                }
                 logMessage("Cannot resolve dependency ${group}:${name}:${version}, you may have to add it via the 'extraInputs' option.")
             }
         }
