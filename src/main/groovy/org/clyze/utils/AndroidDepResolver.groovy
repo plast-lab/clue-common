@@ -12,12 +12,8 @@ class AndroidDepResolver {
     // If set to true, then the resolver keeps track of resolved
     // artifacts with the same group/name and different versions and
     // returns the most recent version. This logic is followed only
-    // for artifacts with groups belonging to 'groupsToKeepUpToDate'.
+    // for artifacts with groups belonging to 'localAndroidDeps'.
     private boolean useLatestVersion = false
-    private static final List<String> groupsToKeepUpToDate = [
-        "com.android.support",
-        "com.google.android.gms"
-    ]
 
     // The cache of resolved artifacts, from (group, name, version)
     // tuples to a set of JARs (artifact & its dependencies).
@@ -104,9 +100,10 @@ class AndroidDepResolver {
 
     // Group of Android dependencies that are resolved locally, via
     // the installed Android SDK.
-    static final List localAndroidDeps = [
+    private static final List<String> localAndroidDeps = [
         "com.android.support",
-        "com.android.support.constraint"
+        "com.android.support.constraint",
+        "com.google.android.gms"
     ]
 
     public Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
@@ -158,7 +155,7 @@ class AndroidDepResolver {
             logMessage("Warning: no pom file found for dependency ${group}:${name}:${version}")
         }
 
-        final boolean isSpecialAndroidGroup = group in groupsToKeepUpToDate
+        final boolean isSpecialAndroidGroup = group in localAndroidDeps
         if (useLatestVersion && isSpecialAndroidGroup) {
             registerArtifact(group, name, version, localJar, ret)
             ret.addAll(getLatestArtifactAndDeps(group, name, version))
@@ -194,34 +191,46 @@ class AndroidDepResolver {
                                    String version, String localJar, String pom) {
         String sdkHome = getSDK()
         String groupPath = group.replaceAll('\\.', '/')
+        String pomPath = null
 
         // Possible locations of .aar/.jar archives in the local
         // Android SDK installation.
-        String path1 = "${sdkHome}/extras/android/m2repository/${groupPath}/${name}/${version}"
-        String path2 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
-        String path3 = "${sdkHome}/extras/android/m2repository/${groupPath}/${name}/${version}"
-        String path4 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
+        final String aarPath1 = "${sdkHome}/extras/android/m2repository/${groupPath}/${name}/${version}"
+        final String aarPath2 = "${sdkHome}/extras/google/m2repository/${groupPath}/${name}/${version}"
+        final String aarPath3 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
+        final Map<String, File> aars =
+            [ "${aarPath1}" : new File("${aarPath1}/${name}-${version}.aar"),
+              "${aarPath2}" : new File("${aarPath2}/${name}-${version}.aar"),
+              "${aarPath3}" : new File("${aarPath3}/${name}-${version}.aar")]
 
-        String pomPath = null
-        File aarPath1 = new File("${path1}/${name}-${version}.aar")
-        File aarPath2 = new File("${path2}/${name}-${version}.aar")
-        String jarPath3 = "${path3}/${name}-${version}.jar"
-        String jarPath4 = "${path4}/${name}-${version}.jar"
-
-        if (aarPath1.exists()) {
-            unpackClassesJarFromAAR(aarPath1, localJar)
-            pomPath = path1
-        } else if (aarPath2.exists()) {
-            unpackClassesJarFromAAR(aarPath2, localJar)
-            pomPath = path2
-        } else if ((new File(jarPath3)).exists()) {
-            copyFile(jarPath3, localJar)
-            pomPath = path3
-        } else if ((new File(jarPath4)).exists()) {
-            copyFile(jarPath4, localJar)
-            pomPath = path4
+        // Search for .aar dependencies.
+        def aarCandidate = aars.find { it.value.exists() }
+        if (aarCandidate) {
+            String aarDir = aarCandidate.key
+            File aar = aarCandidate.value
+            unpackClassesJarFromAAR(aar, localJar)
+            pomPath = aarDir
         } else {
-            throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPath1}, ${aarPath2}, ${jarPath3}, ${jarPath4}")
+            // Search for .jar dependencies.
+            final String jarPath1 = "${sdkHome}/extras/android/m2repository/${groupPath}/${name}/${version}"
+            final String jarPath2 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
+            final String jarFullPath1 = "${jarPath1}/${name}-${version}.jar"
+            final String jarFullPath2 = "${jarPath2}/${name}-${version}.jar"
+            final Map<String, String> jars =
+                [ "${jarPath1}" : "${jarPath1}/${name}-${version}.jar",
+                  "${jarPath2}" : "${jarPath2}/${name}-${version}.jar"]
+            def jarCandidate = jars.find { (new File(it.value)).exists() }
+            if (jarCandidate) {
+                String jarDir = jarCandidate.key
+                String jarFullPath = jarCandidate.value
+                copyFile(jarFullPath, localJar)
+                pomPath = jarDir
+            } else {
+                Set<String> aarPaths = aars.collect { it.canonicalPath }
+                Set<String> jarPaths = jars.collect { it }
+                throwRuntimeException("Cannot find Android dependency: ${group}:${name}:${version}, tried: ${aarPaths}, ${jarPaths}")
+            }
+
         }
         copyFile("${pomPath}/${name}-${version}.pom", pom)
         logMessage("Resolved Android artifact ${group}:${name}:${version} -> ${localJar}")
