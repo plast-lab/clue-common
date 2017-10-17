@@ -53,7 +53,7 @@ class AndroidDepResolver {
 
     // Return the set of all JAR archives for the latest (already
     // resolved) version of an artifact (given as group:name:version).
-    private Set<String> getLatestArtifactAndDeps(String group, String name, String version) {
+    private Set<String> getLatestArtifactAndDeps(String group, String name) {
         String latestVersion
         Set<String> ret
         artifacts.collect { ArtifactDesc ad, Set<String> jars ->
@@ -160,7 +160,7 @@ class AndroidDepResolver {
         final boolean isSpecialAndroidGroup = group in localAndroidDeps
         if (useLatestVersion && isSpecialAndroidGroup) {
             registerArtifact(group, name, version, localJar, ret)
-            ret.addAll(getLatestArtifactAndDeps(group, name, version))
+            ret.addAll(getLatestArtifactAndDeps(group, name))
         } else {
             ret << localJar
         }
