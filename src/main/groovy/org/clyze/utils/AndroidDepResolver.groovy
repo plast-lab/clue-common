@@ -322,8 +322,8 @@ class AndroidDepResolver {
 
     private static void download(String url, String localName) {
         File localFile = new File(localName)
-        logMessage("Downloading ${url} -> ${localName}...")
         localFile.newOutputStream() << new URL(url).openStream()
+        logMessage("Downloaded ${url} -> ${localName}")
     }
 
     private static String genMavenURLPrefix(String group, String name, String version) {
