@@ -160,7 +160,10 @@ class AndroidDepResolver {
                 String scope = dep?.scope
                 if (scope == "compile") {
                     logVMessage("Recursively resolving dependency: ${dep.artifactId}")
-                    ret.addAll(resolveDependency(appBuildHome, dep.groupId.text(), dep.artifactId.text(), dep.version.text()))
+                    Set<String> recDeps = resolveDependency(appBuildHome, dep.groupId.text(), dep.artifactId.text(), dep.version.text())
+                    if (recDeps != null) {
+                        ret.addAll(recDeps)
+                    }
                 } else {
                     logMessage("Ignoring ${scope} dependency: ${dep.artifactId}")
                 }
