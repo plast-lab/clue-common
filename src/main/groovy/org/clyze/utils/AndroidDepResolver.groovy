@@ -113,6 +113,18 @@ class AndroidDepResolver {
             logMessage("Ignoring dependency group: ${group}")
             return null
         }
+        if (version == null || version.equals("")) {
+            println("No version of ${group}-${name}, debug Maven prefix: " + genMavenURLPrefix(group, name, version))
+            if (useLatestVersion) {
+                Set<String> jars = getLatestArtifactAndDeps(group, name)
+                if (jars != null) {
+                    logVMessage("Artifact cache has ${group}:${name}: ${jars}")
+                    return jars
+                } else {
+                    logVMessage("Cannot find ${group}:${name} in artifact cache.")
+                }
+            }
+        }
 
         Set<String> ret = [] as Set
         String extDepsDir = getExtDepsDir(appBuildHome)
