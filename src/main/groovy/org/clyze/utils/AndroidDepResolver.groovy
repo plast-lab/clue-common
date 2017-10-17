@@ -7,6 +7,8 @@ package org.clyze.utils
 
 class AndroidDepResolver {
 
+    private static boolean verbose = false
+
     private String cachedSDK = null
 
     // If set to true, then the resolver keeps track of resolved
@@ -120,7 +122,7 @@ class AndroidDepResolver {
 
         // If the dependency exists, use it.
         if ((new File(localJar)).exists()) {
-            logMessage("Using dependency ${group}:${name}:${version}: ${localJar}")
+            logVMessage("Using dependency ${group}:${name}:${version}: ${localJar}")
         } else {
             // Otherwise, resolve the dependency.
             try {
@@ -140,19 +142,19 @@ class AndroidDepResolver {
 
         // Read pom to resolve the dependencies of this dependency.
         if ((new File(pom)).exists()) {
-            logMessage("Reading ${pom}...")
+            logVMessage("Reading ${pom}...")
             def xml = new XmlSlurper().parse(new File(pom))
             xml.dependencies.children().each { dep ->
                 String scope = dep?.scope
                 if (scope == "compile") {
-                    logMessage("Recursively resolving dependency: ${dep.artifactId}")
+                    logVMessage("Recursively resolving dependency: ${dep.artifactId}")
                     ret.addAll(resolveDependency(appBuildHome, dep.groupId.text(), dep.artifactId.text(), dep.version.text()))
                 } else {
                     logMessage("Ignoring ${scope} dependency: ${dep.artifactId}")
                 }
             }
         } else {
-            logMessage("Warning: no pom file found for dependency ${group}:${name}:${version}")
+            logVMessage("Warning: no pom file found for dependency ${group}:${name}:${version}")
         }
 
         final boolean isSpecialAndroidGroup = group in localAndroidDeps
@@ -233,13 +235,13 @@ class AndroidDepResolver {
 
         }
         copyFile("${pomPath}/${name}-${version}.pom", pom)
-        logMessage("Resolved Android artifact ${group}:${name}:${version} -> ${localJar}")
+        logVMessage("Resolved Android artifact ${group}:${name}:${version} -> ${localJar}")
     }
 
     private static void copyFile(String src, String dst) {
         File srcFile = new File(src)
         if (srcFile.exists()) {
-            logMessage("Copying ${src} -> ${dst}")
+            logVMessage("Copying ${src} -> ${dst}")
             (new File(dst)).newOutputStream() << srcFile.newInputStream()
         } else {
             throwRuntimeException("File to copy does not exist: ${src}")
@@ -260,7 +262,7 @@ class AndroidDepResolver {
             unpackClassesJarFromAAR(localAAR, localJar)
         } catch (FileNotFoundException ex) {
             // Download JAR file.
-            logMessage("AAR not found for ${name}-${version}, looking for JAR...")
+            logVMessage("AAR not found for ${name}-${version}, looking for JAR...")
             download("${mavenPrefix}.jar", localJar)
         }
         download("${mavenPrefix}.pom", pom)
@@ -325,5 +327,9 @@ class AndroidDepResolver {
 
     private static void logMessage(String msg) {
         println "AndroidDepResolver: ${msg}"
+    }
+
+    private static void logVMessage(String msg) {
+        if (verbose) { logMessage(msg) }
     }
 }
