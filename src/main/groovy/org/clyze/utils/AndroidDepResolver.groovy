@@ -160,7 +160,7 @@ class AndroidDepResolver {
             def xml = new XmlSlurper().parse(new File(pom))
             xml.dependencies.children().each { dep ->
                 String scope = dep?.scope
-                if (scope == "compile") {
+                if (scope == null || scope in [ "compile", "provided", "" ]) {
                     logVMessage("Recursively resolving dependency: ${dep.artifactId}")
                     Set<String> recDeps = resolveDependency(appBuildHome, dep.groupId.text(), dep.artifactId.text(), dep.version.text())
                     if (recDeps != null) {
