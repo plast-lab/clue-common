@@ -93,7 +93,7 @@ class AndroidDepResolver {
     }
 
     // Some dependencies are ignored.
-    static final List ignoredGroups = [
+    static final List<String> ignoredGroups = [
         "com.android.support.test.espresso",
         "junit"
     ]
