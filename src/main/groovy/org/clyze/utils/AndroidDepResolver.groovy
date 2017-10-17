@@ -16,6 +16,17 @@ class AndroidDepResolver {
     // returns the most recent version. This logic is followed only
     // for artifacts with groups belonging to 'localAndroidDeps'.
     private boolean useLatestVersion = false
+    public void setUseLatestVersion(boolean u) { this.useLatestVersion = u }
+
+    // If true, then the latest versions are not resolved when
+    // requested but the artifact group:name is pushed in a stack and
+    // can be resolved later by getLatestDelayedArtifacts().
+    private boolean resolveLatestLast = false
+    public void setResolveLatestLast(boolean r) { this.resolveLatestLast = r }
+
+    // The list of delayed artifacts for resolution. The 'version'
+    // field in each element is assumed to be null.
+    private List<ArtifactDesc> delayedArtifacts = [] as List
 
     // The cache of resolved artifacts, from (group, name, version)
     // tuples to a set of JARs (artifact & its dependencies).
@@ -29,10 +40,6 @@ class AndroidDepResolver {
             this.name    = name
             this.version = version
         }
-    }
-
-    public void setUseLatestVersion(boolean u) {
-        this.useLatestVersion = u
     }
 
     // Register an artifact given by a group:name:version tuple that
@@ -116,12 +123,16 @@ class AndroidDepResolver {
         if (version == null || version.equals("")) {
             println("No version of ${group}-${name}, debug Maven prefix: " + genMavenURLPrefix(group, name, version))
             if (useLatestVersion) {
-                Set<String> jars = getLatestArtifactAndDeps(group, name)
-                if (jars != null) {
-                    logVMessage("Artifact cache has ${group}:${name}: ${jars}")
-                    return jars
+                if (resolveLatestLast) {
+                    delayArtifactResolution(group, name)
                 } else {
-                    logVMessage("Cannot find ${group}:${name} in artifact cache.")
+                    Set<String> jars = getLatestArtifactAndDeps(group, name)
+                    if (jars != null) {
+                        logVMessage("Artifact cache has ${group}:${name}: ${jars}")
+                        return jars
+                    } else {
+                        logVMessage("Cannot find ${group}:${name} in artifact cache.")
+                    }
                 }
             }
         }
@@ -177,11 +188,35 @@ class AndroidDepResolver {
         final boolean isSpecialAndroidGroup = group in localAndroidDeps
         if (useLatestVersion && isSpecialAndroidGroup) {
             registerArtifact(group, name, version, localJar, ret)
-            ret.addAll(getLatestArtifactAndDeps(group, name))
+            if (resolveLatestLast) {
+                delayArtifactResolution(group, name)
+            } else {
+                ret.addAll(getLatestArtifactAndDeps(group, name))
+            }
         } else {
             ret << localJar
         }
 
+        return ret
+    }
+
+    private void delayArtifactResolution(String group, String name) {
+        logVMessage("Delaying resolution of artifact ${group}:${name}")
+        delayedArtifacts << new ArtifactDesc(group, name, null)
+    }
+
+    public Set<String> getLatestDelayedArtifacts() {
+        logVMessage("Resolving delayed artifacts...")
+        Set<String> ret = new HashSet<>()
+        delayedArtifacts.each { ArtifactDesc ad ->
+            Set<String> deps = getLatestArtifactAndDeps(ad.group, ad.name)
+            if (deps != null) {
+                logVMessage("Artifact ${ad.group}:${ad.name} was resolved.")
+                ret.addAll(deps)
+            } else {
+                logVMessage("Artifact ${ad.group}:${ad.name} could not be resolved.")
+            }
+        }
         return ret
     }
 
