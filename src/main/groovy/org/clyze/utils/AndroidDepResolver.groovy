@@ -159,6 +159,7 @@ class AndroidDepResolver {
                     ex.printStackTrace()
                 }
                 logMessage("Cannot resolve dependency ${group}:${name}:${version}, you may have to add it via the 'extraInputs' option.")
+                return null
             }
         }
 
