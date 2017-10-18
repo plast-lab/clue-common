@@ -65,14 +65,11 @@ class AndroidDepResolver {
         Set<String> ret
         artifacts.collect { ArtifactDesc ad, Set<String> jars ->
             boolean nameMatches = ad.group == group && ad.name == name
-            if (nameMatches) {
-                if (latestVersion == null ||
-                                     dottedNumLessThan(latestVersion, ad.version,
-                                                       group, name)) {
-                    println "Switching to version ${ad.version} of ${group}:${name}" + (latestVersion == null? "" : " from ${latestVersion}")
-                    latestVersion = ad.version
-                    ret = jars
-                }
+            if (nameMatches && (latestVersion == null ||
+                                dottedNumLessThan(latestVersion, ad.version, group, name))) {
+                logVMessage("Switching to version ${ad.version} of ${group}:${name}" + (latestVersion == null? "" : " from ${latestVersion}"))
+                latestVersion = ad.version
+                ret = jars
             }
         }
         return ret
