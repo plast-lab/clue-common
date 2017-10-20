@@ -44,6 +44,8 @@ class AndroidDepResolver {
         }
     }
 
+    private Set<String> failedArtifacts = new HashSet<>()
+
     // Register an artifact given by a group:name:version tuple that
     // has been resolved to a local JAR and a set of local
     // dependencies (paths of other JARs). Used to pick latest
@@ -119,6 +121,12 @@ class AndroidDepResolver {
             logMessage("Ignoring dependency group: ${group}")
             return null
         }
+
+        String artifactId = "${group}:${name}:${version}"
+        if (artifactId in failedArtifacts) {
+            return null
+        }
+
         if (version == null || version.equals("")) {
             println("No version of ${group}-${name}, debug Maven prefix: " + genMavenURLPrefix(group, name, version))
             if (useLatestVersion) {
@@ -160,7 +168,8 @@ class AndroidDepResolver {
                 if (verbose) {
                     ex.printStackTrace()
                 }
-                logMessage("Cannot resolve dependency ${group}:${name}:${version}, you may have to add it via the 'extraInputs' option.")
+                failedArtifacts << artifactId
+                logMessage("Cannot resolve dependency ${artifactId}, you may have to add it via the 'extraInputs' option.")
             }
         }
 
