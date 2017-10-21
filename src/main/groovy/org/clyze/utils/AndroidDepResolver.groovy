@@ -144,6 +144,7 @@ class AndroidDepResolver {
                         return jars
                     } else {
                         logVMessage("Cannot find ${group}:${name} in artifact cache.")
+                        return null
                     }
                 }
             }
