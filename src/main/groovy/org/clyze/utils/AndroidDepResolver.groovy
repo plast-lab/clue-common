@@ -256,10 +256,7 @@ class AndroidDepResolver {
                 classesJarFound = true
             } else if (it.name.endsWith(".jar")) {
                 // Extract to temporary directory & add to return set.
-                Path tmpDir = Files.createTempDirectory("aar")
-                tmpDir.toFile().deleteOnExit()
-                String name = basename(it.name, "")
-                File ej = new File("${tmpDir}/${name}")
+                File ej = new File(createTmpDir() + "/" + basename(it.name, ""))
                 ej.newOutputStream() << zipFile.getInputStream(it)
                 extraJars << ej.canonicalPath
             }
@@ -270,6 +267,12 @@ class AndroidDepResolver {
         }
     }
 
+    private static String createTmpDir() {
+        Path tmpDir = Files.createTempDirectory("aar")
+        tmpDir.toFile().deleteOnExit()
+        return tmpDir.toString()
+    }
+
     // Transforms a set of Java archives: JAR archives are returned,
     // while AARs are searched for JAR entries, which are returned.
     public static List<String> toJars(List<String> archives) {
@@ -278,10 +281,7 @@ class AndroidDepResolver {
             if (ar.endsWith(".jar")) {
                 jars << ar
             } else if (ar.endsWith(".aar")) {
-                Path tmpDir = Files.createTempDirectory("aar")
-                tmpDir.toFile().deleteOnExit()
-                String name = basename(ar, ".aar")
-                String jar = "${tmpDir}/${name}.jar"
+                String jar = createTmpDir() + "/" + basename(ar, ".aar") + ".jar"
                 Set<String> extraJars = new HashSet<>()
                 unpackClassesJarFromAAR(new File(ar), jar, extraJars)
                 println "Extracted ${jar} from ${ar}"
