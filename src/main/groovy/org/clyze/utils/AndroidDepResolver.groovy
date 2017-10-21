@@ -45,6 +45,7 @@ class AndroidDepResolver {
     }
 
     private Set<String> failedArtifacts = new HashSet<>()
+    private Set<List> ignoredArtifacts = new HashSet<>()
 
     // Register an artifact given by a group:name:version tuple that
     // has been resolved to a local JAR and a set of local
@@ -124,6 +125,10 @@ class AndroidDepResolver {
 
         String artifactId = "${group}:${name}:${version}"
         if (artifactId in failedArtifacts) {
+            return null
+        }
+
+        if ([group, name] in ignoredArtifacts) {
             return null
         }
 
@@ -226,8 +231,10 @@ class AndroidDepResolver {
         Set<String> ret = new HashSet<>()
         delayedArtifacts.each { ArtifactDesc ad ->
             Set<String> deps = getLatestArtifactAndDeps(ad.group, ad.name)
-            if (deps != null) {
-                logVMessage("Artifact ${ad.group}:${ad.name} was resolved.")
+            if ([ad.group, ad.name] in ignoredArtifacts) {
+                logVMessage("Not going to resolve ${ad.group}:${ad.name}.")
+            } else if (deps != null) {
+                logVMessage("Artifact ${ad.group}:${ad.name} was resolved: ${deps}")
                 ret.addAll(deps)
             } else {
                 logVMessage("Artifact ${ad.group}:${ad.name} could not be resolved.")
