@@ -244,7 +244,7 @@ class AndroidDepResolver {
     }
 
     // Decompress AAR and find its classes.jar. Any other .jar entries
-    // are saved in a temporary directory and returned.
+    // are locally extracted and their paths are pushed into 'extraJars'.
     private static void unpackClassesJarFromAAR(File localAAR, String targetJar,
                                                 Set<String> extraJars) {
         boolean classesJarFound = false
