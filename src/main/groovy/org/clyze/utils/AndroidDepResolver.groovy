@@ -198,7 +198,7 @@ class AndroidDepResolver {
                         ret.addAll(recDeps)
                     }
                 } else {
-                    logMessage("Ignoring [${scope}] dependency: ${dep.artifactId.text()}:${dep.version.text()}")
+                    logVMessage("Ignoring [${scope}] dependency: ${dep.artifactId.text()}:${dep.version.text()}")
                 }
             }
         } else {
