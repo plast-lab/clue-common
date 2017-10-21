@@ -147,12 +147,19 @@ class AndroidDepResolver {
         Set<String> ret = [] as Set
         String extDepsDir = getExtDepsDir(appBuildHome)
         String depDir = "${extDepsDir}/${group}/${name}/${version}"
-        String localJar = "${depDir}/${group}-${name}-${version}-classes.jar"
+        String localPre = "${depDir}/${group}-${name}-${version}"
+        String localAar = "${localPre}.aar"
+        String localJar = "${localPre}.jar"
         String pom = "${depDir}/${name}-${version}.pom"
+        String savedFile
 
         // If the dependency exists, use it.
-        if ((new File(localJar)).exists()) {
-            logVMessage("Using dependency ${group}:${name}:${version}: ${localJar}")
+        if ((new File(localAar)).exists()) {
+            logVMessage("Using dependency ${artifactId}: ${localAar}")
+            savedFile = localAar
+        } else if ((new File(localJar)).exists()) {
+            logVMessage("Using dependency ${artifactId}: ${localJar}")
+            savedFile = localJar
         } else {
             // Otherwise, resolve the dependency.
             try {
@@ -160,9 +167,9 @@ class AndroidDepResolver {
                 (new File(depDir)).mkdirs()
 
                 if (localAndroidDeps.contains(group)) {
-                    resolveAndroidDep(depDir, group, name, version, localJar, pom)
+                    savedFile = resolveAndroidDep(depDir, group, name, version, localPre, pom)
                 } else {
-                    resolveExtDep(depDir, group, name, version, localJar, pom)
+                    savedFile = resolveExtDep(depDir, group, name, version, localPre, pom)
                 }
             } catch (Exception ex) {
                 if (verbose) {
@@ -190,21 +197,22 @@ class AndroidDepResolver {
                 }
             }
         } else {
-            logVMessage("Warning: no pom file found for dependency ${group}:${name}:${version}")
+            logVMessage("Warning: no pom file found for dependency ${artifactId}")
         }
 
         final boolean isSpecialAndroidGroup = group in localAndroidDeps
-        if (useLatestVersion && isSpecialAndroidGroup) {
-            registerArtifact(group, name, version, localJar, ret)
-            if (resolveLatestLast) {
-                delayArtifactResolution(group, name)
+        if (savedFile != null) {
+            if (useLatestVersion && isSpecialAndroidGroup) {
+                registerArtifact(group, name, version, savedFile, ret)
+                if (resolveLatestLast) {
+                    delayArtifactResolution(group, name)
+                } else {
+                    ret.addAll(getLatestArtifactAndDeps(group, name))
+                }
             } else {
-                ret.addAll(getLatestArtifactAndDeps(group, name))
+                ret << savedFile
             }
-        } else {
-            ret << localJar
         }
-
         return ret
     }
 
@@ -289,14 +297,12 @@ class AndroidDepResolver {
     }
 
     // Resolves an Android dependency by finding its .aar/.jar in the
-    // local Android SDK installation. Parameter 'localJar' is the
-    // name of the .jar file that will contain the classes of the
-    // dependency after this method finishes. If the dependency is an
-    // .aar, then its classes.jar is written to 'localJar' and any
-    // remaining .jar entries go to the function's return value.
-    private Set<String> resolveAndroidDep(String depDir, String group, String name,
-                                          String version, String localJar, String pom) {
-        Set<String> extraJars = new HashSet<>()
+    // local Android SDK installation. Parameter 'localPre' is the
+    // base name of the .aar/.jar file that will contain the
+    // dependency after this method finishes.
+    private String resolveAndroidDep(String depDir, String group, String name,
+                                     String version, String localPre, String pom) {
+        String savedFile
         String sdkHome = getSDK()
         String groupPath = group.replaceAll('\\.', '/')
         String pomPath = null
@@ -316,7 +322,8 @@ class AndroidDepResolver {
         if (aarCandidate) {
             String aarDir = aarCandidate.key
             File aar = aarCandidate.value
-            unpackClassesJarFromAAR(aar, localJar, extraJars)
+            savedFile = "${localPre}.aar"
+            copyFile(aar.canonicalPath, savedFile)
             pomPath = aarDir
         } else {
             // Search for .jar dependencies.
@@ -331,7 +338,8 @@ class AndroidDepResolver {
             if (jarCandidate) {
                 String jarDir = jarCandidate.key
                 String jarFullPath = jarCandidate.value
-                copyFile(jarFullPath, localJar)
+                savedFile = "${localPre}.jar"
+                copyFile(jarFullPath, savedFile)
                 pomPath = jarDir
             } else {
                 Set<String> aarPaths = aars.collect { it.value.canonicalPath }
@@ -341,8 +349,8 @@ class AndroidDepResolver {
 
         }
         copyFile("${pomPath}/${name}-${version}.pom", pom)
-        logVMessage("Resolved Android artifact ${group}:${name}:${version} -> ${localJar}")
-        return extraJars
+        logVMessage("Resolved Android artifact ${group}:${name}:${version} -> ${savedFile}")
+        return savedFile
     }
 
     private static void copyFile(String src, String dst) {
@@ -358,23 +366,22 @@ class AndroidDepResolver {
     // Resolve an external dependency as a local file. AAR libraries
     // are downloadad and their classes.jar extracted; JARs are
     // downloaded.
-    private static Set<String> resolveExtDep(String depDir, String group, String name,
-                                             String version, String localJar, String pom) {
-        Set<String> extraJars = new HashSet<>()
+    private static String resolveExtDep(String depDir, String group, String name,
+                                        String version, String localPre, String pom) {
+        String savedFile
         String mavenPrefix = genMavenURLPrefix(group, name, version)
         try {
             // Download AAR file.
-            String localAARName = "${depDir}/${name}-${version}.aar"
-            File localAAR = new File(localAARName)
-            download("${mavenPrefix}.aar", localAARName)
-            unpackClassesJarFromAAR(localAAR, localJar, extraJars)
+            savedFile = "${localPre}.aar"
+            download("${mavenPrefix}.aar", savedFile)
         } catch (FileNotFoundException ex) {
             // Download JAR file.
             logVMessage("AAR not found for ${name}-${version}, looking for JAR...")
-            download("${mavenPrefix}.jar", localJar)
+            savedFile = "${localPre}.jar"
+            download("${mavenPrefix}.jar", savedFile)
         }
         download("${mavenPrefix}.pom", pom)
-        return extraJars
+        return savedFile
     }
 
     private static void download(String url, String localName) {
