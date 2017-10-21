@@ -379,7 +379,12 @@ class AndroidDepResolver {
 
     private static void download(String url, String localName) {
         File localFile = new File(localName)
-        localFile.newOutputStream() << new URL(url).openStream()
+        try {
+            localFile.newOutputStream() << new URL(url).openStream()
+        } catch (Exception ex) {
+            localFile.delete()
+            throw ex
+        }
         logMessage("Downloaded ${url} -> ${localName}")
     }
 
