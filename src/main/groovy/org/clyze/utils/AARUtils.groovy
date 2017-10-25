@@ -28,7 +28,7 @@ public class AARUtils {
         }
     }
 
-    private static String createTmpDir() {
+    public static String createTmpDir() {
         Path tmpDir = Files.createTempDirectory("aar")
         tmpDir.toFile().deleteOnExit()
         return tmpDir.toString()
