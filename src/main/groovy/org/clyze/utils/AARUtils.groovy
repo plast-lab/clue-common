@@ -4,10 +4,13 @@ import java.nio.file.*;
 
 public class AARUtils {
 
-    // Decompress AAR and find its classes.jar. Any other .jar entries
-    // are locally extracted and their paths are pushed into 'extraJars'.
+    // Decompress AAR and find its classes.jar, which is then saved
+    // using the value of parameter 'targetJar'. Any other .jar
+    // entries are locally extracted and their paths are pushed into
+    // 'extraJars'. Temporary directories created go into 'tmpDirs'.
     private static void unpackClassesJarFromAAR(File localAAR, String targetJar,
-                                                Set<String> extraJars) {
+                                                Set<String> extraJars,
+                                                Set<String> tmpDirs) {
         boolean classesJarFound = false
         def zipFile = new java.util.zip.ZipFile(localAAR)
         zipFile.entries().each {
@@ -17,7 +20,7 @@ public class AARUtils {
                 classesJarFound = true
             } else if (it.name.endsWith(".jar")) {
                 // Extract to temporary directory & add to return set.
-                File ej = new File(createTmpDir() + "/" + basename(it.name, ""))
+                File ej = new File(createTmpDir(tmpDirs) + "/" + basename(it.name, ""))
                 ej.newOutputStream() << zipFile.getInputStream(it)
                 extraJars << ej.canonicalPath
             }
@@ -28,23 +31,29 @@ public class AARUtils {
         }
     }
 
-    public static String createTmpDir() {
-        Path tmpDir = Files.createTempDirectory("aar")
-        tmpDir.toFile().deleteOnExit()
-        return tmpDir.toString()
+    // Create temporary directory and add it to 'tmpDirs' (so that it
+    // can be later deleted). Preferred to File.deleteOnExit(), since
+    // this code may be used in a server context and thus never exit.
+    public static String createTmpDir(Set<String> tmpDirs) {
+        String tmpDir = Files.createTempDirectory("aar").toString()
+        tmpDirs?.add(tmpDir)
+        return tmpDir
     }
 
     // Transforms a set of Java archives: JAR archives are returned,
     // while AARs are searched for JAR entries, which are returned.
-    public static List<String> toJars(List<String> archives, boolean ignore) {
+    // Parameter 'tmpDirs' collects any temporary directories created.
+    public static List<String> toJars(List<String> archives, boolean ignore,
+                                      Set<String> tmpDirs) {
         List<String> jars = []
         archives.each { String ar ->
             if (ar.endsWith(".jar")) {
                 jars << ar
             } else if (ar.endsWith(".aar")) {
-                String jar = createTmpDir() + "/" + basename(ar, ".aar") + ".jar"
+                String tmpDir = createTmpDir(tmpDirs)
+                String jar = tmpDir + "/" + basename(ar, ".aar") + ".jar"
                 Set<String> extraJars = new HashSet<>()
-                unpackClassesJarFromAAR(new File(ar), jar, extraJars)
+                unpackClassesJarFromAAR(new File(ar), jar, extraJars, tmpDirs)
                 println "Extracted ${jar} from ${ar}"
                 jars << jar
                 if (extraJars.size() > 0) {
