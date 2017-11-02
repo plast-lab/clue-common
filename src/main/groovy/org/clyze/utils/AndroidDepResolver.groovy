@@ -372,10 +372,16 @@ class AndroidDepResolver {
                 logMessage("Warning: Android SDK directory (${property} in ${localProp}) does not exist: " + sdkDir)
             }
             cachedSDK = sdkDir
-            return cachedSDK
         } else {
-            throw new RuntimeException("File ${localProperties.canonicalPath} does not exist.")
+            String androidEnv = "ANDROID_HOME"
+            String androidHome = System.getenv(androidEnv)
+            if (androidHome != null) {
+                cachedSDK = androidHome
+            } else {
+                throw new RuntimeException("File ${localProperties.canonicalPath} does not exist and ${androidEnv} is not defined.")
+            }
         }
+        return cachedSDK
     }
 
     private String getSDK() {
