@@ -54,10 +54,10 @@ public class AARUtils {
                 String jar = tmpDir + "/" + basename(ar, ".aar") + ".jar"
                 Set<String> extraJars = new HashSet<>()
                 unpackClassesJarFromAAR(new File(ar), jar, extraJars, tmpDirs)
-                println "Extracted ${jar} from ${ar}"
+                // println "Extracted ${jar} from ${ar}"
                 jars << jar
                 if (extraJars.size() > 0) {
-                    println "Extracted ${extraJars} from ${ar}"
+                    // println "Extracted ${extraJars} from ${ar}"
                     jars.addAll(extraJars)
                 }
             } else {
