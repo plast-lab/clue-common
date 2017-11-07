@@ -9,6 +9,8 @@ import org.clyze.persistent.model.Symbol
 @InheritConstructors
 class MethodInvocation extends Symbol {
 
+	String name
+
 	String invokingMethodDoopId
 
 	String doopId
@@ -24,9 +26,10 @@ class MethodInvocation extends Symbol {
 	 * @param invokingMethodDoopId
 	 * @param inIIB                 is inside instance initializer block
 	 */
-	MethodInvocation(Position position, String sourceFileName, String doopId, String invokingMethodDoopId,
+	MethodInvocation(Position position, String sourceFileName, String name, String doopId, String invokingMethodDoopId,
 					 boolean inIIB = false) {
 		super(position, sourceFileName)
+		this.name = name
 		this.doopId = doopId
 		this.invokingMethodDoopId = invokingMethodDoopId
 		this.inIIB = inIIB
