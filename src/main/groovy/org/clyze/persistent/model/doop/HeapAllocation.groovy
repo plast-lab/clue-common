@@ -9,6 +9,8 @@ import org.clyze.persistent.model.Symbol
 @InheritConstructors
 class HeapAllocation extends Symbol {
 
+	/** DoopId of the allocated type */
+	// todo: Rename the field to a more descriptive name, e.g. allocatedTypeDoopId
 	String type
 
 	String allocatingMethodDoopId
