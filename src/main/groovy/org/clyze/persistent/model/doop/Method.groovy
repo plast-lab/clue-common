@@ -26,6 +26,8 @@ class Method extends Symbol {
 
 	boolean isAbstract
 
+	boolean isNative
+
 	String declaringClassDoopId
 
 	int totalInvocations
