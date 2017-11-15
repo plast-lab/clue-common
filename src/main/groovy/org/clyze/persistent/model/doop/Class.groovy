@@ -33,6 +33,11 @@ class Class extends Symbol {
 	String doopId
 
 	/**
+	 * The doopId of the type or method where this type is declared.
+	 */
+	String declaringSymbolDoopId
+
+	/**
 	 * @param position
 	 * @param sourceFileName
 	 * @param name
