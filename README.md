@@ -1,5 +1,6 @@
 # Readme
 
-This repo contains the `org.clyze.persistent` and `org.clyze.analysis` packages, which are 
-shared by the other components of the clyze unified framework.
+This repo contains packages `org.clyze.analysis`,
+`org.clyze.persistent`, and `org.clyze.utils`, which are shared by the
+other components of the clyze unified framework.
 
