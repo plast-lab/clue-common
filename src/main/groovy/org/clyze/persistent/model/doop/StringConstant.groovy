@@ -6,7 +6,8 @@ import org.clyze.persistent.model.Position
 import org.clyze.persistent.model.Symbol
 
 /**
- * This class represents a string literal initializing a static final field.
+ * This class represents a string constant; i.e. a pair of a static final String
+ * field and the string literal initializing it.
  *
  * Why we need this?
  * Javac chooses to inline some cases of static final fields. Such fields do not
@@ -15,7 +16,7 @@ import org.clyze.persistent.model.Symbol
  */
 @EqualsAndHashCode(callSuper = true)
 @InheritConstructors
-class SFSFieldLiteral extends Symbol {
+class StringConstant extends Symbol {
 
     /** The doopId of the static final field that this string literal initializes. */
     String fieldDoopId
@@ -39,7 +40,7 @@ class SFSFieldLiteral extends Symbol {
      * @param sourceFileName
      * @param fieldDoopId
      */
-    public SFSFieldLiteral(Position position, String sourceFileName, String fieldDoopId, String value) {
+    public StringConstant(Position position, String sourceFileName, String fieldDoopId, String value) {
 
         super(position, sourceFileName)
 
