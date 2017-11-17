@@ -357,7 +357,7 @@ class AndroidDepResolver {
 
     // Find the location of the Android SDK. Assumes it is property
     // 'sdk.dir' in file 'local.properties' located in 'rootDir'.
-    public String findSDK(String rootDir) {
+    public void findSDK(String rootDir) {
         def localProp = "local.properties"
         def localProperties = new File(rootDir, localProp)
         if (localProperties.exists()) {
@@ -381,7 +381,6 @@ class AndroidDepResolver {
                 throw new RuntimeException("File ${localProperties.canonicalPath} does not exist and ${androidEnv} is not defined.")
             }
         }
-        return cachedSDK
     }
 
     private String getSDK() {
