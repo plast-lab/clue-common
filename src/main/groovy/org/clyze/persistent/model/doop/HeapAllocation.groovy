@@ -9,9 +9,7 @@ import org.clyze.persistent.model.Symbol
 @InheritConstructors
 class HeapAllocation extends Symbol {
 
-	/** DoopId of the allocated type */
-	// todo: Rename the field to a more descriptive name, e.g. allocatedTypeDoopId
-	String type
+	String allocatedTypeDoopId
 
 	String allocatingMethodDoopId
 
@@ -25,15 +23,15 @@ class HeapAllocation extends Symbol {
 	 * @param position
 	 * @param sourceFileName
 	 * @param doopId
-	 * @param type
+	 * @param allocatedTypeDoopId
 	 * @param allocatingMethodDoopId
-	 * @param inIIB                     is inside instance initializer block
+	 * @param inIIB is inside instance initializer block
 	 */
-	HeapAllocation(Position position, String sourceFileName, String doopId, String type, String allocatingMethodDoopId,
+	HeapAllocation(Position position, String sourceFileName, String doopId, String allocatedTypeDoopId, String allocatingMethodDoopId,
 				   boolean inIIB = false) {
 		super(position, sourceFileName)
 		this.doopId = doopId
-		this.type = type
+		this.allocatedTypeDoopId = allocatedTypeDoopId
 		this.allocatingMethodDoopId = allocatingMethodDoopId
 		this.inIIB = inIIB
 	}
