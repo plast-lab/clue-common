@@ -18,6 +18,9 @@ class HeapAllocation extends Symbol {
 	/** is inside instance initializer block */
 	boolean inIIB
 
+	/** is an array type */
+	boolean isArray
+
 	/**
 	 *
 	 * @param position
@@ -26,13 +29,15 @@ class HeapAllocation extends Symbol {
 	 * @param allocatedTypeDoopId
 	 * @param allocatingMethodDoopId
 	 * @param inIIB is inside instance initializer block
+	 * @param isArray
 	 */
 	HeapAllocation(Position position, String sourceFileName, String doopId, String allocatedTypeDoopId, String allocatingMethodDoopId,
-				   boolean inIIB = false) {
+				   boolean inIIB = false, boolean isArray = false) {
 		super(position, sourceFileName)
 		this.doopId = doopId
 		this.allocatedTypeDoopId = allocatedTypeDoopId
 		this.allocatingMethodDoopId = allocatingMethodDoopId
 		this.inIIB = inIIB
+		this.isArray = isArray
 	}
 }
