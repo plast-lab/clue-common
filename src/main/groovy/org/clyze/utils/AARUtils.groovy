@@ -53,7 +53,12 @@ public class AARUtils {
                 String tmpDir = createTmpDir(tmpDirs)
                 String jar = tmpDir + "/" + basename(ar, ".aar") + ".jar"
                 Set<String> extraJars = new HashSet<>()
-                unpackClassesJarFromAAR(new File(ar), jar, extraJars, tmpDirs)
+                try {
+                    unpackClassesJarFromAAR(new File(ar), jar, extraJars, tmpDirs)
+                } catch (Exception ex) {
+                    println "Error while handling ${ar}"
+                    throw ex
+                }
                 // println "Extracted ${jar} from ${ar}"
                 jars << jar
                 if (extraJars.size() > 0) {
