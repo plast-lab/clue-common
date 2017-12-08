@@ -24,7 +24,7 @@ class Executor {
 				 String commandLine,
 				 Closure outputLineProcessor = STDOUT_PRINTER) {
 
-		def pb = new ProcessBuilder("/bin/bash", "-c", commandLine)
+		def pb = new ProcessBuilder("/usr/bin/env", "bash", "-c", commandLine)
 		if (workingDirectory) {
 			File cwd = FileOps.findDirOrThrow(workingDirectory, "Working directory is invalid: $workingDirectory")
 			pb.directory(cwd)
