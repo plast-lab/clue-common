@@ -10,7 +10,7 @@ import java.nio.file.Files
 @TypeChecked
 class CPreprocessor {
 
-	String macroCli
+	List<String> macroCli
 	Executor executor
 	boolean emitLineMarkers
 
@@ -21,13 +21,12 @@ class CPreprocessor {
 		}
 		.collect { AnalysisOption option ->
 			if (option.value instanceof Boolean)
-				return "-D${option.id}"
+				"-D${option.id}" as String
 			else if (option.value instanceof Integer)
-				return "-D${option.id}=${option.value}"
+				"-D${option.id}=${option.value}" as String
 			else
-				return "-D${option.id}='\"${option.value}\"'"
+				"-D${option.id}='\"${option.value}\"'" as String
 		}
-		.join(" ")
 		this.executor = executor
 		emitLineMarkers = false
 	}
@@ -55,9 +54,13 @@ class CPreprocessor {
 	}
 
 	CPreprocessor preprocess(String output, String input, String... includes) {
-		def lineMarkersFlag = emitLineMarkers ? '' : ' -P'
-		def includeArgs = includes.collect { "-include $it" }.join(" ")
-		executor.execute("cpp $lineMarkersFlag $macroCli $input $includeArgs $output")
+		def cmd = ['cpp']
+		if (!emitLineMarkers) cmd << '-P'
+		cmd += macroCli
+		cmd << input
+		includes.each { cmd += ['-include', it as String] }
+		cmd << output
+		executor.execute(cmd)
 		return this
 	}
 

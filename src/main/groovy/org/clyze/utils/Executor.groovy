@@ -21,10 +21,10 @@ class Executor {
 	}
 
 	void execute(String workingDirectory,
-				 String commandLine,
+				 List<String> command,
 				 Closure outputLineProcessor = STDOUT_PRINTER) {
 
-		def pb = new ProcessBuilder("/usr/bin/env", "bash", "-c", commandLine)
+		def pb = new ProcessBuilder(command)
 		if (workingDirectory) {
 			File cwd = FileOps.findDirOrThrow(workingDirectory, "Working directory is invalid: $workingDirectory")
 			pb.directory(cwd)
@@ -42,9 +42,9 @@ class Executor {
 
 		// Add a shutdown hook in case the JVM terminates during the execution of the process
 		def shutdownActions = {
-			logger.debug("Destroying process: $commandLine")
+			logger.debug("Destroying process: $command")
 			process.destroy()
-			logger.debug("Process destroyed: $commandLine")
+			logger.debug("Process destroyed: $command")
 			executorService.shutdownNow()
 		}
 		def shutdownThread = new Thread(shutdownActions as Runnable)
@@ -93,11 +93,11 @@ class Executor {
 
 		// Check return code and raise exception at failure indication
 		if (returnCode != 0) {
-			throw new RuntimeException("Command exited with non-zero status:\n $commandLine")
+			throw new RuntimeException("Command exited with non-zero status:\n $command")
 		}
 	}
 
-	void execute(String commandLine, Closure outputLineProcessor = STDOUT_PRINTER) {
-		execute(null, commandLine, outputLineProcessor)
+	void execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
+		execute(null, command, outputLineProcessor)
 	}
 }
