@@ -4,5 +4,6 @@ enum ArtifactKind {
 	AAR,
 	APK,	
 	JAR,	
-	WAR
+	WAR,
+    OTHER
 }
