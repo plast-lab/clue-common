@@ -5,5 +5,6 @@ interface AnalysisFactory<A extends Analysis> {
 				  String id,
 				  String name,
 				  Map<String, AnalysisOption> options,
-				  List<String> inputFiles)
+				  List<String> inputFiles,
+				  List<String> libraryFiles)
 }

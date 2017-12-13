@@ -35,6 +35,11 @@ abstract class Analysis implements Runnable {
 	List<File> inputFiles
 
 	/**
+	 * The dependency (library) filepaths of the analysis
+	 */
+	List<File> libraryFiles
+
+	/**
 	 * Generic query entry-point
 	 */
 	abstract void processRelation(String relation, Closure outputLineProcessor)
