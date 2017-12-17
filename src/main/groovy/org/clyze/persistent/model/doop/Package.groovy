@@ -21,7 +21,7 @@ class Package extends ItemImpl {
 
 	}
 
-	Package(String id, String name, String fullyQualifiedName, String parentPackageId, List<String> artifactIds) {
+	Package(String id, String name, String fullyQualifiedName, String parentPackageId, List<String> artifactIds = []) {
 		this.id = id
 		this.name = name
 		this.fullyQualifiedName = fullyQualifiedName
