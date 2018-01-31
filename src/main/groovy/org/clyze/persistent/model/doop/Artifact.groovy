@@ -19,6 +19,7 @@ class Artifact extends ItemImpl {
 	boolean hasSources
 	String sha1
 	long sizeInBytes	
+	Set<String> packages = [] as Set
 
 	Artifact(String id, String name, ArtifactKind kind, boolean isDependency=true, boolean hasSources=false, String sha1 = null, long sizeInBytes=0) {
 		this.id = id
