@@ -16,17 +16,17 @@ class Artifact extends ItemImpl {
 	String name
 	ArtifactKind kind
 	boolean isDependency
-	boolean hasSources
+	String sourcesName
 	String sha1
 	long sizeInBytes	
 	Set<String> packages = [] as Set
 
-	Artifact(String id, String name, ArtifactKind kind, boolean isDependency=true, boolean hasSources=false, String sha1 = null, long sizeInBytes=0) {
+	Artifact(String id, String name, ArtifactKind kind, boolean isDependency=true, String sourcesName=null, String sha1 = null, long sizeInBytes=0) {
 		this.id = id
 		this.name = name
 		this.kind = kind
 		this.isDependency = isDependency
-		this.hasSources = hasSources		
+		this.sourcesName = sourcesName
 		this.sha1 = sha1
 		this.sizeInBytes = sizeInBytes
 	}
