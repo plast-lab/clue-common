@@ -130,6 +130,9 @@ class Helper {
 
 	/**
 	 * Return elapsed time in seconds.
+	 *
+	 * TODO: Return millisecond precision (either as long or double)
+	 *       and if needed fix usages of this method in other repos.
 	 */
 	static long timing(Closure c) {
 		long now = System.currentTimeMillis()
