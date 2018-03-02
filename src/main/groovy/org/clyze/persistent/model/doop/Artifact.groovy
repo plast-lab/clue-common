@@ -12,22 +12,24 @@ import org.clyze.persistent.model.ItemImpl
 @EqualsAndHashCode
 class Artifact extends ItemImpl {
 
+	public static final String CHECKSUM_ALGORITHM = "SHA1"
+
 	String id
 	String name
 	ArtifactKind kind
 	boolean isDependency
 	String sourcesName
-	String sha1
+	String checksum
 	long sizeInBytes	
 	Set<String> packages = [] as Set
 
-	Artifact(String id, String name, ArtifactKind kind, boolean isDependency=true, String sourcesName=null, String sha1 = null, long sizeInBytes=0) {
+	Artifact(String id, String name, ArtifactKind kind, boolean isDependency=true, String sourcesName=null, String checksum = null, long sizeInBytes=0) {
 		this.id = id
 		this.name = name
 		this.kind = kind
 		this.isDependency = isDependency
 		this.sourcesName = sourcesName
-		this.sha1 = sha1
+		this.checksum = checksum
 		this.sizeInBytes = sizeInBytes
 	}
 }
