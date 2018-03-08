@@ -22,10 +22,8 @@ class CPreprocessor {
 		.collect { AnalysisOption option ->
 			if (option.value instanceof Boolean)
 				"-D${option.id}" as String
-			else if (option.value instanceof Integer)
-				"-D${option.id}=${option.value}" as String
 			else
-				"-D${option.id}='\"${option.value}\"'" as String
+				"-D${option.id}=${option.value}" as String
 		}
 		this.executor = executor
 		emitLineMarkers = false
