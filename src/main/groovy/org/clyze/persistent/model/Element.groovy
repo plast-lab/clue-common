@@ -11,16 +11,10 @@ abstract class Element extends ItemImpl {
 	String id
 
 	/**
-	 * The analysis id this element belong to.
-	 * (required by clue-server, safe to ignore in doop-jcplugin)
+	 * The root element id -- the id of the "root element" this element belong to.
+	 * Either the analysis or the bundle, depending on the type of this element.	 
 	 */
-	String anId
-
-	/**
-	 * The id of the user that created the analysis of id "anId"
-	 * (required by clue-server, safe to ignore in doop-jcplugin)
-	 */
-	String userId
+	String rootElemId	
 
 	Element() {}
 

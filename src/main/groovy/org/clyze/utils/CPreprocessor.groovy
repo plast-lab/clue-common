@@ -25,6 +25,7 @@ class CPreprocessor {
 			else
 				"-D${option.id}=${option.value}" as String
 		}
+		System.out.println("Preprocessor: " + macroCli)
 		this.executor = executor
 		emitLineMarkers = false
 	}

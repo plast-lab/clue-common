@@ -1,6 +1,8 @@
 package org.clyze.utils
 
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 import org.apache.log4j.*
 
 import java.lang.reflect.Method
@@ -11,6 +13,8 @@ import java.util.zip.ZipFile
  * Various helper methods.
  */
 class Helper {
+
+	private static final Log logger = LogFactory.getLog(getClass())
 
 	/**
 	 * Initializes Log4j (logging framework).
@@ -126,6 +130,9 @@ class Helper {
 
 	/**
 	 * Return elapsed time in seconds.
+	 *
+	 * TODO: Return millisecond precision (either as long or double)
+	 *       and if needed fix usages of this method in other repos.
 	 */
 	static long timing(Closure c) {
 		long now = System.currentTimeMillis()
@@ -138,4 +145,12 @@ class Helper {
 		// We measure time only in error-free cases
 		return ((System.currentTimeMillis() - now) / 1000).longValue()
 	}
+
+	/**
+	 * Print elapsed time in seconds along with the given message.
+	 */
+	static void timingWithLogging(String message, Closure c) {
+		logger.debug(message + " took ${timing(c)} sec")
+	}
+
 }
