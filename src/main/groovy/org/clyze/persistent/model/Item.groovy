@@ -10,7 +10,7 @@ interface Item {
 	/**
 	 * @param json The json data to populate the object
 	 */
-	void fromJSON(String json)
+	Item fromJSON(String json)
 
 	/**
 	 * @return The object state in json representation

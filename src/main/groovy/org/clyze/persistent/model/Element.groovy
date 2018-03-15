@@ -17,8 +17,4 @@ abstract class Element extends ItemImpl {
 	String rootElemId	
 
 	Element() {}
-
-	Element(String json) {
-		fromJSON(json)
-	}
 }

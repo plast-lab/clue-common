@@ -22,13 +22,14 @@ abstract class ItemImpl implements Item {
 	 * @param json
 	 */
 	@Override
-	void fromJSON(String json) {
+	ItemImpl fromJSON(String json) {
 		def map = new JsonSlurper().parseText(json)
 		map.each { String key, Object value ->
 			if (this.properties.containsKey(key)) {
 				this[key] = value
 			}
 		}
+		return this
 	}
 
 	/**
