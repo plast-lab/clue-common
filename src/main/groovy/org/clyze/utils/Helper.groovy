@@ -54,15 +54,21 @@ class Helper {
 	}
 
 	/**
-	 * Executes the given Java main class using the supplied class loader.
+	 * Executes the given Java main class using the supplied class
+	 * loader. Returns false if the method throws an exception.
 	 */
-	static void execJava(ClassLoader cl, String mainClass, String[] params) {
+	static boolean execJava(ClassLoader cl, String mainClass, String[] params) {
 		//This is a better way to invoke the main method using a different
 		//classloader (the runWithClassLoader/invokeMainMethod methods are
 		//problematic and should be removed).
 		Class theClass = Class.forName(mainClass, true, cl)
 		Method mainMethod = theClass.getMethod("main", [String[].class] as Class[])
-		mainMethod.invoke(null, [params] as Object[])
+        try {
+            mainMethod.invoke(null, [params] as Object[])
+            return true
+        } catch (Throwable t) {
+            return false;
+        }
 	}
 
 	/**
