@@ -1,13 +1,10 @@
 package org.clyze.utils
 
-import org.apache.commons.io.FilenameUtils
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.*
 
 import java.lang.reflect.Method
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
 
 /**
  * Various helper methods.
@@ -98,29 +95,6 @@ class Helper {
 		Object[] args = [params]
 		Method main = Class.forName(mainClass).getMethod("main", parameterTypes)
 		main.invoke(null, args)
-	}
-
-	/**
-	 * Returns a set of the packages contained in the given jar.
-	 * Any classes that are not included in packages are also retrieved.
-	 */
-	static Set<String> getPackages(File jar) {
-		ZipFile zip = new ZipFile(jar)
-		Enumeration<? extends ZipEntry> entries = zip.entries()
-		List<ZipEntry> classes = entries?.findAll { ZipEntry entry ->
-			entry.getName().endsWith(".class")
-		}
-		List<String> packages = classes.collect { ZipEntry entry ->
-			String entryName = entry.getName()
-			if (entryName.indexOf("/") > 0)
-				return FilenameUtils.getPath(entry.getName()).replace('/' as char, '.' as char) + '*'
-			else
-				return FilenameUtils.getBaseName(entryName)
-		}
-
-		packages = packages.unique()
-
-		return (packages as Set)
 	}
 
 	/**
