@@ -133,4 +133,13 @@ class Helper {
 		logger.debug(message + " took ${timing(c)} sec")
 	}
 
+    // Throws a runtime exception with a message. The message is also
+    // shown in the standard output. This utility helps debugging as
+    // Gradle may report a different exception (e.g. the usual
+    // IllegalStateException "buildToolsVersion is not specified").
+    static void throwRuntimeException(String errMsg) {
+        println errMsg
+        throw new RuntimeException(errMsg)
+    }
+
 }

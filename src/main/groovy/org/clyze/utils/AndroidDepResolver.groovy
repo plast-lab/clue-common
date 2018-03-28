@@ -1,5 +1,7 @@
 package org.clyze.utils
 
+import static org.clyze.utils.Helper.throwRuntimeException
+
 // This class takes care of resolving dependencies on Android, using
 // the local Android SDK and maven.org. Before calling resolution, you
 // must call once findSDK(rootDir), to set the SDK path from property
@@ -386,15 +388,6 @@ class AndroidDepResolver {
     private String getSDK() {
         // If findSDK() has not been called successfully, fail.
         return cachedSDK ?: throwRuntimeException("Internal error: SDK is null.")
-    }
-
-    // Throws a runtime exception with a message. The message is also
-    // shown in the standard output. This utility helps debugging as
-    // Gradle may report a different exception (e.g. the usual
-    // IllegalStateException "buildToolsVersion is not specified").
-    static void throwRuntimeException(String errMsg) {
-        println errMsg
-        throw new RuntimeException(errMsg)
     }
 
     private static void logMessage(String msg) {
