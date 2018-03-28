@@ -1,5 +1,6 @@
 package org.clyze.utils
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.*
@@ -142,4 +143,7 @@ class Helper {
         throw new RuntimeException(errMsg)
     }
 
+    public static cleanUp(Set<String> tmpDirs) {
+        tmpDirs.each { tmpDir -> FileUtils.deleteQuietly(new File(tmpDir)) }
+    }
 }
