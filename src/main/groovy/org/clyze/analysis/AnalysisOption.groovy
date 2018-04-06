@@ -14,6 +14,7 @@ class AnalysisOption<T> {
 				description: option.description,
 				value: option.value,
 				validValues: option.validValues,
+				multipleValues: option.multipleValues,
 				isMandatory: option.isMandatory,
 				forCacheID: option.forCacheID,
 				forPreprocessor: option.forPreprocessor,
@@ -53,7 +54,12 @@ class AnalysisOption<T> {
 	Set<T> validValues = null
 
 	/**
-	 * Indicates whether the options is a mandatory one
+	 * Indicate whether the option accepts many values
+	 */
+	boolean multipleValues = false
+
+	/**
+	 * Indicates whether the option is a mandatory one
 	 */
 	boolean isMandatory = false
 
@@ -88,17 +94,17 @@ class AnalysisOption<T> {
 	boolean isAdvanced = false
 
 	/**
-	 * Indicates whether the options is a file
+	 * Indicates whether the option is a file
 	 */
 	boolean isFile = false
 
 	/**
-	 * Indicates whether the options is a directoy
+	 * Indicates whether the option is a directoy
 	 */
 	boolean isDir = false
 
 	/**
-	 * Indicates whether the options is a non-standard flag
+	 * Indicates whether the option is a non-standard flag
 	 */
 	boolean nonStandard = false
 
