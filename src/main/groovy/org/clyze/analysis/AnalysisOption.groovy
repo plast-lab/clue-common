@@ -116,4 +116,8 @@ class AnalysisOption<T> {
 
 	@Override
 	String toString() { "$id=$value" }
+
+	public boolean acceptsMultipleInputs() {
+		return this.multipleValues && this.valueType && (this.valueType instanceof InputType)
+	}
 }
