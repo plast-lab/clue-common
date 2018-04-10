@@ -15,6 +15,7 @@ class AnalysisOption<T> {
 				value: option.value,
 				validValues: option.validValues,
 				multipleValues: option.multipleValues,
+				valueType: option.valueType,
 				isMandatory: option.isMandatory,
 				forCacheID: option.forCacheID,
 				forPreprocessor: option.forPreprocessor,
