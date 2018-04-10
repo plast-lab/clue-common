@@ -7,5 +7,5 @@ interface AnalysisFactory<A extends Analysis> {
 				  Map<String, AnalysisOption> options,
 				  List<String> inputFiles,
 				  List<String> libraryFiles,
-				  List<String> hprofFiles)
+				  List<String> heapFiles)
 }
