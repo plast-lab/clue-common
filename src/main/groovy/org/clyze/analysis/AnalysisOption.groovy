@@ -59,6 +59,11 @@ class AnalysisOption<T> {
 	boolean multipleValues = false
 
 	/**
+	 * The type of the values
+	 */
+	InputType valueType = null
+
+	/**
 	 * Indicates whether the option is a mandatory one
 	 */
 	boolean isMandatory = false
