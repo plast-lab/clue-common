@@ -48,4 +48,8 @@ release {
     //use defaults, see https://github.com/researchgate/gradle-release
 }
 
+tasks.release.doLast {
+    println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
+}
+
 afterReleaseBuild.dependsOn publish
