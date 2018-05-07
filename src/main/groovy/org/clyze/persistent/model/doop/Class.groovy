@@ -16,6 +16,9 @@ class Class extends Symbol {
 	 * The symbol name (package name not included)
 	 */
 	String name
+	
+	/** The artifact name (e.g. foo-1.2.jar) */
+	String artifactName
 
 	String packageName
 
