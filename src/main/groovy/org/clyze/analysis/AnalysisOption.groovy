@@ -83,7 +83,7 @@ class AnalysisOption<T> {
 	/**
 	 * Indicates whether the option can be specified by the user in the web UI
 	 */
-	boolean webUI = false
+	UI webUI = null
 
 	/**
 	 * Indicates whether the option can be specified by the user in the command line interface
