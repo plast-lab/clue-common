@@ -3,6 +3,10 @@ package org.clyze.utils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
+import java.util.zip.*
+
+import java.nio.file.*
+
 class FileOps {
 
 	private static final FileFilter ALL_FILES_AND_DIRECTORIES = [
@@ -91,5 +95,40 @@ class FileOps {
 	static File writeToFile(File file, String s) {
 		file.withWriter { Writer w -> w.write s }
 		return file
+	}
+
+
+	/**
+	 * Extracts of the contents of the given zipFile to the dest directory.
+	 */
+	static void unzip(File zipFile, File dest) {
+
+		findFileOrThrow(zipFile, "Not a valid file: $zipFile")
+		findDirOrThrow(dest, "Not a directory: $dest")
+		Path destPath = dest.toPath()
+		ZipInputStream zipInput = new ZipInputStream(new FileInputStream(zipFile))
+		zipInput.withStream { 
+			ZipEntry entry
+			while(entry = zipInput.getNextEntry()) { //until null is returned
+				Path target = destPath.resolve(entry.getName())
+				if (entry.isDirectory()) {
+					Files.createDirectories(target)
+				}
+				else {
+					Path parent = target.getParent()
+					if (parent) {
+						Files.createDirectories(parent)
+					}	
+					Files.copy(zipInput, target)
+				}
+			}
+		}
+	}
+
+	/**
+	 * Extracts of the contents of the given zipFile to the dest directory.
+	 */
+	static void unzip(String zipFile, File dest) {
+		unzip(new File(zipFile), dest)
 	}
 }
