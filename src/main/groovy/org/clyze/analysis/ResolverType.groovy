@@ -1,5 +1,5 @@
 package org.clyze.analysis
 
-public final enum ResolverType {
+enum ResolverType {
     LOCAL_FILE, URL, MAVEN_ARTIFACT, ZIP
 }

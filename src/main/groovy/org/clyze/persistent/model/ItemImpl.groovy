@@ -5,23 +5,10 @@ import groovy.json.JsonSlurper
 
 abstract class ItemImpl implements Item {
 
-	/**
-	 *
-	 */
 	static final String ID_FIELD = "id"
 
-	/**
-	 * @return
-	 */
-	@Override
-	String getId() {
-		return this[ID_FIELD]
-	}
+	String getId() { this[ID_FIELD] }
 
-	/**
-	 * @param json
-	 */
-	@Override
 	ItemImpl fromJSON(String json) {
 		def map = new JsonSlurper().parseText(json)
 		map.each { String key, Object value ->
@@ -32,22 +19,11 @@ abstract class ItemImpl implements Item {
 		return this
 	}
 
-	/**
-	 * @return
-	 */
-	@Override
-	String toJSON() {
-		JsonOutput.toJson(toMap())
-	}
+	String toJSON() { JsonOutput.toJson(toMap()) }
 
-	/**
-	 * @return
-	 */
-	@Override
 	Map<String, Object> toMap() {
 		return properties.findAll { String key, Object value ->
 			value != null && key != "class" && key != "ID_FIELD"
 		}
 	}
-
 }

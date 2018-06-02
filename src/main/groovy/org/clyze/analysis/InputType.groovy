@@ -2,7 +2,7 @@ package org.clyze.analysis
 
 import static ResolverType.*
 
-public final enum InputType {
+enum InputType {
     INPUT("input", [LOCAL_FILE, URL, MAVEN_ARTIFACT]),
     LIBRARY("library", [LOCAL_FILE, URL, MAVEN_ARTIFACT]),
     HPROF("heap dump", [LOCAL_FILE, URL, ZIP]),
@@ -11,17 +11,12 @@ public final enum InputType {
     private final String title
     private final Set<ResolverType> resolvers
 
-    public InputType(String title, List<ResolverType> resolvers) {
+    InputType(String title, List<ResolverType> resolvers) {
         this.title = title
         this.resolvers = resolvers as Set
     }
 
-    @Override
-    public String toString() {
-        return title
-    }
+    String toString() { title }
 
-    public Set<ResolverType> getResolverTypes() {
-        return resolvers
-    }
+    Set<ResolverType> getResolverTypes() { resolvers }
 }

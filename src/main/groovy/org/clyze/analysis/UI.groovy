@@ -1,5 +1,5 @@
 package org.clyze.analysis
 
-public enum UI {
+enum UI {
     AnalysisForm, InputBundleForm
 }
