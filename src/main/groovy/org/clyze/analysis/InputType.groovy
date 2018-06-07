@@ -1,12 +1,10 @@
 package org.clyze.analysis
 
-import static ResolverType.*
-
 enum InputType {
-    INPUT("input", [LOCAL_FILE, URL, MAVEN_ARTIFACT]),
-    LIBRARY("library", [LOCAL_FILE, URL, MAVEN_ARTIFACT]),
-    HPROF("heap dump", [LOCAL_FILE, URL, ZIP]),
-    DYNAMIC("dynamic class", [LOCAL_FILE, ZIP])
+    INPUT("input", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.MAVEN_ARTIFACT]),
+    LIBRARY("library", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.MAVEN_ARTIFACT]),
+    HPROF("heap dump", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
+    DYNAMIC("dynamic class", [ResolverType.LOCAL_FILE, ResolverType.ZIP])
 
     private final String title
     private final Set<ResolverType> resolvers
