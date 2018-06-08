@@ -15,8 +15,6 @@ class MethodInvocation extends Symbol {
 
 	String doopId
 
-	String paramTypes
-
 	/** is inside instance initializer block */
 	boolean inIIB
 
@@ -26,16 +24,14 @@ class MethodInvocation extends Symbol {
 	 * @param sourceFileName
 	 * @param doopId
 	 * @param invokingMethodDoopId
-	 * @param paramTypes
 	 * @param inIIB                 is inside instance initializer block
 	 */
 	MethodInvocation(Position position, String sourceFileName, String name, String doopId, String invokingMethodDoopId,
-					 String paramTypes = null, boolean inIIB = false) {
+					 boolean inIIB = false) {
 		super(position, sourceFileName)
 		this.name = name
 		this.doopId = doopId
 		this.invokingMethodDoopId = invokingMethodDoopId
-		this.paramTypes = paramTypes
 		this.inIIB = inIIB
 	}
 }
