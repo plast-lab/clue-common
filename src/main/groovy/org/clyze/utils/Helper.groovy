@@ -1,6 +1,6 @@
 package org.clyze.utils
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileUtils
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.*
@@ -56,46 +56,14 @@ class Helper {
 	 * loader. Returns false if the method throws an exception.
 	 */
 	static boolean execJava(ClassLoader cl, String mainClass, String[] params) {
-		//This is a better way to invoke the main method using a different
-		//classloader (the runWithClassLoader/invokeMainMethod methods are
-		//problematic and should be removed).
 		Class theClass = Class.forName(mainClass, true, cl)
 		Method mainMethod = theClass.getMethod("main", [String[].class] as Class[])
         try {
             mainMethod.invoke(null, [params] as Object[])
             return true
-        } catch (Throwable t) {
-            return false;
+        } catch (all) {
+            return false
         }
-	}
-
-	/**
-	 * Runs the closure in the current thread using the specified class loader
-	 * @param cl - the class loader to use
-	 * @param closure - the closure to run
-	 */
-	static void runWithClassLoader(ClassLoader cl, Closure closure) {
-		Thread currentThread = Thread.currentThread()
-		ClassLoader oldLoader = currentThread.getContextClassLoader()
-		currentThread.setContextClassLoader(cl)
-		try {
-			closure.call()
-		} catch (e) {
-			throw new RuntimeException(e.getMessage(), e)
-		}
-		finally {
-			currentThread.setContextClassLoader(oldLoader)
-		}
-	}
-
-	/**
-	 * Invokes the main method of the given mainClass, passing the supplied params.
-	 */
-	static void invokeMainMethod(String mainClass, String[] params) {
-		Class[] parameterTypes = [String[].class]
-		Object[] args = [params]
-		Method main = Class.forName(mainClass).getMethod("main", parameterTypes)
-		main.invoke(null, args)
 	}
 
 	/**
@@ -111,9 +79,6 @@ class Helper {
 
 	/**
 	 * Return elapsed time in seconds.
-	 *
-	 * TODO: Return millisecond precision (either as long or double)
-	 *       and if needed fix usages of this method in other repos.
 	 */
 	static long timing(Closure c) {
 		long now = System.currentTimeMillis()
@@ -143,7 +108,7 @@ class Helper {
         throw new RuntimeException(errMsg)
     }
 
-    public static cleanUp(Set<String> tmpDirs) {
+    static cleanUp(Set<String> tmpDirs) {
         tmpDirs.each { tmpDir -> FileUtils.deleteQuietly(new File(tmpDir)) }
     }
 }
