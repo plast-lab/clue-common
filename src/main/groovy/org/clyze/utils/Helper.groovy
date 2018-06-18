@@ -1,8 +1,7 @@
 package org.clyze.utils
 
+import groovy.util.logging.Log4j
 import org.apache.commons.io.FileUtils
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 import org.apache.log4j.*
 
 import java.lang.reflect.Method
@@ -10,9 +9,8 @@ import java.lang.reflect.Method
 /**
  * Various helper methods.
  */
+@Log4j
 class Helper {
-
-	private static final Log logger = LogFactory.getLog(getClass())
 
 	/**
 	 * Initializes Log4j (logging framework).
@@ -95,9 +93,7 @@ class Helper {
 	/**
 	 * Print elapsed time in seconds along with the given message.
 	 */
-	static void timingWithLogging(String message, Closure c) {
-		logger.debug(message + " took ${timing(c)} sec")
-	}
+	static void timingWithLogging(String message, Closure c) { log.debug(message + " took ${timing(c)} sec") }
 
     // Throws a runtime exception with a message. The message is also
     // shown in the standard output. This utility helps debugging as

@@ -2,18 +2,16 @@ package org.clyze.utils
 
 import groovy.transform.TupleConstructor
 import groovy.transform.TypeChecked
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
+import groovy.util.logging.Log4j
 
 import java.util.concurrent.Executors
 
+@Log4j
 @TupleConstructor
 @TypeChecked
 class Executor {
 
 	static final Closure STDOUT_PRINTER = { String line -> println line }
-
-	protected Log logger = LogFactory.getLog(getClass())
 
 	File currWorkingDir = new File(".")
 	Map<String, String> environment
@@ -26,9 +24,9 @@ class Executor {
 		def executorService = Executors.newSingleThreadExecutor()
 		// Add a shutdown hook in case the JVM terminates during the execution of the process
 		def shutdownActions = {
-			logger.debug "Destroying process: $command"
+			log.debug "Destroying process: $command"
 			process.destroy()
-			logger.debug "Process destroyed: $command"
+			log.debug "Process destroyed: $command"
 			executorService.shutdownNow()
 		}
 		def shutdownThread = new Thread(shutdownActions as Runnable)
@@ -95,7 +93,7 @@ class Executor {
 		def pid = fld.get(process)
 
 		def monitorFile = new File(currWorkingDir,"monitoring.txt")
-		logger.info "Runtime info monitored in $monitorFile.absolutePath"
+		log.info "Runtime info monitored in $monitorFile.absolutePath"
 		monitorFile.withWriterAppend { writer ->
 			writer << "$monitoringInterval\n"
 			while (process.alive) {
