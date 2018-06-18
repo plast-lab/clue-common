@@ -15,18 +15,13 @@ class Executor {
 
 	protected Log logger = LogFactory.getLog(getClass())
 
+	File currWorkingDir = new File(".")
 	Map<String, String> environment
+	boolean isMonitoringEnabled = false
+	long monitoringInterval = 5000L
 
 	void execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
-		execute(null, command, false, outputLineProcessor)
-	}
-
-	void execute(String workingDir, List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
-		execute(workingDir, command, false, outputLineProcessor)
-	}
-
-	void execute(String workingDir, List<String> command, boolean enableMonitoring, Closure outputLineProcessor = STDOUT_PRINTER) {
-		def process = startProcess(workingDir, command)
+		def process = startProcess(command)
 
 		def executorService = Executors.newSingleThreadExecutor()
 		// Add a shutdown hook in case the JVM terminates during the execution of the process
@@ -59,7 +54,7 @@ class Executor {
 				}
 			})
 
-			enableMonitoring ? monitor(workingDir, process) : future.get()
+			isMonitoringEnabled ? monitor(process) : future.get()
 		}
 		catch (InterruptedException e) {
 			Runtime.runtime.removeShutdownHook(shutdownThread)
@@ -81,51 +76,46 @@ class Executor {
 		//}
 
 		// Check return code and raise exception at failure indication
-		if (returnCode != 0) {
+		if (returnCode != 0)
 			throw new RuntimeException("Command exited with non-zero status:\n $command")
-		}
 	}
 
-	Process startProcess(String workingDir, List<String> command) {
+	Process startProcess(List<String> command) {
 		def pb = new ProcessBuilder(command)
-		if (workingDir) {
-			def cwd = FileOps.findDirOrThrow(workingDir, "Working directory is invalid: $workingDir")
-			pb.directory(cwd)
-		}
+		pb.directory(currWorkingDir)
 		pb.redirectErrorStream(true)
 		pb.environment().clear()
 		pb.environment().putAll(this.environment)
 		pb.start()
 	}
 
-	void monitor(String workingDir, Process process) {
-		def interval = 5000
-		def monitorFile = new File(workingDir ?: ".", "monitoring.txt")
-		monitorFile << "$interval\n"
-
-		logger.info "Runtime info monitored in $monitorFile.canonicalPath"
-
+	void monitor(Process process) {
 		def fld = process.class.getDeclaredField("pid")
 		fld.setAccessible(true)
 		def pid = fld.get(process)
 
-		while (process.alive) {
-			// "ps -p $pid -o %cpu,%mem,cmd --noheader".split().toList() /// %cpu is not current but avg
-			startProcess(workingDir, "top -b -n 1 -p $pid".split().toList())
-					.inputStream.newReader(). withReader { reader ->
-				// If pid is still valid (e.g. process has not ended) the last line has the actual information
-				def lastLine = reader.readLines().last()
-				if (lastLine.startsWith(pid as String)) {
-					// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
-					def parts = lastLine.split()
-					def mem = parts[5].endsWith("g") ? (parts[5][0..-2]).toDouble() * 1024 : parts[5].toDouble()
-					def info = "${mem}MB\t${parts[8]}\n"
-					monitorFile << info
-					new File(monitorFile.parentFile, "monitoring.latest.txt").withWriter { it.write info }
+		def monitorFile = new File(currWorkingDir,"monitoring.txt")
+		logger.info "Runtime info monitored in $monitorFile.absolutePath"
+		monitorFile.withWriterAppend { writer ->
+			writer << "$monitoringInterval\n"
+			while (process.alive) {
+				startProcess("top -b -n 1 -p $pid".split().toList())
+						.inputStream.newReader(). withReader { reader ->
+					// If pid is still valid (e.g. process has not ended) the last line has the actual information
+					def lastLine = reader.readLines().last()
+					if (lastLine.startsWith(pid as String)) {
+						// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
+						def parts = lastLine.split()
+						def mem = parts[5].endsWith("g") ? (parts[5][0..-2]).toDouble() * 1024 : parts[5].toDouble()
+						def info = "$pid\t${mem}MB\t${parts[8]}\t${parts[11]}\n"
+						writer << info
+						// Delete previous contents
+						new File(monitorFile.parentFile, "monitoring.latest.txt").withWriter { it.write info }
+					}
+					null
 				}
-				null
+				Thread.currentThread().sleep(monitoringInterval)
 			}
-			Thread.currentThread().sleep(interval)
 		}
 	}
 }
