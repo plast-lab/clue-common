@@ -106,7 +106,8 @@ class Executor {
 					if (lastLine.startsWith(pid as String)) {
 						// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
 						def parts = lastLine.split()
-						def mem = parts[5].endsWith("g") ? (parts[5][0..-2]).toDouble() * 1024 : parts[5].toDouble()
+						// If RES ends with "g" it's measured in GB, otherwise in KB. Convert both in MB
+						def mem = (parts[5].endsWith("g") ? (parts[5][0..-2]).toDouble() * 1024 : parts[5].toDouble() / 1024).toLong()
 						def info = "$pid\t${mem}MB\t${parts[8]}\t${parts[11]}\n"
 						writer << info
 						// Delete previous contents
