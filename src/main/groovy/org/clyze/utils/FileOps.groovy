@@ -82,6 +82,16 @@ class FileOps {
 		return dir
 	}
 
+	static File ensureDirExistsOrThrow(String dir, String message) {
+		if (!dir) throw new RuntimeException(message)
+		return ensureDirExistsOrThrow(new File(dir), message)
+	}
+
+	static File ensureDirExistsOrThrow(File dir, String message) {
+		dir.mkdirs()
+		return findDirOrThrow(dir, message)
+	}
+
 	/**
 	 * Copies the contents of the src directory to dest (as in: cp -R src/* dest).
 	 */
