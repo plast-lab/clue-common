@@ -81,4 +81,7 @@ hs_err_pid*
 .gitignore
 .idea/
 
-
+#VS Code (with ecliple buildship for java projects)
+.classpath
+.project
+.settings
