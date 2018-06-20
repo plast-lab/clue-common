@@ -97,16 +97,20 @@ class Executor {
 		monitorFile.withWriterAppend { writer ->
 			writer << "$monitoringInterval\n"
 			while (process.alive) {
-				startProcess("top -b -n 1 -p $pid".split().toList())
-						.inputStream.newReader(). withReader { reader ->
+				startProcess("top -b -n 1 -p $pid".split().toList()).inputStream.newReader(). withReader { reader ->
 					// If pid is still valid (e.g. process has not ended) the last line has the actual information
 					def lastLine = reader.readLines().last()
 					if (lastLine.startsWith(pid as String)) {
 						// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
 						def parts = lastLine.split()
-						// If RES ends with "g" it's measured in GB, otherwise in KB. Convert both in MB
-						def mem = (parts[5].endsWith("g") ? (parts[5][0..-2]).toDouble() * 1024 : parts[5].toDouble() / 1024).toLong()
-						def info = "$pid\t${mem}MB\t${parts[8]}\t${parts[11]}\n"
+
+						// If RES ends with "g" it's measured in GB, with "t" in TB, otherwise in KB. Convert in MB
+						double mem
+						if (parts[5].endsWith("g")) mem = parts[5][0..-2].toDouble() * 1024
+						else if (parts[5].endsWith("t")) mem = parts[5][0..-2].toDouble() * 1024 * 1024
+						else mem = parts[5].toDouble() / 1024
+
+						def info = "$pid\t${mem.toLong()}MB\t${parts[8].toDouble()}\t${parts[11]}\n"
 						writer << info
 						// Delete previous contents
 						new File(monitorFile.parentFile, "monitoring.latest.txt").withWriter { it.write info }
