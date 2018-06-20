@@ -15,8 +15,10 @@ class Executor {
 
 	File currWorkingDir = new File(".")
 	Map<String, String> environment
-	boolean isMonitoringEnabled = false
-	long monitoringInterval = 5000L
+
+	boolean isMonitoringEnabled
+	long monitoringInterval
+	Closure extraMonitorHandling
 
 	void execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
 		def process = startProcess(command)
@@ -52,12 +54,12 @@ class Executor {
 				}
 			})
 
-			isMonitoringEnabled ? monitor(process) : future.get()
+			isMonitoringEnabled ? doSampling(process) : future.get()
 		}
-		catch (InterruptedException e) {
+		catch (all) {
 			Runtime.runtime.removeShutdownHook(shutdownThread)
 			shutdownActions()
-			throw e
+			throw all
 		}
 		finally {
 			executorService.shutdownNow()
@@ -87,38 +89,49 @@ class Executor {
 		pb.start()
 	}
 
-	void monitor(Process process) {
+	void enableMonitor(long monitoringInterval, Closure extraMonitorHandling = null) {
+		this.monitoringInterval = monitoringInterval
+		this.extraMonitorHandling = extraMonitorHandling
+		isMonitoringEnabled = true
+	}
+
+	void disableMonitor() { isMonitoringEnabled = false }
+
+	void doSampling(Process process) {
+		// Get PID via "reflection" hack
 		def fld = process.class.getDeclaredField("pid")
 		fld.setAccessible(true)
 		def pid = fld.get(process)
 
-		def monitorFile = new File(currWorkingDir,"monitoring.txt")
+		def monitorFile = new File(currWorkingDir, "monitoring.txt")
+		def monitorWriter = monitorFile.newWriter()
+		def monitorFileLatest = new File(currWorkingDir, "monitoring.latest.txt")
 		log.info "Runtime info monitored in $monitorFile.absolutePath"
-		monitorFile.withWriterAppend { writer ->
-			writer << "$monitoringInterval\n"
-			while (process.alive) {
-				startProcess("top -b -n 1 -p $pid".split().toList()).inputStream.newReader(). withReader { reader ->
-					// If pid is still valid (e.g. process has not ended) the last line has the actual information
-					def lastLine = reader.readLines().last()
-					if (lastLine.startsWith(pid as String)) {
-						// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
-						def parts = lastLine.split()
+		monitorWriter.writeLine "$monitoringInterval"
+		while (process.alive) {
+			startProcess("top -b -n 1 -p $pid".split().toList()).inputStream.newReader().withReader { reader ->
+				// If pid is still valid (e.g. process has not ended) the last line has the actual information
+				def lastLine = reader.readLines().last()
+				if (lastLine.startsWith(pid as String)) {
+					// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
+					def parts = lastLine.split()
 
-						// If RES ends with "g" it's measured in GB, with "t" in TB, otherwise in KB. Convert in MB
-						double mem
-						if (parts[5].endsWith("g")) mem = parts[5][0..-2].toDouble() * 1024
-						else if (parts[5].endsWith("t")) mem = parts[5][0..-2].toDouble() * 1024 * 1024
-						else mem = parts[5].toDouble() / 1024
+					// If RES ends with "g" it's measured in GB, with "t" in TB, otherwise in KB. Convert in MB
+					double mem
+					if (parts[5].endsWith("g")) mem = parts[5][0..-2].toDouble() * 1024
+					else if (parts[5].endsWith("t")) mem = parts[5][0..-2].toDouble() * 1024 * 1024
+					else mem = parts[5].toDouble() / 1024
+					def info = "${parts[0]}\t${mem.toLong()}MB\t${parts[8].toDouble()}\t${parts[11]}"
 
-						def info = "$pid\t${mem.toLong()}MB\t${parts[8].toDouble()}\t${parts[11]}\n"
-						writer << info
-						// Delete previous contents
-						new File(monitorFile.parentFile, "monitoring.latest.txt").withWriter { it.write info }
-					}
-					null
+					monitorWriter.writeLine info
+					// Delete previous contents
+					monitorFileLatest.withWriter { it.writeLine info }
+
+					extraMonitorHandling?.call parts.toList()
 				}
-				Thread.currentThread().sleep(monitoringInterval)
+				null
 			}
+			Thread.currentThread().sleep(monitoringInterval)
 		}
 	}
 }
