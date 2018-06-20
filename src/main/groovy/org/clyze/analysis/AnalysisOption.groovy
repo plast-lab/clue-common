@@ -1,36 +1,11 @@
 package org.clyze.analysis
 
 import groovy.transform.AutoClone
+import static groovy.transform.AutoCloneStyle.COPY_CONSTRUCTOR
 
-@AutoClone
+@AutoClone(style = COPY_CONSTRUCTOR)
 class AnalysisOption<T> {
-	/**
-	 * The copy constructor pattern
-	 */
-	static AnalysisOption<T> newInstance(AnalysisOption<T> option) {
-		return new AnalysisOption<>(
-				id: option.id,
-				name: option.name,
-				optName: option.optName,
-				description: option.description,
-				value: option.value,
-				validValues: option.validValues,
-				multipleValues: option.multipleValues,
-				valueType: option.valueType,
-				isMandatory: option.isMandatory,
-				forCacheID: option.forCacheID,
-				forPreprocessor: option.forPreprocessor,
-				webUI: option.webUI,
-				cli: option.cli,
-				argName: option.argName,
-				changesFacts: option.changesFacts,
-				isAdvanced: option.isAdvanced,
-				isFile: option.isFile,
-				isDir: option.isDir,
-				nonStandard: option.nonStandard
-		)
-	}
-
+	
 	/**
 	 * The id of the option as used internally by the code (e.g. by the preprocessor, the web form, etc)
 	 */
