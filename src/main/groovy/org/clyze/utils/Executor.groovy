@@ -20,7 +20,7 @@ class Executor {
 	long monitoringInterval
 	Closure extraMonitorHandling
 
-	void execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
+	Executor execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
 		def process = startProcess(command)
 
 		def executorService = Executors.newSingleThreadExecutor()
@@ -78,6 +78,8 @@ class Executor {
 		// Check return code and raise exception at failure indication
 		if (returnCode != 0)
 			throw new RuntimeException("Command exited with non-zero status:\n $command")
+
+		return this
 	}
 
 	Process startProcess(List<String> command) {
@@ -89,13 +91,17 @@ class Executor {
 		pb.start()
 	}
 
-	void enableMonitor(long monitoringInterval, Closure extraMonitorHandling = null) {
+	Executor enableMonitor(long monitoringInterval, Closure extraMonitorHandling = null) {
 		this.monitoringInterval = monitoringInterval
 		this.extraMonitorHandling = extraMonitorHandling
 		isMonitoringEnabled = true
+		return this
 	}
 
-	void disableMonitor() { isMonitoringEnabled = false }
+	Executor disableMonitor() {
+		isMonitoringEnabled = false
+		return this
+	}
 
 	void doSampling(Process process) {
 		// Get PID via "reflection" hack
