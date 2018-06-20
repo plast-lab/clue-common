@@ -11,6 +11,7 @@ class AnalysisOption<T> {
 		return new AnalysisOption<>(
 				id: option.id,
 				name: option.name,
+				optName: option.optName,
 				description: option.description,
 				value: option.value,
 				validValues: option.validValues,
@@ -41,6 +42,11 @@ class AnalysisOption<T> {
 	String name = null
 
 	/**
+	 * Shorthand version of the above name (for cli)
+	 */
+	String optName = null
+
+	/**
 	 * The description of the option (for the end-user)
 	 */
 	String description
@@ -48,7 +54,7 @@ class AnalysisOption<T> {
 	/**
 	 * The value of the option
 	 */
-	T value
+	T value = null
 
 	/**
 	 * An optional set of valid values
@@ -120,10 +126,9 @@ class AnalysisOption<T> {
 	 */
 	boolean nonStandard = false
 
-	@Override
 	String toString() { "$id=$value" }
 
-	public boolean acceptsMultipleInputs() {
-		return this.multipleValues && this.valueType && (this.valueType instanceof InputType)
+	boolean acceptsMultipleInputs() {
+		this.multipleValues && this.valueType && (this.valueType instanceof InputType)
 	}
 }
