@@ -15,11 +15,6 @@ abstract class Analysis implements Runnable {
 	Map<String, AnalysisOption> options
 
 	/**
-	 * The output dir for the analysis
-	 */
-	File outDir
-
-	/**
 	 * Generic query entry-point
 	 */
 	abstract void processRelation(String relation, Closure outputLineProcessor)
