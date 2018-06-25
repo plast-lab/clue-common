@@ -22,7 +22,6 @@ class Artifact extends ItemImpl {
 	String checksum
 	long sizeInBytes	
 	Set<String> packages = [] as Set
-	String canonicalPath
 	String parentArtifactId
 
 	Artifact(String id, 
@@ -32,8 +31,7 @@ class Artifact extends ItemImpl {
 			 String sourcesName=null, 
 			 String checksum = null, 
 			 long sizeInBytes=0,
-			 String parentArtifactId=null,
-			 String canonicalPath=null) {
+			 String parentArtifactId=null) {
 		this.id               = id
 		this.name             = name
 		this.kind             = kind
@@ -42,6 +40,5 @@ class Artifact extends ItemImpl {
 		this.checksum         = checksum
 		this.sizeInBytes      = sizeInBytes
 		this.parentArtifactId = parentArtifactId
-		this.canonicalPath	  = canonicalPath
 	}
 }
