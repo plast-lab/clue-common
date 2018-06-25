@@ -5,5 +5,6 @@ enum ArtifactKind {
 	APK,	
 	JAR,	
 	WAR,
+	DEX,
     OTHER
 }

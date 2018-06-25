@@ -22,14 +22,23 @@ class Artifact extends ItemImpl {
 	String checksum
 	long sizeInBytes	
 	Set<String> packages = [] as Set
+	Artifact parent
 
-	Artifact(String id, String name, ArtifactKind kind, boolean isDependency=true, String sourcesName=null, String checksum = null, long sizeInBytes=0) {
-		this.id = id
-		this.name = name
-		this.kind = kind
+	Artifact(String id, 
+			 String name, 
+			 ArtifactKind kind, 
+			 boolean isDependency=true, 
+			 String sourcesName=null, 
+			 String checksum = null, 
+			 long sizeInBytes=0,
+			 Artifact parent=null) {
+		this.id           = id
+		this.name         = name
+		this.kind         = kind
 		this.isDependency = isDependency
-		this.sourcesName = sourcesName
-		this.checksum = checksum
-		this.sizeInBytes = sizeInBytes
+		this.sourcesName  = sourcesName
+		this.checksum     = checksum
+		this.sizeInBytes  = sizeInBytes
+		this.parent       = parent
 	}
 }
