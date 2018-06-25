@@ -122,10 +122,11 @@ class Executor {
 					// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
 					def parts = lastLine.split()
 
-					// If RES ends with "g" it's measured in GB, with "t" in TB, otherwise in KB. Convert in MB
+					// If RES ends with "g" it's measured in GB, with "t" in TB, with "m" in MB, otherwise in KB. Convert to MB.
 					double mem
 					if (parts[5].endsWith("g")) mem = parts[5][0..-2].toDouble() * 1024
 					else if (parts[5].endsWith("t")) mem = parts[5][0..-2].toDouble() * 1024 * 1024
+					else if (parts[5].endsWith("m")) mem = parts[5][0..-2].toDouble()
 					else mem = parts[5].toDouble() / 1024
 					def info = "${parts[0]}\t${mem.toLong()}MB\t${parts[8].toDouble()}\t${parts[11]}"
 
