@@ -18,7 +18,7 @@ class Executor {
 
 	boolean isMonitoringEnabled
 	long monitoringInterval
-	Closure extraMonitorHandling
+	Closure monitorClosure
 
 	Executor execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
 		def process = startProcess(command)
@@ -91,9 +91,9 @@ class Executor {
 		pb.start()
 	}
 
-	Executor enableMonitor(long monitoringInterval, Closure extraMonitorHandling = null) {
+	Executor enableMonitor(long monitoringInterval, Closure monitorClosure = null) {
 		this.monitoringInterval = monitoringInterval
-		this.extraMonitorHandling = extraMonitorHandling
+		this.monitorClosure = monitorClosure
 		isMonitoringEnabled = true
 		return this
 	}
@@ -134,7 +134,7 @@ class Executor {
 					// Delete previous contents
 					monitorFileLatest.withWriter { it.writeLine info }
 
-					extraMonitorHandling?.call parts.toList()
+					monitorClosure?.call parts.toList()
 				}
 				null
 			}
