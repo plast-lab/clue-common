@@ -5,6 +5,7 @@ enum InputType {
     LIBRARY("library", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.MAVEN_ARTIFACT]),
     PLATFORM("platform", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
     HPROF("heap dump", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
+    MISC("misc", [ResolverType.LOCAL_FILE, ResolverType.URL]),
 
     private final String title
     private final Set<ResolverType> resolvers
