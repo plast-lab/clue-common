@@ -119,22 +119,34 @@ class Executor {
 				// If pid is still valid (e.g. process has not ended) the last line has the actual information
 				def lastLine = reader.readLines().last()
 				if (lastLine.startsWith(pid as String)) {
-					// PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
 					def parts = lastLine.split()
+					def values = [
+							"PID"      : parts[0],
+							"USER"     : parts[1],
+							"PR"       : parts[2],
+							"NI"       : parts[3],
+							"VIRT"     : parts[4],
+							"RES"      : parts[5],
+							"SHR"      : parts[6],
+							"S"        : parts[7],
+							"CPU_PER"  : parts[8],
+							"MEM_PER"  : parts[9],
+							"TIME_PLUS": parts[10],
+							"COMMAND"  : parts[11]
+					]
 
 					// If RES ends with "g" it's measured in GB, with "t" in TB, with "m" in MB, otherwise in KB. Convert to MB.
-					double mem
-					if (parts[5].endsWith("g")) mem = parts[5][0..-2].toDouble() * 1024
-					else if (parts[5].endsWith("t")) mem = parts[5][0..-2].toDouble() * 1024 * 1024
-					else if (parts[5].endsWith("m")) mem = parts[5][0..-2].toDouble()
-					else mem = parts[5].toDouble() / 1024
-					def info = "${parts[0]}\t${mem.toLong()}MB\t${parts[8].toDouble()}\t${parts[11]}"
+					if (values.RES.endsWith("g")) values.RES = values.RES[0..-2].toDouble() * 1024
+					else if (values.RES.endsWith("t")) values.RES = values.RES[0..-2].toDouble() * 1024 * 1024
+					else if (values.RES.endsWith("m")) values.RES = values.RES[0..-2].toDouble()
+					else values.RES = values.RES.toDouble() / 1024
+					def info = "${values.PID}\t${values.RES.toLong()}MB\t${values.CPU_PER.toDouble()}\t${values.COMMAND}"
 
 					monitorWriter.writeLine info
 					// Delete previous contents
 					monitorFileLatest.withWriter { it.writeLine info }
 
-					monitorClosure?.call parts.toList()
+					monitorClosure?.call values
 				}
 				null
 			}
