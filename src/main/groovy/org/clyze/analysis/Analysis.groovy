@@ -15,6 +15,11 @@ abstract class Analysis implements Runnable {
 	Map<String, AnalysisOption> options
 
 	/**
+	 * Optional closure for handling monitoring of the analysis
+	 */
+	Closure monitorClosure = null
+
+	/**
 	 * Generic query entry-point
 	 */
 	abstract void processRelation(String relation, Closure outputLineProcessor)
