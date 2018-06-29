@@ -18,4 +18,7 @@ interface AnalysisFamily {
 
 	/** The list of options supported by the analysis. */
 	List<AnalysisOption> supportedOptions()
+
+	/** The list of options supported by the analysis, exposed as a map. */
+	Map<String, AnalysisOption> supportedOptionsAsMap()
 }
