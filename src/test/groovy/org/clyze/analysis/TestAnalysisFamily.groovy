@@ -24,4 +24,9 @@ class TestAnalysisFamily implements AnalysisFamily {
             )
         ]
     }
+
+    @Override
+    Map<String, AnalysisOption> supportedOptionsAsMap() {
+        return [ option1 : 'option1', option2 : true ]
+    }
 }
