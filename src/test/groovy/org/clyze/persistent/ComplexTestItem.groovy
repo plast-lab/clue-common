@@ -9,4 +9,17 @@ import groovy.transform.EqualsAndHashCode
 class ComplexTestItem extends TestItem {
     List<String> list
     Map<String, Integer> map
+
+    protected void loadFrom(Map<String, Object> map) {
+    	super.loadFrom(map)
+		this.list  = map.list
+		this.map   = map.map		
+	}
+
+	protected void saveTo(Map<String, Object> map) {
+		super.saveTo(map)
+		map.list = this.list
+		map.map  = this.map
+	}
+
 }

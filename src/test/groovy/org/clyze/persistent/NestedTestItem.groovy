@@ -8,4 +8,21 @@ import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode
 class NestedTestItem extends ComplexTestItem {
     TestClass nested
+
+    protected void loadFrom(Map<String, Object> map) {
+    	super.loadFrom(map)
+    	def nestedMap = map.nested
+    	def nested = new TestClass()
+    	nested.memberStr = nestedMap.memberStr
+    	nested.memberInt = nestedMap.memberInt
+		this.nested = nested	
+	}
+
+	protected void saveTo(Map<String, Object> map) {
+		super.saveTo(map)
+		map.nested = [
+			memberStr: nested.memberStr,
+			memberInt: nested.memberInt		
+		]
+	}
 }
