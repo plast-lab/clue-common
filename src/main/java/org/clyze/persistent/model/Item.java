@@ -1,24 +1,26 @@
-package org.clyze.persistent.model
+package org.clyze.persistent.model;
 
-interface Item {
+import java.util.Map;
+
+public interface Item {
 
 	/**
 	 * @return The item id
 	 */
-	String getId()
+	String getId();
 
 	/**
 	 * @param json The json data to populate the object
 	 */
-	Item fromJSON(String json)
+	Item fromJSON(String json);
 
 	/**
 	 * @return The object state in json representation
 	 */
-	String toJSON()
+	String toJSON();
 
 	/**
 	 * @return The object state as a map [item property => property value]
 	 */
-	Map<String, Object> toMap()
+	Map<String, Object> toMap();
 }

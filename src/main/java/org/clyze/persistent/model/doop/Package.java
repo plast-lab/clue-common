@@ -1,0 +1,50 @@
+package org.clyze.persistent.model.doop;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+
+import org.clyze.persistent.model.ItemImpl;
+
+/**
+ * A package of a project.
+ */
+public class Package extends ItemImpl {
+
+	private String id;
+	private String name;
+	private String fullyQualifiedName;
+	private String parentPackageId;
+	//A package can be defined in multiple artifacts
+	private List<String> artifactIds;
+
+	public Package() {}
+
+	public Package(String id, String name, String fullyQualifiedName, String parentPackageId, List<String> artifactIds) {
+		this.id = id;
+		this.name = name;
+		this.fullyQualifiedName = fullyQualifiedName;
+		this.parentPackageId = parentPackageId;
+		this.artifactIds = artifactIds;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	protected void saveTo(Map<String, Object> map) {		
+		map.put("id", this.id);
+		map.put("name", this.name);
+		map.put("fullyQualifiedName", this.fullyQualifiedName);
+		map.put("parentPackageId", this.parentPackageId);
+		map.put("artifactIds", this.artifactIds);
+	}
+
+	protected void loadFrom(Map<String, Object> map){
+		this.id                 = (String) map.get("id");
+		this.name               = (String) map.get("name");
+		this.fullyQualifiedName = (String) map.get("fullyQualifiedName");
+		this.parentPackageId    = (String) map.get("parentPackageId");
+		this.artifactIds        = (List<String>) map.get("artifactIds");
+	}
+}

@@ -1,6 +1,6 @@
-package org.clyze.persistent.model.doop
+package org.clyze.persistent.model.doop;
 
-class DynamicMethodInvocation {
+public class DynamicMethodInvocation {
 	/**
 	 * Creates an instruction ID for an invokedynamic that calls a
 	 * lambda metafactory, passing it a method handle c::meth.
@@ -9,7 +9,7 @@ class DynamicMethodInvocation {
 	 * @param meth method handle: method name
 	 * return          the invokedynamic ID
 	 */
-	static String genId(String c, String meth) {
-		return "invokedynamic_${c}::${meth}"
+	public static String genId(String c, String meth) {
+		return "invokedynamic_" + c + "::" + meth;
 	}
 }
