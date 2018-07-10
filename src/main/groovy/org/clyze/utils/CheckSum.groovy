@@ -1,5 +1,6 @@
 package org.clyze.utils
 
+import static groovy.io.FileType.FILES
 import java.security.MessageDigest
 
 class CheckSum {
@@ -13,6 +14,17 @@ class CheckSum {
 		return f.withInputStream { InputStream input ->
 			return checksum(input, algorithm)
 		}
+	}
+
+	static List<String> checksumList(File f, String algorithm) {
+		if (f.isDirectory()) {
+			List<String> ret = [] as List
+			f.eachFileMatch FILES, ~/.*\.py/, { File py ->
+				ret << checksum(py, algorithm)
+			}
+			return ret
+		} else
+			return [checksum(f, algorithm)]
 	}
 
 	static String checksum(InputStream input, String algorithm) {
