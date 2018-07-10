@@ -219,6 +219,6 @@ public class Class extends Symbol {
 		this.isAbstract            = (Boolean) map.get("isAbstract");
 		this.doopId                = (String) map.get("doopId");
 		this.declaringSymbolDoopId = (String) map.get("declaringSymbolDoopId");
-		this.sizeInBytes           = (Long) map.get("sizeInBytes");
+		this.sizeInBytes           = ((Number) map.get("sizeInBytes")).longValue();
 	}	
 }

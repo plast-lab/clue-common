@@ -71,7 +71,7 @@ public class Artifact extends ItemImpl {
 		this.isDependency     = (Boolean) map.get("isDependency");
 		this.sourcesName      = (String) map.get("sourcesName");
 		this.checksum         = (String) map.get("checksum");
-		this.sizeInBytes      = (Long) map.get("sizeInBytes");
+		this.sizeInBytes      = ((Number) map.get("sizeInBytes")).longValue();
 		this.packages.addAll((Collection) map.get("packages"));
 		this.parentArtifactId = (String) map.get("parentArtifactId");
 	}

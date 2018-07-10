@@ -73,10 +73,10 @@ public abstract class Symbol extends Element {
 		super.loadFrom(map);
 		Map<String, Object> position = (Map<String, Object>)map.get("position");
 		this.position = new Position(
-			(long) position.get("startLine"),
-			(long) position.get("startColumn"),
-			(long) position.get("endLine"),
-			(long) position.get("endColumn")
+			((Number) position.get("startLine")).longValue(),
+			((Number) position.get("startColumn")).longValue(),
+			((Number) position.get("endLine")).longValue(),
+			((Number) position.get("endColumn")).longValue()
 		);
 		this.sourceFileName = (String) map.get("sourceFileName");
 	}
