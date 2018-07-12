@@ -69,25 +69,22 @@ public class MethodInvocation extends Symbol {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         if (!super.equals(object)) return false;
-        MethodInvocation that = (MethodInvocation) object;
-        /*
+        MethodInvocation that = (MethodInvocation) object;        
         return inIIB == that.inIIB &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(invokingMethodDoopId, that.invokingMethodDoopId) &&
-                Objects.equals(doopId, that.doopId);
-        */
-        return Objects.equals(doopId, that.doopId);        
+                Objects.equals(doopId, that.doopId);                    
     }
 
     public int hashCode() {
-        //return Objects.hash(super.hashCode(), name, invokingMethodDoopId, doopId, inIIB);
-        return Objects.hash(super.hashCode(), doopId);
+        return Objects.hash(super.hashCode(), name, invokingMethodDoopId, doopId, inIIB);       
     }
 
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);
 		map.put("invokingMethodDoopId", this.invokingMethodDoopId);
+        map.put("doopId", this.doopId);
 		map.put("inIIB", this.inIIB);
 	}
 
@@ -95,6 +92,7 @@ public class MethodInvocation extends Symbol {
 		super.loadFrom(map);
 		this.name                 = (String) map.get("name");
 		this.invokingMethodDoopId = (String) map.get("invokingMethodDoopId");
+        this.doopId               = (String) map.get("doopId");
 		this.inIIB                = (Boolean) map.get("inIIB");
 	}
 }
