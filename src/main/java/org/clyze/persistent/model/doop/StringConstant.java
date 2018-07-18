@@ -35,6 +35,10 @@ public class StringConstant extends Symbol {
     private String value;
 
     public StringConstant() {}
+
+    public StringConstant(String id) {
+        this.id = id;
+    }
     
     public StringConstant(Position position, 
                           String sourceFileName, 

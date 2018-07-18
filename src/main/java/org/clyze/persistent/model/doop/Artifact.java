@@ -76,7 +76,13 @@ public class Artifact extends ItemImpl {
 		this.parentArtifactId = (String) map.get("parentArtifactId");
 	}
 
+	@Override
 	public String getId() {
 		return id;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
 	}
 }

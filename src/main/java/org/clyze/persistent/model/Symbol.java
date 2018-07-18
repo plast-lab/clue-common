@@ -23,8 +23,7 @@ public abstract class Symbol extends Element {
 	 */
 	public Symbol(Position position, String sourceFileName) {
 		this.position = position;
-		this.sourceFileName = sourceFileName;
-		this.setId(randomUUID().toString());
+		this.sourceFileName = sourceFileName;		
 	}
 
 	public Position getPosition() {
@@ -59,25 +58,29 @@ public abstract class Symbol extends Element {
 
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
-		Map<String, Object> posMap = new HashMap();
-		posMap.put("startLine", position.getStartLine());
-		posMap.put("endLine", position.getEndLine());
-		posMap.put("startColumn", position.getStartColumn());
-		posMap.put("endColumn", position.getEndColumn());
-
-		map.put("position", posMap);
+		if (position != null) {
+			Map<String, Object> posMap = new HashMap();
+			posMap.put("startLine", position.getStartLine());
+			posMap.put("endLine", position.getEndLine());
+			posMap.put("startColumn", position.getStartColumn());
+			posMap.put("endColumn", position.getEndColumn());
+			map.put("position", posMap);
+		}		
 		map.put("sourceFileName", sourceFileName);
 	}
 
 	protected void loadFrom(Map<String, Object> map){
 		super.loadFrom(map);
 		Map<String, Object> position = (Map<String, Object>)map.get("position");
-		this.position = new Position(
-			((Number) position.get("startLine")).longValue(),
-			((Number) position.get("startColumn")).longValue(),
-			((Number) position.get("endLine")).longValue(),
-			((Number) position.get("endColumn")).longValue()
-		);
+		if (position != null) {
+			this.position = new Position(
+				((Number) position.get("startLine")).longValue(),
+				((Number) position.get("startColumn")).longValue(),
+				((Number) position.get("endLine")).longValue(),
+				((Number) position.get("endColumn")).longValue()
+			);
+		}
+		
 		this.sourceFileName = (String) map.get("sourceFileName");
 	}
 }

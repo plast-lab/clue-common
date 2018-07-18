@@ -5,15 +5,13 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.Symbol;
+import org.clyze.persistent.model.SymbolWithDoopId;
 
-public class HeapAllocation extends Symbol {
+public class HeapAllocation extends SymbolWithDoopId {
 
 	private String allocatedTypeDoopId;
 
-	private String allocatingMethodDoopId;
-
-	private String doopId;
+	private String allocatingMethodDoopId;	
 
 	/** is inside instance initializer block */
 	private boolean inIIB = false;
@@ -22,6 +20,10 @@ public class HeapAllocation extends Symbol {
 	private boolean isArray = false;
 
     public HeapAllocation() {}
+
+    public HeapAllocation(String id) {
+        this.id = id;
+    }
 	
 	public HeapAllocation(Position position, 
                           String sourceFileName, 
@@ -30,8 +32,7 @@ public class HeapAllocation extends Symbol {
                           String allocatingMethodDoopId,
                           boolean inIIB, 
                           boolean isArray) {
-		super(position, sourceFileName);
-		this.doopId = doopId;
+		super(position, sourceFileName, doopId);		
 		this.allocatedTypeDoopId = allocatedTypeDoopId;
 		this.allocatingMethodDoopId = allocatingMethodDoopId;
 		this.inIIB = inIIB;
@@ -53,15 +54,7 @@ public class HeapAllocation extends Symbol {
     public void setAllocatingMethodDoopId(String allocatingMethodDoopId) {
         this.allocatingMethodDoopId = allocatingMethodDoopId;
     }
-
-    public String getDoopId() {
-        return doopId;
-    }
-
-    public void setDoopId(String doopId) {
-        this.doopId = doopId;
-    }
-
+    
     public boolean getInIIB() {
         return inIIB;
     }
@@ -98,8 +91,7 @@ public class HeapAllocation extends Symbol {
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("allocatedTypeDoopId", this.allocatedTypeDoopId);
-		map.put("allocatingMethodDoopId", this.allocatingMethodDoopId);
-		map.put("doopId", this.doopId);
+		map.put("allocatingMethodDoopId", this.allocatingMethodDoopId);		
 		map.put("inIIB", this.inIIB);
 		map.put("isArray", this.isArray);
 	}
@@ -107,8 +99,7 @@ public class HeapAllocation extends Symbol {
 	protected void loadFrom(Map<String, Object> map){
 		super.loadFrom(map);
 		this.allocatedTypeDoopId    = (String) map.get("allocatedTypeDoopId");
-		this.allocatingMethodDoopId = (String) map.get("allocatingMethodDoopId");
-		this.doopId                 = (String) map.get("doopId");
+		this.allocatingMethodDoopId = (String) map.get("allocatingMethodDoopId");		
 		this.inIIB                  = (Boolean) map.get("inIIB");
 		this.isArray                = (Boolean) map.get("isArray");
 	}

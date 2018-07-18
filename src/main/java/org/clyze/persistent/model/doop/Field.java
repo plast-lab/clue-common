@@ -1,13 +1,13 @@
 package org.clyze.persistent.model.doop;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.Symbol;
+import org.clyze.persistent.model.SymbolWithDoopId;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Field extends Symbol {
+public class Field extends SymbolWithDoopId {
 
 	private String name;
 
@@ -15,11 +15,13 @@ public class Field extends Symbol {
 
 	private boolean isStatic;
 
-	private String declaringClassDoopId;
-
-	private String doopId;
+	private String declaringClassDoopId;	
 
     public Field() {}
+
+    public Field(String id) {
+        this.id = id;
+    }
 	
 	public Field(Position position, 
                  String sourceFileName, 
@@ -28,13 +30,12 @@ public class Field extends Symbol {
                  String type, 
                  String declaringClassDoopId,
                  boolean isStatic) {
-		super(position, sourceFileName);
-		this.name = name;
-		this.doopId = doopId;
+		super(position, sourceFileName, doopId);
+		this.name = name;		
 		this.type = type;
 		this.declaringClassDoopId = declaringClassDoopId;
 		this.isStatic = isStatic;
-	}
+	}    
 
     public String getName() {
         return name;
@@ -68,14 +69,6 @@ public class Field extends Symbol {
         this.declaringClassDoopId = declaringClassDoopId;
     }
 
-    public String getDoopId() {
-        return doopId;
-    }
-
-    public void setDoopId(String doopId) {
-        this.doopId = doopId;
-    }
-
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
@@ -101,8 +94,7 @@ public class Field extends Symbol {
 		map.put("name", this.name);
 		map.put("type", this.type);
 		map.put("isStatic", this.isStatic);
-		map.put("declaringClassDoopId", this.declaringClassDoopId);
-		map.put("doopId", this.doopId);
+		map.put("declaringClassDoopId", this.declaringClassDoopId);		
 	}
 
 	protected void loadFrom(Map<String, Object> map){
@@ -110,7 +102,6 @@ public class Field extends Symbol {
 		this.name                 = (String) map.get("name");
 		this.type                 = (String) map.get("type");
 		this.isStatic             = (Boolean) map.get("isStatic");
-		this.declaringClassDoopId = (String) map.get("declaringClassDoopId");
-		this.doopId               = (String) map.get("doopId");
+		this.declaringClassDoopId = (String) map.get("declaringClassDoopId");		
 	}
 }

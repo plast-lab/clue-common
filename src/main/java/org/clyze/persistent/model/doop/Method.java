@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.Symbol;
+import org.clyze.persistent.model.SymbolWithDoopId;
 
-public class Method extends Symbol {
+public class Method extends SymbolWithDoopId {
 
 	private String name;
 
@@ -30,9 +30,7 @@ public class Method extends Symbol {
 
 	private boolean isNative;
 
-	private String declaringClassDoopId;	
-
-	private String doopId;
+	private String declaringClassDoopId;		
 
 	/**
 	 * The place where the method definition begins (including any annotations and modifiers) and ends (i.e. right after
@@ -48,6 +46,10 @@ public class Method extends Symbol {
 
 	public Method() {}
 
+	public Method(String id) {
+		this.id = id;
+	}
+
 	public Method(Position position, 
 				  String sourceFileName, 
 				  String name, 
@@ -61,11 +63,10 @@ public class Method extends Symbol {
 				  boolean isAbstract,
 				  boolean isNative,
 				  Position outerPosition) {
-		super(position, sourceFileName);
+		super(position, sourceFileName, doopId);
 		this.name = name;
 		this.declaringClassDoopId = declaringClassDoopId;
-		this.returnType = returnType;
-		this.doopId = doopId;
+		this.returnType = returnType;		
 		this.params = params;
 		this.paramTypes = paramTypes;
 		this.isStatic = isStatic;		
@@ -73,7 +74,7 @@ public class Method extends Symbol {
 		this.isAbstract = isAbstract;
 		this.isNative = isNative;
 		this.outerPosition = outerPosition;
-	}
+	}	
 
 	public String getName() {
 		return name;
@@ -147,14 +148,6 @@ public class Method extends Symbol {
 		this.declaringClassDoopId = declaringClassDoopId;
 	}
 
-	public String getDoopId() {
-		return doopId;
-	}
-
-	public void setDoopId(String doopId) {
-		this.doopId = doopId;
-	}
-
 	public Position getOuterPosition() {
 		return outerPosition;
 	}
@@ -204,8 +197,7 @@ public class Method extends Symbol {
 		map.put("isInterface", this.isInterface);
 		map.put("isAbstract", this.isAbstract);
 		map.put("isNative", this.isNative);
-		map.put("declaringClassDoopId", this.declaringClassDoopId);
-		map.put("doopId", this.doopId);
+		map.put("declaringClassDoopId", this.declaringClassDoopId);	
 	}
 
 	protected void loadFrom(Map<String, Object> map){
@@ -218,8 +210,7 @@ public class Method extends Symbol {
 		this.isInterface          = (Boolean) map.get("isInterface");
 		this.isAbstract           = (Boolean) map.get("isAbstract");
 		this.isNative             = (Boolean) map.get("isNative");
-		this.declaringClassDoopId = (String) map.get("declaringClassDoopId");
-		this.doopId               = (String) map.get("doopId");
+		this.declaringClassDoopId = (String) map.get("declaringClassDoopId");		
 	}
 
 	private static final String[] loadArray(Object o) {

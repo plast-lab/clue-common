@@ -10,6 +10,11 @@ public interface Item {
 	String getId();
 
 	/**
+	 * Set the item id
+	 */
+	void setId(String id);	
+
+	/**
 	 * @param json The json data to populate the object
 	 */
 	Item fromJSON(String json);

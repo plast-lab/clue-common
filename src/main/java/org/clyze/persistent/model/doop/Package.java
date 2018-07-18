@@ -28,8 +28,14 @@ public class Package extends ItemImpl {
 		this.artifactIds = artifactIds;
 	}
 
+	@Override
 	public String getId() {
 		return id;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	protected void saveTo(Map<String, Object> map) {		

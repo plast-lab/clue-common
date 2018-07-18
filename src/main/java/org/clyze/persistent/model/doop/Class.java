@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.Symbol;
+import org.clyze.persistent.model.SymbolWithDoopId;
 
 /**
  * Symbol used for classes, interfaces and enums
  */
-public class Class extends Symbol {
+public class Class extends SymbolWithDoopId {
 
 	/**
 	 * The symbol name (package name not included)
@@ -31,9 +31,7 @@ public class Class extends Symbol {
 	private boolean isStatic;
 	private boolean isInner;
 	private boolean isAnonymous;
-	private boolean isAbstract;
-
-	private String doopId;
+	private boolean isAbstract;	
 
 	/**
 	 * The doopId of the type or method where this type is declared.
@@ -43,6 +41,10 @@ public class Class extends Symbol {
 	private long sizeInBytes;
 
 	public Class() {}
+
+	public Class(String id) {
+		this.id = id;
+	}
 	
 	public Class(Position position, 
 				 String sourceFileName, 
@@ -55,17 +57,16 @@ public class Class extends Symbol {
 				 boolean isInner, 
 				 boolean isAnonymous, 
 				 boolean isAbstract) {		
-		super(position, sourceFileName);
+		super(position, sourceFileName, doopId);
 		this.name = name;
-		this.packageName = packageName;
-		this.doopId = doopId;
+		this.packageName = packageName;		
 		this.isInterface = isInterface;
 		this.isEnum = isEnum;
 		this.isStatic = isStatic;
 		this.isInner = isInner;
 		this.isAnonymous = isAnonymous;
 		this.isAbstract = isAbstract;	
-	}
+	}	
 
 	public String getName() {
 		return name;
@@ -81,15 +82,7 @@ public class Class extends Symbol {
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
-	}
-
-	public String getDoopId() {
-		return doopId;
-	}
-
-	public void setDoopId(String doopId) {
-        this.doopId = doopId;
-    }
+	}	
 
 	public String getArtifactName() {
 		return artifactName;
@@ -200,8 +193,7 @@ public class Class extends Symbol {
 		map.put("isStatic", this.isStatic);
 		map.put("isInner", this.isInner);
 		map.put("isAnonymous", this.isAnonymous);
-		map.put("isAbstract", this.isAbstract);
-		map.put("doopId", this.doopId);
+		map.put("isAbstract", this.isAbstract);		
 		map.put("declaringSymbolDoopId", this.declaringSymbolDoopId);
 		map.put("sizeInBytes", this.sizeInBytes);
 	}
@@ -216,8 +208,7 @@ public class Class extends Symbol {
 		this.isStatic              = (Boolean) map.get("isStatic");
 		this.isInner               = (Boolean) map.get("isInner");
 		this.isAnonymous           = (Boolean) map.get("isAnonymous");
-		this.isAbstract            = (Boolean) map.get("isAbstract");
-		this.doopId                = (String) map.get("doopId");
+		this.isAbstract            = (Boolean) map.get("isAbstract");		
 		this.declaringSymbolDoopId = (String) map.get("declaringSymbolDoopId");
 		this.sizeInBytes           = ((Number) map.get("sizeInBytes")).longValue();
 	}	

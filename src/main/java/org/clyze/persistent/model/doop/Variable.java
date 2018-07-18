@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.Symbol;
+import org.clyze.persistent.model.SymbolWithDoopId;
 
-public class Variable extends Symbol {
+public class Variable extends SymbolWithDoopId {
 
 	private String name;
 
@@ -17,14 +17,16 @@ public class Variable extends Symbol {
 
 	private boolean isParameter;
 
-	private String declaringMethodDoopId;
-
-	private String doopId;
+	private String declaringMethodDoopId;	
 
 	/** is inside an instance initializer block */
 	private boolean inIIB = false;
 
 	public Variable() {}
+
+    public Variable(String id) {
+        this.id = id;
+    }
 
 	public Variable(Position position, 
 					String sourceFileName, 
@@ -35,15 +37,14 @@ public class Variable extends Symbol {
 					boolean isLocal, 
 					boolean isParameter, 
 					boolean inIIB) {
-		super(position, sourceFileName);
-		this.name = name;
-		this.doopId = doopId;
+		super(position, sourceFileName, doopId);
+		this.name = name;		
 		this.type = type;
 		this.declaringMethodDoopId = declaringMethodDoopId;
 		this.isLocal = isLocal;
 		this.isParameter = isParameter;
 		this.inIIB = inIIB;
-	}
+	}    
 
     public String getName() {
         return name;
@@ -79,10 +80,6 @@ public class Variable extends Symbol {
 
     public void setDeclaringMethodDoopId(String declaringMethodDoopId) {
         this.declaringMethodDoopId = declaringMethodDoopId;
-    }
-
-    public void setDoopId(String doopId) {
-        this.doopId = doopId;
     }
 
     public boolean getInIIB() {
@@ -121,8 +118,7 @@ public class Variable extends Symbol {
 		map.put("type", this.type);
 		map.put("isLocal", this.isLocal);
 		map.put("isParameter", this.isParameter);
-		map.put("declaringMethodDoopId", this.declaringMethodDoopId);
-		map.put("doopId", this.doopId);
+		map.put("declaringMethodDoopId", this.declaringMethodDoopId);		
 		map.put("inIIB", this.inIIB);
 	}
 
@@ -132,8 +128,7 @@ public class Variable extends Symbol {
 		this.type                  = (String) map.get("type");
 		this.isLocal               = (Boolean) map.get("isLocal");
 		this.isParameter           = (Boolean) map.get("isParameter");
-		this.declaringMethodDoopId = (String) map.get("declaringMethodDoopId");
-		this.doopId                = (String) map.get("doopId");
+		this.declaringMethodDoopId = (String) map.get("declaringMethodDoopId");		
 		this.inIIB                 = (Boolean) map.get("inIIB");
 	}
 
