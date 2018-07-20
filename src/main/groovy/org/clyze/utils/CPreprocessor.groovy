@@ -53,7 +53,8 @@ class CPreprocessor {
 	}
 
 	CPreprocessor preprocess(String output, String input, String... includes) {
-		def cmd = ['cpp']
+		// "Hack" for MacOS. The default cpp executable is not working correctly
+		def cmd = System.properties["os.name"].contains("MAC") ? ['cpp8'] : ['cpp']
 		if (!emitLineMarkers) cmd << '-P'
 		cmd += macroCli
 		cmd << input
