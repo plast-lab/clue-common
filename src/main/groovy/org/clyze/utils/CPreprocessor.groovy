@@ -2,6 +2,8 @@ package org.clyze.utils
 
 import groovy.transform.TypeChecked
 import org.apache.commons.io.FileUtils
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 import org.clyze.analysis.Analysis
 import org.clyze.analysis.AnalysisOption
 
@@ -9,12 +11,15 @@ import java.nio.file.Files
 
 @TypeChecked
 class CPreprocessor {
+	protected Log logger
+
 
 	List<String> macroCli
 	Executor executor
 	boolean emitLineMarkers
 
 	CPreprocessor(Analysis analysis, Executor executor) {
+		this.logger = LogFactory.getLog(getClass());
 		macroCli = analysis.options.values()
 				.findAll { AnalysisOption option ->
 			option.forPreprocessor && option.value
@@ -25,7 +30,7 @@ class CPreprocessor {
 			else
 				"-D${option.id}=${option.value}" as String
 		}
-		System.out.println("Preprocessor: " + macroCli)
+		logger.debug "Preprocessor: " + macroCli
 		this.executor = executor
 		emitLineMarkers = false
 	}
