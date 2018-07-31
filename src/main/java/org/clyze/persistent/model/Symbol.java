@@ -75,8 +75,8 @@ public abstract class Symbol extends Element {
 		if (position != null) {
 			this.position = new Position(
 				((Number) position.get("startLine")).longValue(),
-				((Number) position.get("startColumn")).longValue(),
 				((Number) position.get("endLine")).longValue(),
+				((Number) position.get("startColumn")).longValue(),			
 				((Number) position.get("endColumn")).longValue()
 			);
 		}
