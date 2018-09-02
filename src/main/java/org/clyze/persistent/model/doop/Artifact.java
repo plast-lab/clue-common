@@ -19,15 +19,15 @@ public class Artifact extends ItemImpl {
 	protected String id;
 	protected String name;
 	protected ArtifactKind kind;
-	protected boolean isDependency = true;
+	protected boolean isDependency;
 	protected String sourcesName;
 	protected String checksum;
-	protected long sizeInBytes = 0;
-	protected Set<String> packages = new HashSet<>();
+	protected long sizeInBytes;
+	protected Set<String> packages;
 	protected String parentArtifactId;
 
 	public Artifact(String id, String name, ArtifactKind kind, boolean isDependency, String sourcesName, String checksum, long sizeInBytes) {
-		this(id, name, kind, isDependency, sourcesName, checksum, sizeInBytes, new HashSet<String>(), null);
+		this(id, name, kind, isDependency, sourcesName, checksum, sizeInBytes, new HashSet<>(), null);
 	}	
 
 	public Artifact(String id, 
