@@ -16,7 +16,7 @@ public class Position {
 	 * This is not always the case, e.g. in a "HeapAllocation" symbol, the "new"
 	 * and the class name may be in different lines
 	 *
-	 * @param startLine
+	 * @param line
 	 * @param startColumn
 	 * @param endColumn
 	 */
