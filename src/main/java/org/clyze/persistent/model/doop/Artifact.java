@@ -23,7 +23,7 @@ public class Artifact extends ItemImpl {
 	protected String sourcesName;
 	protected String checksum;
 	protected long sizeInBytes;
-	protected Set<String> packages;
+	protected final Set<String> packages;
 	protected String parentArtifactId;
 
 	public Artifact(String id, String name, ArtifactKind kind, boolean isDependency, String sourcesName, String checksum, long sizeInBytes) {

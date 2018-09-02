@@ -62,8 +62,7 @@ public class AARUtils {
     // while AARs are searched for JAR entries, which are returned.
     // Parameter 'tmpDirs' collects any temporary directories created.
     public static List<String> toJars(List<String> archives, boolean ignore,
-                                      Set<String> tmpDirs)
-            throws IOException {
+                                      Set<String> tmpDirs) {
         List<String> jars = new ArrayList<>();
         archives.forEach(s -> toJar(s, jars, archives, ignore, tmpDirs));
         return jars;

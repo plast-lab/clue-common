@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static java.util.UUID.randomUUID;
-
 /**
  * A symbol element that exists in source code
  */
