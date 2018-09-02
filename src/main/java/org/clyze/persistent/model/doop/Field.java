@@ -4,7 +4,6 @@ import org.clyze.persistent.model.Position;
 import org.clyze.persistent.model.SymbolWithDoopId;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Field extends SymbolWithDoopId {

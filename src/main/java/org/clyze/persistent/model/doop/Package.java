@@ -1,7 +1,6 @@
 package org.clyze.persistent.model.doop;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 
 import org.clyze.persistent.model.ItemImpl;
