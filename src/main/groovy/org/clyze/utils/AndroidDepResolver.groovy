@@ -1,6 +1,6 @@
 package org.clyze.utils
 
-import static org.clyze.utils.Helper.throwRuntimeException
+import static org.clyze.utils.JHelper.throwRuntimeException
 
 // This class takes care of resolving dependencies on Android, using
 // the local Android SDK and maven.org. Before calling resolution, you

@@ -1,7 +1,6 @@
 package org.clyze.utils
 
 import groovy.util.logging.Log4j
-import org.apache.commons.io.FileUtils
 import org.apache.log4j.*
 
 import java.lang.reflect.Method
@@ -94,17 +93,4 @@ class Helper {
 	 * Print elapsed time in seconds along with the given message.
 	 */
 	static void timingWithLogging(String message, Closure c) { log.debug(message + " took ${timing(c)} sec") }
-
-    // Throws a runtime exception with a message. The message is also
-    // shown in the standard output. This utility helps debugging as
-    // Gradle may report a different exception (e.g. the usual
-    // IllegalStateException "buildToolsVersion is not specified").
-    static void throwRuntimeException(String errMsg) {
-        println errMsg
-        throw new RuntimeException(errMsg)
-    }
-
-    static cleanUp(Set<String> tmpDirs) {
-        tmpDirs.each { tmpDir -> FileUtils.deleteQuietly(new File(tmpDir)) }
-    }
 }
