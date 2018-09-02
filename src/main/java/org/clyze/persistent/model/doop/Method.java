@@ -212,7 +212,7 @@ public class Method extends SymbolWithDoopId {
 		this.declaringClassDoopId = (String) map.get("declaringClassDoopId");		
 	}
 
-	private static final String[] loadArray(Object o) {
+	private static String[] loadArray(Object o) {
 		if (o == null) {
 			return null;
 		}

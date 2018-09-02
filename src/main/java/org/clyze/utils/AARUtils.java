@@ -46,11 +46,16 @@ public class AARUtils {
     // Create temporary directory and add it to 'tmpDirs' (so that it
     // can be later deleted). Preferred to File.deleteOnExit(), since
     // this code may be used in a server context and thus never exit.
-    public static String createTmpDir(Set<String> tmpDirs) throws IOException {
-        String tmpDir = Files.createTempDirectory("aar").toString();
-        if (tmpDirs != null)
-            tmpDirs.add(tmpDir);
-        return tmpDir;
+    public static String createTmpDir(Set<String> tmpDirs) {
+        try {
+            String tmpDir = Files.createTempDirectory("aar").toString();
+            if (tmpDirs != null)
+                tmpDirs.add(tmpDir);
+            return tmpDir;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     // Transforms a set of Java archives: JAR archives are returned,
