@@ -30,6 +30,7 @@
 
 # IntelliJ
 /out/
+clue-common.iml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
