@@ -18,4 +18,23 @@ public class JHelper {
     public static void cleanUp(Set<String> tmpDirs) {
         tmpDirs.forEach(tmpDir -> FileUtils.deleteQuietly(new File(tmpDir)));
     }
+
+    /**
+     * Executes a command, printing all standard output/error messages
+     * prefixed by a custom string.
+     *
+     * @param cmd       the command to run
+     * @param prefix    the prefix
+     */
+    private static void runWithOutput(String[] cmd, String prefix) throws IOException {
+        Process proc = Runtime.getRuntime().exec(cmd);
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        stdInput.lines().forEach(s -> printWithPrefix(s, prefix));
+        BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+        stdError.lines().forEach(s -> printWithPrefix(s, prefix));
+    }
+
+    private static void printWithPrefix(String s, String prefix) {
+        System.out.println(prefix + ": " + s);
+    }
 }
