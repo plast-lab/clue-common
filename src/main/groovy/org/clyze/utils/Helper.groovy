@@ -2,6 +2,7 @@ package org.clyze.utils
 
 import groovy.util.logging.Log4j
 import org.apache.log4j.*
+import org.apache.log4j.helpers.NullEnumeration;
 
 import java.lang.reflect.Method
 
@@ -46,6 +47,12 @@ class Helper {
 		def root = Logger.rootLogger
 		root.setLevel(Level.toLevel(logLevel, Level.WARN))
 		root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
+	}
+
+	static boolean shouldInitializeLogging() {
+		Logger logger = Logger.getRootLogger();
+		Enumeration appenders = logger.getAllAppenders();
+		return ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
 	}
 
 	/**
