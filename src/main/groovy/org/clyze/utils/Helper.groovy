@@ -50,9 +50,31 @@ class Helper {
 	}
 
 	static boolean shouldInitializeLogging() {
-		Logger logger = Logger.getRootLogger();
-		Enumeration appenders = logger.getAllAppenders();
-		return ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
+		Logger logger = Logger.getRootLogger()
+		Enumeration appenders = logger.getAllAppenders()
+		boolean noAppenders = ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
+		if (noAppenders) {
+			return true
+		} else {
+			boolean doopAppenderFound = false
+			// Check that the appender of initLogging() is found.
+			for (def appender : appenders) {
+				if (appender instanceof DailyRollingFileAppender) {
+					doopAppenderFound = true
+				} else if (!(appender instanceof ConsoleAppender)) {
+					System.err.println("Warning: non-Doop appender found: " + appender.class)
+				}
+			}
+			return !doopAppenderFound
+		}
+	}
+
+	static synchronized void tryInitLogging(String logLevel, String logDir, boolean console) throws IOException {
+		if (shouldInitializeLogging()) {
+			initLogging(logLevel, logDir, console)
+		} else {
+			println "Logging already initialized."
+		}
 	}
 
 	/**
