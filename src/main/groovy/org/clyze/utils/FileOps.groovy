@@ -2,10 +2,8 @@ package org.clyze.utils
 
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
-
-import java.util.zip.*
-
 import java.nio.file.*
+import java.util.zip.*
 
 class FileOps {
 
@@ -141,4 +139,29 @@ class FileOps {
 	static void unzip(String zipFile, File dest) {
 		unzip(new File(zipFile), dest)
 	}
+
+    /**
+     * Decompresses a .gz file.
+     * @param gzPath    the path of the input file
+     * @param savePath  the path to use for saving the decompressed contents
+     */
+    static void decompressGzipFile(String gzPath, String savePath) {
+        GZIPInputStream gis
+        FileOutputStream fos
+        try {
+            FileInputStream fis = new FileInputStream(gzPath)
+            gis = new GZIPInputStream(fis)
+            fos = new FileOutputStream(savePath)
+            byte[] buffer = new byte[1024]
+            int len
+            while ((len = gis.read(buffer)) != -1) {
+                fos.write(buffer, 0, len)
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            fos?.close();
+            gis?.close();
+        }
+    }
 }
