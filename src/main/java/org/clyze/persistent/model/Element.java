@@ -26,14 +26,14 @@ public abstract class Element extends ItemImpl {
 
 	public boolean equals(Object object) {
 		if (this == object) return true;
-		if (object == null || getClass() != object.getClass()) return false;
-		if (!super.equals(object)) return false;
+		if (!(object instanceof Element)) return false;
 		Element element = (Element) object;
+
 		return Objects.equals(rootElemId, element.rootElemId);
 	}
 
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), rootElemId);
+		return Objects.hash(rootElemId);
 	}
 
 	protected void saveTo(Map<String, Object> map) {		

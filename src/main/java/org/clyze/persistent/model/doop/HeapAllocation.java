@@ -70,23 +70,6 @@ public class HeapAllocation extends SymbolWithDoopId {
         isArray = array;
     }
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        HeapAllocation that = (HeapAllocation) object;
-        return inIIB == that.inIIB &&
-                isArray == that.isArray &&
-                Objects.equals(allocatedTypeDoopId, that.allocatedTypeDoopId) &&
-                Objects.equals(allocatingMethodDoopId, that.allocatingMethodDoopId) &&
-                Objects.equals(doopId, that.doopId);
-    }
-
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), allocatedTypeDoopId, allocatingMethodDoopId, doopId, inIIB, isArray);
-    }
-
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("allocatedTypeDoopId", this.allocatedTypeDoopId);

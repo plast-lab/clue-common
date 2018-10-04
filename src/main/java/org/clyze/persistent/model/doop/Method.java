@@ -155,37 +155,6 @@ public class Method extends SymbolWithDoopId {
 		this.outerPosition = outerPosition;
 	}
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        Method method = (Method) object;
-        /*
-        return isStatic == method.isStatic &&
-                isInterface == method.isInterface &&
-                isAbstract == method.isAbstract &&
-                isNative == method.isNative &&
-                Objects.equals(name, method.name) &&
-                Objects.equals(returnType, method.returnType) &&
-                Arrays.equals(params, method.params) &&
-                Arrays.equals(paramTypes, method.paramTypes) &&
-                Objects.equals(declaringClassDoopId, method.declaringClassDoopId) &&
-                Objects.equals(doopId, method.doopId) &&
-                Objects.equals(outerPosition, method.outerPosition);
-        */
-        return Objects.equals(doopId, method.doopId);
-    }
-
-    public int hashCode() {
-    	/*
-        int result = Objects.hash(super.hashCode(), name, returnType, isStatic, isInterface, isAbstract, isNative, declaringClassDoopId, doopId, outerPosition);
-        result = 31 * result + Arrays.hashCode(params);
-        result = 31 * result + Arrays.hashCode(paramTypes);
-        return result;
-        */
-        return Objects.hash(super.hashCode(), doopId);
-    }
-
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);

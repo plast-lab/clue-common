@@ -31,16 +31,15 @@ public class Usage extends SymbolWithDoopId {
 
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
+        if (!(object instanceof Usage)) return false;
         Usage usage = (Usage) object;
-        return Objects.equals(usageKind, usage.usageKind) &&
-               Objects.equals(doopId, usage.doopId);
+
+        return super.equals(object)
+            && Objects.equals(usageKind, usage.usageKind);
     }
 
     public int hashCode() {
-
-        return Objects.hash(super.hashCode(), usageKind, doopId);
+        return Objects.hash(super.hashCode(), usageKind);
     }
 
     protected void saveTo(Map<String, Object> map) {

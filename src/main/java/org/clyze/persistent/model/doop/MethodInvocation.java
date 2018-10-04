@@ -57,21 +57,6 @@ public class MethodInvocation extends SymbolWithDoopId {
         this.inIIB = inIIB;
     }
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        MethodInvocation that = (MethodInvocation) object;        
-        return inIIB == that.inIIB &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(invokingMethodDoopId, that.invokingMethodDoopId) &&
-                Objects.equals(doopId, that.doopId);                    
-    }
-
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, invokingMethodDoopId, doopId, inIIB);       
-    }
-
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);

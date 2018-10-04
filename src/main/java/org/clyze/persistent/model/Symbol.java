@@ -41,17 +41,17 @@ public abstract class Symbol extends Element {
 	}
 
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        Symbol symbol = (Symbol) object;
-        return Objects.equals(position, symbol.position) &&
-               Objects.equals(sourceFileName, symbol.sourceFileName);
+		if (this == object) return true;
+		if (!(object instanceof Symbol)) return false;
+		Symbol symbol = (Symbol) object;
+
+		return super.equals(symbol)
+			&& Objects.equals(sourceFileName, symbol.sourceFileName)
+			&& Objects.equals(position, symbol.position);
     }
 
     public int hashCode() {
-
-        return Objects.hash(super.hashCode(), position, sourceFileName);
+        return Objects.hash(super.hashCode(), sourceFileName, position);
     }
 
     protected void saveTo(Map<String, Object> map) {

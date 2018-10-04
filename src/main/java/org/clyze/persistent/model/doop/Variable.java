@@ -89,28 +89,6 @@ public class Variable extends SymbolWithDoopId {
         this.inIIB = inIIB;
     }
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        Variable variable = (Variable) object;
-        /*
-        return isLocal == variable.isLocal &&
-                isParameter == variable.isParameter &&
-                inIIB == variable.inIIB &&
-                Objects.equals(name, variable.name) &&
-                Objects.equals(type, variable.type) &&
-                Objects.equals(declaringMethodDoopId, variable.declaringMethodDoopId) &&
-                Objects.equals(doopId, variable.doopId);
-        */
-        return Objects.equals(doopId, variable.doopId);
-    }
-
-    public int hashCode() {
-        //return Objects.hash(super.hashCode(), name, type, isLocal, isParameter, declaringMethodDoopId, doopId, inIIB);
-        return Objects.hash(super.hashCode(), doopId);
-    }
-
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);

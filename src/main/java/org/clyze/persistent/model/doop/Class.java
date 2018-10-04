@@ -155,33 +155,6 @@ public class Class extends SymbolWithDoopId {
 		this.sizeInBytes = sizeInBytes;
 	}
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        Class aClass = (Class) object;
-        /*
-        return isInterface == aClass.isInterface &&
-                isEnum == aClass.isEnum &&
-                isStatic == aClass.isStatic &&
-                isInner == aClass.isInner &&
-                isAnonymous == aClass.isAnonymous &&
-                isAbstract == aClass.isAbstract &&
-                sizeInBytes == aClass.sizeInBytes &&
-                Objects.equals(name, aClass.name) &&
-                Objects.equals(artifactName, aClass.artifactName) &&
-                Objects.equals(packageName, aClass.packageName) &&
-                Objects.equals(doopId, aClass.doopId) &&
-                Objects.equals(declaringSymbolDoopId, aClass.declaringSymbolDoopId);
-        */
-        return Objects.equals(doopId, aClass.doopId); 
-    }
-
-    public int hashCode() {
-        //return Objects.hash(super.hashCode(), name, artifactName, packageName, isInterface, isEnum, isStatic, isInner, isAnonymous, isAbstract, doopId, declaringSymbolDoopId, sizeInBytes);
-        return Objects.hash(super.hashCode(), doopId);
-    }
-
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);

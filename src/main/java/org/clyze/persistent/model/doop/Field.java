@@ -68,26 +68,6 @@ public class Field extends SymbolWithDoopId {
         this.declaringClassDoopId = declaringClassDoopId;
     }
 
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        Field field = (Field) object;
-        /*
-        return isStatic == field.isStatic &&
-                Objects.equals(name, field.name) &&
-                Objects.equals(type, field.type) &&
-                Objects.equals(declaringClassDoopId, field.declaringClassDoopId) &&
-                Objects.equals(doopId, field.doopId);
-        */
-        return Objects.equals(doopId, field.doopId);
-    }
-
-    public int hashCode() {
-        //return Objects.hash(super.hashCode(), name, type, isStatic, declaringClassDoopId, doopId);
-        return Objects.hash(super.hashCode(), doopId);
-    }
-
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);

@@ -26,15 +26,15 @@ public abstract class SymbolWithDoopId extends Symbol {
 	}
 
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        SymbolWithDoopId symbol = (SymbolWithDoopId) object;
-        return Objects.equals(doopId, symbol.doopId);
+		if (this == object) return true;
+		if (!(object instanceof SymbolWithDoopId)) return false;
+		SymbolWithDoopId symbol = (SymbolWithDoopId) object;
+
+		return super.equals(symbol)
+			&& Objects.equals(doopId, symbol.doopId);
     }
 
     public int hashCode() {
-
         return Objects.hash(super.hashCode(), doopId);
     }
 

@@ -57,18 +57,17 @@ public class Position {
 	}
 
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        if (!super.equals(object)) return false;
-        Position position = (Position) object;
-        return startLine == position.startLine &&
-                startColumn == position.startColumn &&
-                endLine == position.endLine &&
-                endColumn == position.endColumn;
+		if (this == object) return true;
+		if (!(object instanceof Position)) return false;
+		Position position = (Position) object;
+
+		return startLine == position.startLine
+			&& startColumn == position.startColumn
+			&& endLine == position.endLine
+			&& endColumn == position.endColumn;
     }
 
     public int hashCode() {
-
-        return Objects.hash(super.hashCode(), startLine, startColumn, endLine, endColumn);
+        return Objects.hash(startLine, startColumn, endLine, endColumn);
     }
 }
