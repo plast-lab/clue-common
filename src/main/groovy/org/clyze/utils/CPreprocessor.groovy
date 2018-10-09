@@ -28,7 +28,10 @@ class CPreprocessor {
 			if (option.value instanceof Boolean)
 				"-D${option.id}" as String
 			else
-				"-D${option.id}=${option.value}" as String
+				if (option.name == "PRIMARY_PARTITION")
+					"-D${option.id}=\"${option.value}\"" as String
+				else
+					"-D${option.id}=${option.value}" as String
 		}
 		logger.debug "Preprocessor: " + macroCli
 		this.executor = executor
