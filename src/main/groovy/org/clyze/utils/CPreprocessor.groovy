@@ -11,95 +11,96 @@ import java.nio.file.Files
 
 @TypeChecked
 class CPreprocessor {
-	protected Log logger
+    protected Log logger
 
 
-	List<String> macroCli
-	Executor executor
-	boolean emitLineMarkers
+    List<String> macroCli
+    Executor executor
+    boolean emitLineMarkers
 
-	CPreprocessor(Analysis analysis, Executor executor) {
-		this.logger = LogFactory.getLog(getClass());
-		macroCli = analysis.options.values()
-				.findAll { AnalysisOption option ->
-			option.forPreprocessor && option.value
-		}
-		.collect { AnalysisOption option ->
-			if (option.value instanceof Boolean)
-				"-D${option.id}" as String
-			else
-				if (option.name == "PRIMARY_PARTITION")
-					"-D${option.id}=\"${option.value}\"" as String
-				else
-					"-D${option.id}=${option.value}" as String
-		}
-		logger.debug "Preprocessor: " + macroCli
-		this.executor = executor
-		emitLineMarkers = false
-	}
+    CPreprocessor(Analysis analysis, Executor executor) {
+        this.logger = LogFactory.getLog(getClass());
+        macroCli = analysis.options.values()
+                .findAll { AnalysisOption option ->
+            option.forPreprocessor && option.value
+        }
+        .collect { AnalysisOption option ->
+            if (option.value instanceof Boolean)
+                "-D${option.id}" as String
+            else {
+                if (option.id == "PRIMARY_PARTITION")
+                    "-D${option.id}=\"${option.value}\"" as String
+                else
+                    "-D${option.id}=${option.value}" as String
+            }
+        }
+        logger.debug "Preprocessor: " + macroCli
+        this.executor = executor
+        emitLineMarkers = false
+    }
 
-	CPreprocessor enableLineMarkers() {
-		emitLineMarkers = true
-		return this
-	}
+    CPreprocessor enableLineMarkers() {
+        emitLineMarkers = true
+        return this
+    }
 
-	CPreprocessor disableLineMarkers() {
-		emitLineMarkers = false
-		return this
-	}
+    CPreprocessor disableLineMarkers() {
+        emitLineMarkers = false
+        return this
+    }
 
-	CPreprocessor preprocessIfExists(String output, String input, String... includes) {
-		if (new File(input).isFile())
-			preprocess(output, input, includes)
-		else {
-			def tmpFile = createUniqueTmpFile()
-			tmpFile.createNewFile()
-			preprocess(output, tmpFile.getCanonicalPath(), includes)
-			FileUtils.deleteQuietly(tmpFile)
-		}
-		return this
-	}
+    CPreprocessor preprocessIfExists(String output, String input, String... includes) {
+        if (new File(input).isFile())
+            preprocess(output, input, includes)
+        else {
+            def tmpFile = createUniqueTmpFile()
+            tmpFile.createNewFile()
+            preprocess(output, tmpFile.getCanonicalPath(), includes)
+            FileUtils.deleteQuietly(tmpFile)
+        }
+        return this
+    }
 
-	CPreprocessor preprocess(String output, String input, String... includes) {
-		// "Hack" for MacOS. The default cpp executable is not working correctly
-		def cmd = (System.properties["os.name"] as String).contains("MAC") ? ['cpp8'] : ['cpp']
-		if (!emitLineMarkers) cmd << '-P'
-		cmd += macroCli
-		cmd << input
-		includes.each { cmd += ['-include', it as String] }
-		cmd << output
-		executor.execute(cmd)
-		return this
-	}
+    CPreprocessor preprocess(String output, String input, String... includes) {
+        // "Hack" for MacOS. The default cpp executable is not working correctly
+        def cmd = (System.properties["os.name"] as String).contains("MAC") ? ['cpp8'] : ['cpp']
+        if (!emitLineMarkers) cmd << '-P'
+        cmd += macroCli
+        cmd << input
+        includes.each { cmd += ['-include', it as String] }
+        cmd << output
+        executor.execute(cmd)
+        return this
+    }
 
-	// Preprocess input file and put contents *in the beginning* of the output file.
-	void includeAtStart(String output, String input, String... includes) {
-		def tmpFile = createUniqueTmpFile()
-		preprocess(tmpFile.getCanonicalPath(), output, (includes + [input]) as String[])
-		FileUtils.copyFile(tmpFile, new File(output))
-		FileUtils.deleteQuietly(tmpFile)
-	}
+    // Preprocess input file and put contents *in the beginning* of the output file.
+    void includeAtStart(String output, String input, String... includes) {
+        def tmpFile = createUniqueTmpFile()
+        preprocess(tmpFile.getCanonicalPath(), output, (includes + [input]) as String[])
+        FileUtils.copyFile(tmpFile, new File(output))
+        FileUtils.deleteQuietly(tmpFile)
+    }
 
-	void includeAtEnd(String output, String input, String... includes) {
-		includeAtEnd0(output, input, includes, this.&preprocess)
-	}
+    void includeAtEnd(String output, String input, String... includes) {
+        includeAtEnd0(output, input, includes, this.&preprocess)
+    }
 
-	void includeAtEndIfExists(String output, String input, String... includes) {
-		includeAtEnd0(output, input, includes, this.&preprocessIfExists)
-	}
+    void includeAtEndIfExists(String output, String input, String... includes) {
+        includeAtEnd0(output, input, includes, this.&preprocessIfExists)
+    }
 
-	// Implementation method called by *includeAtEnd* and *includeAtEndIfExists* with the
-	// appropriate preprocess method (*preprocess* and *preprocessIfExists* respectively) as parameter.
-	private void includeAtEnd0(String output, String input, String[] includes, Closure closure) {
-		def tmpFile = createUniqueTmpFile()
-		closure(tmpFile.getCanonicalPath(), input, includes)
-		tmpFile.withInputStream { stream ->
-			new File(output) << stream
-		}
-		FileUtils.deleteQuietly(tmpFile)
-	}
+    // Implementation method called by *includeAtEnd* and *includeAtEndIfExists* with the
+    // appropriate preprocess method (*preprocess* and *preprocessIfExists* respectively) as parameter.
+    private void includeAtEnd0(String output, String input, String[] includes, Closure closure) {
+        def tmpFile = createUniqueTmpFile()
+        closure(tmpFile.getCanonicalPath(), input, includes)
+        tmpFile.withInputStream { stream ->
+            new File(output) << stream
+        }
+        FileUtils.deleteQuietly(tmpFile)
+    }
 
-	private static File createUniqueTmpFile() {
-		Files.createTempFile(FileUtils.getTempDirectory().toPath(), "tmp", "pre").toFile()
-	}
+    private static File createUniqueTmpFile() {
+        Files.createTempFile(FileUtils.getTempDirectory().toPath(), "tmp", "pre").toFile()
+    }
 }
