@@ -80,6 +80,10 @@ class Helper {
 	/**
 	 * Executes the given Java main class using the supplied class
 	 * loader. Returns false if the method throws an exception.
+	 *
+	 * @param cl		  the classloader
+	 * @param mainClass	  the main class
+	 * @param params	  the parameters of the main class
 	 */
 	static boolean execJava(ClassLoader cl, String mainClass, String[] params) {
 		Class theClass = Class.forName(mainClass, true, cl)
@@ -90,6 +94,26 @@ class Helper {
         } catch (all) {
             return false
         }
+	}
+
+	/**
+	 * Alternate version of execJava() that executes a Java main class
+	 * using a given classloader and passes exceptions to the
+	 * caller. Note that since the caller may be using a different
+	 * classloader, "instanceof A" checks on the exceptions may fail
+	 * even if they are of type A (if "A" is loaded by the given
+	 * classloader and the "A" in the caller context has been loaded
+	 * by a different classloader).
+	 *
+	 * @param cl          the classloader
+	 * @param mainClass   the main class
+	 * @param params      the parameters of the main class
+	 * @throws            an exception (see description above)
+	 */
+	static boolean execJavaNoCatch(ClassLoader cl, String mainClass, String[] params) throws Exception {
+		Class theClass = Class.forName(mainClass, true, cl)
+		Method mainMethod = theClass.getMethod("main", [String[].class] as Class[])
+		mainMethod.invoke(null, [params] as Object[])
 	}
 
 	/**
