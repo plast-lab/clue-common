@@ -126,8 +126,10 @@ class FileOps {
 					Path parent = target.getParent()
 					if (parent) {
 						Files.createDirectories(parent)
-					}	
-					Files.copy(zipInput, target)
+					}
+					// Artifacts (e.g., mockito-all-2.0.2-beta) may contain
+					// duplicate entries and thus we need to replace files.
+					Files.copy(zipInput, target, StandardCopyOption.REPLACE_EXISTING)
 				}
 			}
 		}
