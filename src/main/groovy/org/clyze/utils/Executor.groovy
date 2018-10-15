@@ -27,58 +27,32 @@ class Executor {
 		// Add a shutdown hook in case the JVM terminates during the execution of the process
 		def shutdownActions = {
 			log.debug "Destroying process: $command"
-			process.destroy()
+			process.destroyForcibly()
 			log.debug "Process destroyed: $command"
 			executorService.shutdownNow()
 		}
-		def shutdownThread = new Thread(shutdownActions as Runnable)
+		def shutdownThread = new Thread(shutdownActions)
 		Runtime.getRuntime().addShutdownHook(shutdownThread)
 
-		/*
-		 * Put the use of readline in a separate thread because it ignores
-		 * thread interrupts. When an interrupt occurs, the "parent" thread
-		 * will handle it and destroy the process so that the underlying socket
-		 * is closed and readLine will fail. Otherwise if when a timeout
-		 * occurs, the process will continue to run ignoring any attempt to
-		 * stop it.
-		 */
 		try {
-			def future = executorService.submit(new Runnable() {
-				@Override
-				void run() {
-					process.inputStream.newReader().withReader { reader ->
-						String line
-						while ((line = reader.readLine()) != null)
-							outputLineProcessor(line.trim())
-					}
-				}
-			})
+			if (isMonitoringEnabled)
+				executorService.submit({ doSampling(process) })
 
-			isMonitoringEnabled ? doSampling(process) : future.get()
-		}
-		catch (all) {
+			// Wait for process to terminate
+			def returnCode = process.waitFor()
+			process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
+
+			// Check return code and raise exception at failure indication
+			if (returnCode != 0)
+				throw new RuntimeException("Command exited with non-zero status:\n $command")
+
+		} catch (e) {
 			Runtime.runtime.removeShutdownHook(shutdownThread)
-			shutdownActions()
-			throw all
+			shutdownActions.call()
+			throw e
+		} finally {
+			executorService.shutdown()
 		}
-		finally {
-			executorService.shutdownNow()
-		}
-		Runtime.runtime.removeShutdownHook(shutdownThread)
-
-		// Wait for process to terminate
-		def returnCode = process.waitFor()
-
-		// Create an error string that contains everything in the stderr stream
-		//def errorMessages = process.errorStream.getText()
-		//if (!errorMessages.isAllWhitespace()) {
-		//    System.err.print(errorMessages)
-		//}
-
-		// Check return code and raise exception at failure indication
-		if (returnCode != 0)
-			throw new RuntimeException("Command exited with non-zero status:\n $command")
-
 		return this
 	}
 
