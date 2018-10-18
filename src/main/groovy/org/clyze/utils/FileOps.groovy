@@ -98,6 +98,35 @@ class FileOps {
 	}
 
 	/**
+	 * Wrapper of copyDirContents() that retries the copy a number of times
+	 * before failing.
+	 */
+	static void copyDirContentsWithRetry(File src, File dest) {
+		// For busy filesystems, this copy may fail (issue IO-443,
+		// https://issues.apache.org/jira/browse/IO-443), so we may retry.
+		int retries = 0
+		while (true) {
+			try {
+				println "Copying ${src} to ${dest}..."
+				copyDirContents(src, dest)
+				return
+			} catch (e) {
+				e.printStackTrace()
+				System.exit(0)
+				if (retries++ > 3) {
+					System.err.println("Cannot copy ${src} to ${dest}: ${e.message}");
+					throw e
+				} else {
+					// Wait for I/O to settle.
+					final int sleepTime = 2000
+					System.err.println("Retrying copy due of ${src} to ${dest} ms due to error: ${e.message}");
+					Thread.sleep(sleepTime)
+				}
+			}
+		}
+	}
+
+	/**
 	 * Writes the given string to the given file.
 	 */
 	static File writeToFile(File file, String s) {
