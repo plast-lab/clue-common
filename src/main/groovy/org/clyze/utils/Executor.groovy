@@ -20,8 +20,23 @@ class Executor {
 	long monitoringInterval
 	Closure monitorClosure
 
+	private static final class Invocation {
+		List<String> command
+		File outputFile		
+	}
+
+	Executor executeWithRedirectedOutput(List<String> command, File outputFile, Closure outputLineProcessor = STDOUT_PRINTER) {		
+		return invoke(new Invocation(command: command, outputFile: outputFile), outputLineProcessor)
+	}
+
 	Executor execute(List<String> command, Closure outputLineProcessor = STDOUT_PRINTER) {
-		def process = startProcess(command)
+		return invoke(new Invocation(command: command), outputLineProcessor)
+	}
+
+	private final Executor invoke(Invocation invo, Closure outputLineProcessor) {
+		Process process = startProcess(invo.command, invo.outputFile)
+
+		String command = invo.command.join(" ")
 
 		def executorService = Executors.newSingleThreadExecutor()
 		// Add a shutdown hook in case the JVM terminates during the execution of the process
@@ -39,8 +54,15 @@ class Executor {
 				executorService.submit({ doSampling(process) })
 
 			// Wait for process to terminate
-			def returnCode = process.waitFor()
-			process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
+			def returnCode = process.waitFor()			
+			if (invo.outputFile) {
+				// If an outputFile is present, read its contents
+				invo.outputFile.readLines().each { outputLineProcessor(it.trim()) }
+			}
+			else {
+				// Else read the from process stream
+				process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
+			}
 
 			// Check return code and raise exception at failure indication
 			if (returnCode != 0)
@@ -56,10 +78,13 @@ class Executor {
 		return this
 	}
 
-	Process startProcess(List<String> command) {
+	Process startProcess(List<String> command, File outputFile=null) {
 		def pb = new ProcessBuilder(command)
 		pb.directory(currWorkingDir)
 		pb.redirectErrorStream(true)
+		if (outputFile) {
+			pb.redirectOutput(outputFile)
+		}
 		pb.environment().clear()
 		pb.environment().putAll(this.environment)
 		pb.start()
