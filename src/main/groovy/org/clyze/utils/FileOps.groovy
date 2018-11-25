@@ -94,7 +94,9 @@ class FileOps {
 	 * Copies the contents of the src directory to dest (as in: cp -R src/* dest).
 	 */
 	static void copyDirContents(File src, File dest) {
-		FileUtils.copyDirectory(src, dest, ALL_FILES_AND_DIRECTORIES)
+		if (src.canonicalPath != dest.canonicalPath) {
+			FileUtils.copyDirectory(src, dest, ALL_FILES_AND_DIRECTORIES)
+		}
 	}
 
 	/**

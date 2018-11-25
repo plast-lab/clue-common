@@ -19,7 +19,7 @@ class CPreprocessor {
     boolean emitLineMarkers
 
     CPreprocessor(Analysis analysis, Executor executor) {
-        this.logger = LogFactory.getLog(getClass());
+        this.logger = LogFactory.getLog(getClass())
         macroCli = analysis.options.values()
                 .findAll { AnalysisOption option ->
             option.forPreprocessor && option.value
@@ -28,10 +28,7 @@ class CPreprocessor {
             if (option.value instanceof Boolean)
                 "-D${option.id}" as String
             else {
-                if (option.id == "PRIMARY_PARTITION")
-                    "-D${option.id}=\"${option.value}\"" as String
-                else
-                    "-D${option.id}=${option.value}" as String
+                "-D${option.id}=${option.value}" as String
             }
         }
         logger.debug "Preprocessor: " + macroCli
