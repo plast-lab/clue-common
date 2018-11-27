@@ -146,4 +146,25 @@ class Helper {
 	 * Print elapsed time in seconds along with the given message.
 	 */
 	static void timingWithLogging(String message, Closure c) { log.debug(message + " took ${timing(c)} sec") }
+
+	/**
+	 * Read the line of a seeds file which should refer to either a method or a constructor.	 
+	 */
+	static String readMethodDoopId(String seedFileLine) throws RuntimeException {
+		
+		//The seeds file notation does not use doopIds for constructors.
+		//e.g. in a seeds file we have:
+		//package.class$innerClass: class$innerClass(args...)
+		//instead of: 
+		//package.class$innerClass: void <init>(args...)
+				
+		int colonIndex     = seedFileLine.indexOf(':')
+		int leftParenIndex = seedFileLine.indexOf('(')
+		String fqcn        = seedFileLine.substring(0, colonIndex)
+		String mn          = seedFileLine.substring(colonIndex + 2, leftParenIndex)
+		return fqcn.endsWith(mn) ?
+			   "<" + fqcn + ": void <init>" + seedFileLine.substring(leftParenIndex) + ">" :
+			   "<" + seedFileLine + ">"
+					
+	}
 }
