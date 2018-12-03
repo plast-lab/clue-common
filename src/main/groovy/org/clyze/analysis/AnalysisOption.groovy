@@ -77,5 +77,10 @@ class AnalysisOption<T> {
 	 */
 	boolean changesFacts = false
 
+	/**
+	 * The group containing this option (e.g., "reflection"), null for none.
+	 */
+	String group = null
+
 	String toString() { "$id=$value" }
 }
