@@ -167,4 +167,16 @@ class Helper {
 			   "<" + seedFileLine + ">"
 					
 	}
+
+	/**
+	 * Replacement of Groovy's eachLine(), to work with large files.
+	 */
+	static void forEachLineIn(String path, Closure cl) {
+		File file = new File(path)
+		BufferedReader br = new BufferedReader(new FileReader(file))
+		br.withCloseable {
+			String line
+			while ((line = it.readLine()) != null) { cl(line) }
+		}
+	}
 }
