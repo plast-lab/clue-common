@@ -83,4 +83,20 @@ public class Artifact extends ItemImpl {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public ArtifactKind getKind() {
+		return kind;
+	}
+
+	public boolean isDependency() {
+		return isDependency;
+	}
+
+	public Set<String> getPackages() {
+		return packages;
+	}
 }
