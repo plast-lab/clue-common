@@ -54,7 +54,7 @@ public class HeapAllocation extends SymbolWithDoopId {
         this.allocatingMethodDoopId = allocatingMethodDoopId;
     }
     
-    public boolean getInIIB() {
+    public boolean isInIIB() {
         return inIIB;
     }
 
@@ -62,11 +62,11 @@ public class HeapAllocation extends SymbolWithDoopId {
         this.inIIB = inIIB;
     }
 
-    public boolean getIsArray() {
+    public boolean isArray() {
         return isArray;
     }
 
-    public void setIsArray(boolean array) {
+    public void setArray(boolean array) {
         isArray = array;
     }
 

@@ -61,15 +61,15 @@ public class Variable extends SymbolWithDoopId {
         return isLocal;
     }
 
-    public void setIsLocal(boolean local) {
+    public void setLocal(boolean local) {
         isLocal = local;
     }
 
-    public boolean getIsParameter() {
+    public boolean isParameter() {
         return isParameter;
     }
 
-    public void setIsParameter(boolean parameter) {
+    public void setParameter(boolean parameter) {
         isParameter = parameter;
     }
 
@@ -81,7 +81,7 @@ public class Variable extends SymbolWithDoopId {
         this.declaringMethodDoopId = declaringMethodDoopId;
     }
 
-    public boolean getInIIB() {
+    public boolean isInIIB() {
         return inIIB;
     }
 

@@ -22,12 +22,15 @@ public class Method extends SymbolWithDoopId {
 	private String[] paramTypes;
 
 	private boolean isStatic;
-
 	private boolean isInterface;
-
 	private boolean isAbstract;
-
 	private boolean isNative;
+	private boolean isSynchronized;
+	private boolean isFinal;
+	private boolean isSynthetic;
+	private boolean isPublic;
+	private boolean isProtected;
+	private boolean isPrivate;
 
 	private String declaringClassDoopId;		
 
@@ -61,6 +64,12 @@ public class Method extends SymbolWithDoopId {
 				  boolean isInterface,
 				  boolean isAbstract,
 				  boolean isNative,
+				  boolean isSynchronized,
+				  boolean isFinal,
+				  boolean isSynthetic,
+				  boolean isPublic,
+				  boolean isProtected,
+				  boolean isPrivate,
 				  Position outerPosition) {
 		super(position, sourceFileName, doopId);
 		this.name = name;
@@ -72,6 +81,12 @@ public class Method extends SymbolWithDoopId {
 		this.isInterface = isInterface;
 		this.isAbstract = isAbstract;
 		this.isNative = isNative;
+		this.isSynchronized = isSynchronized;
+		this.isFinal = isFinal;
+		this.isSynthetic = isSynthetic;
+		this.isPublic = isPublic;
+		this.isProtected = isProtected;
+		this.isPrivate = isPrivate;
 		this.outerPosition = outerPosition;
 	}	
 
@@ -107,37 +122,61 @@ public class Method extends SymbolWithDoopId {
 		this.paramTypes = paramTypes;
 	}
 
-	public boolean getIsStatic() {
+	public boolean isStatic() {
 		return isStatic;
 	}
 
-	public void setIsStatic(boolean aStatic) {
+	public void setStatic(boolean aStatic) {
 		isStatic = aStatic;
 	}
 
-	public boolean getIsInterface() {
+	public boolean isInterface() {
 		return isInterface;
 	}
 
-	public void setIsInterface(boolean anInterface) {
+	public void setInterface(boolean anInterface) {
 		isInterface = anInterface;
 	}
 
-	public boolean getIsAbstract() {
+	public boolean isAbstract() {
 		return isAbstract;
 	}
 
-	public void setIsAbstract(boolean anAbstract) {
+	public void setAbstract(boolean anAbstract) {
 		isAbstract = anAbstract;
 	}
 
-	public boolean getIisNative() {
+	public boolean isNative() {
 		return isNative;
 	}
 
-	public void setIsNative(boolean aNative) {
+	public void setNative(boolean aNative) {
 		isNative = aNative;
 	}
+
+	public boolean isSynchronized() { return isSynchronized; }
+
+	public void setSynchronized(boolean aSynchronized) { isSynchronized = aSynchronized; }
+
+	public boolean isFinal() { return isFinal; }
+
+	public void setFinal(boolean aFinal) { isFinal = aFinal; }
+
+	public boolean isSynthetic() { return isSynthetic; }
+
+	public void setSynthetic(boolean synthetic) { isSynthetic = synthetic;}
+
+	public boolean isPublic() { return isPublic; }
+
+	public void setPublic(boolean aPublic) {  isPublic = aPublic;  }
+
+	public boolean isProtected() { return isProtected; }
+
+	public void setProtected(boolean aProtected) {  isProtected = aProtected; }
+
+	public boolean isPrivate() {  return isPrivate;  }
+
+	public void setPrivate(boolean aPrivate) { isPrivate = aPrivate; }
 
 	public String getDeclaringClassDoopId() {
 		return declaringClassDoopId;
@@ -165,6 +204,12 @@ public class Method extends SymbolWithDoopId {
 		map.put("isInterface", this.isInterface);
 		map.put("isAbstract", this.isAbstract);
 		map.put("isNative", this.isNative);
+		map.put("isSynchronized", this.isSynchronized);
+		map.put("isFinal", this.isFinal);
+		map.put("isSynthetic", this.isSynthetic);
+		map.put("isPublic", this.isPublic);
+		map.put("isProtected", this.isProtected);
+		map.put("isPrivate", this.isPrivate);
 		map.put("declaringClassDoopId", this.declaringClassDoopId);	
 	}
 
@@ -178,6 +223,11 @@ public class Method extends SymbolWithDoopId {
 		this.isInterface          = (Boolean) map.get("isInterface");
 		this.isAbstract           = (Boolean) map.get("isAbstract");
 		this.isNative             = (Boolean) map.get("isNative");
+		this.isFinal              = (Boolean) map.get("isFinal");
+		this.isSynthetic          = (Boolean) map.get("isSynthetic");
+		this.isPublic             = (Boolean) map.get("isPublic");
+		this.isProtected          = (Boolean) map.get("isProtected");
+		this.isPrivate            = (Boolean) map.get("isPrivate");
 		this.declaringClassDoopId = (String) map.get("declaringClassDoopId");		
 	}
 

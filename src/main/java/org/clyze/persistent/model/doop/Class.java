@@ -30,7 +30,11 @@ public class Class extends SymbolWithDoopId {
 	private boolean isStatic;
 	private boolean isInner;
 	private boolean isAnonymous;
-	private boolean isAbstract;	
+	private boolean isAbstract;
+	private boolean isFinal;
+	private boolean isPublic;
+	private boolean isProtected;
+	private boolean isPrivate;
 
 	/**
 	 * The doopId of the type or method where this type is declared.
@@ -55,7 +59,11 @@ public class Class extends SymbolWithDoopId {
 				 boolean isStatic, 
 				 boolean isInner, 
 				 boolean isAnonymous, 
-				 boolean isAbstract) {		
+				 boolean isAbstract,
+				 boolean isFinal,
+				 boolean isPublic,
+				 boolean isProtected,
+				 boolean isPrivate) {
 		super(position, sourceFileName, doopId);
 		this.name = name;
 		this.packageName = packageName;		
@@ -64,7 +72,11 @@ public class Class extends SymbolWithDoopId {
 		this.isStatic = isStatic;
 		this.isInner = isInner;
 		this.isAnonymous = isAnonymous;
-		this.isAbstract = isAbstract;	
+		this.isAbstract = isAbstract;
+		this.isFinal = isFinal;
+		this.isPublic = isPublic;
+		this.isProtected = isProtected;
+		this.isPrivate = isPrivate;
 	}	
 
 	public String getName() {
@@ -91,52 +103,84 @@ public class Class extends SymbolWithDoopId {
 		this.artifactName = artifactName;
 	}
 
-	public boolean getIsInterface() {
+	public boolean isInterface() {
 		return isInterface;
 	}
 
-	public void setIsInterface(boolean anInterface) {
+	public void setInterface(boolean anInterface) {
 		isInterface = anInterface;
 	}
 
-	public boolean getIsEnum() {
+	public boolean isEnum() {
 		return isEnum;
 	}
 
-	public void setIsEnum(boolean anEnum) {
+	public void setEnum(boolean anEnum) {
 		isEnum = anEnum;
 	}
 
-	public boolean getIsStatic() {
+	public boolean isStatic() {
 		return isStatic;
 	}
 
-	public void setIsStatic(boolean aStatic) {
+	public void setStatic(boolean aStatic) {
 		isStatic = aStatic;
 	}
 
-	public boolean getIsInner() {
+	public boolean isInner() {
 		return isInner;
 	}
 
-	public void setIsInner(boolean inner) {
+	public void setInner(boolean inner) {
 		isInner = inner;
 	}
 
-	public boolean getIsAnonymous() {
+	public boolean isAnonymous() {
 		return isAnonymous;
 	}
 
-	public void setIsAnonymous(boolean anonymous) {
+	public void setAnonymous(boolean anonymous) {
 		isAnonymous = anonymous;
 	}
 
-	public boolean getIsAbstract() {
+	public boolean isAbstract() {
 		return isAbstract;
 	}
 
-	public void setIsAbstract(boolean anAbstract) {
+	public void setAbstract(boolean anAbstract) {
 		isAbstract = anAbstract;
+	}
+
+	public boolean isFinal() {
+		return isFinal;
+	}
+
+	public void setFinal(boolean aFinal) {
+		isFinal = aFinal;
+	}
+
+	public boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setPublic(boolean aPublic) {
+		isPublic = aPublic;
+	}
+
+	public boolean isProtected() {
+		return isProtected;
+	}
+
+	public void setProtected(boolean aProtected) {
+		isProtected = aProtected;
+	}
+
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean aPrivate) {
+		isPrivate = aPrivate;
 	}
 
 	public String getDeclaringSymbolDoopId() {
@@ -165,7 +209,11 @@ public class Class extends SymbolWithDoopId {
 		map.put("isStatic", this.isStatic);
 		map.put("isInner", this.isInner);
 		map.put("isAnonymous", this.isAnonymous);
-		map.put("isAbstract", this.isAbstract);		
+		map.put("isAbstract", this.isAbstract);
+		map.put("isFinal", this.isFinal);
+		map.put("isPublic", this.isPublic);
+		map.put("isProtected", this.isProtected);
+		map.put("isPrivate", this.isPrivate);
 		map.put("declaringSymbolDoopId", this.declaringSymbolDoopId);
 		map.put("sizeInBytes", this.sizeInBytes);
 	}
@@ -180,7 +228,11 @@ public class Class extends SymbolWithDoopId {
 		this.isStatic              = (Boolean) map.get("isStatic");
 		this.isInner               = (Boolean) map.get("isInner");
 		this.isAnonymous           = (Boolean) map.get("isAnonymous");
-		this.isAbstract            = (Boolean) map.get("isAbstract");		
+		this.isAbstract            = (Boolean) map.get("isAbstract");
+		this.isFinal               = (Boolean) map.get("isFinal");
+		this.isPublic              = (Boolean) map.get("isPublic");
+		this.isProtected           = (Boolean) map.get("isProtected");
+		this.isPrivate             = (Boolean) map.get("isPrivate");
 		this.declaringSymbolDoopId = (String) map.get("declaringSymbolDoopId");
 		this.sizeInBytes           = ((Number) map.get("sizeInBytes")).longValue();
 	}	

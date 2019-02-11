@@ -52,11 +52,11 @@ public class Field extends SymbolWithDoopId {
         this.type = type;
     }
 
-    public boolean getIsStatic() {
+    public boolean isStatic() {
         return isStatic;
     }
 
-    public void setIsStatic(boolean aStatic) {
+    public void setStatic(boolean aStatic) {
         isStatic = aStatic;
     }
 

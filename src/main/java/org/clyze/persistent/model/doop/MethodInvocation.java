@@ -49,7 +49,7 @@ public class MethodInvocation extends SymbolWithDoopId {
         this.invokingMethodDoopId = invokingMethodDoopId;
     }
 
-    public boolean getInIIB() {
+    public boolean isInIIB() {
         return inIIB;
     }
 
