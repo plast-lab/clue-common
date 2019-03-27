@@ -52,16 +52,20 @@ class Executor {
 		try {
 			if (isMonitoringEnabled)
 				executorService.submit({ doSampling(process) })
-
+				
+			if (!invo.outputFile) {
+				// If there is no output file, reat the inputsream before waiting for the process.
+				// This is necessary to ensure that the process does not block while the stream having reached its buffer size.
+				while (process.isAlive)
+					process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
+			}
+			
 			// Wait for process to terminate
-			def returnCode = process.waitFor()			
+			def returnCode = process.waitFor()	
+				
 			if (invo.outputFile) {
 				// If an outputFile is present, read its contents
 				invo.outputFile.readLines().each { outputLineProcessor(it.trim()) }
-			}
-			else {
-				// Else read the from process stream
-				process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
 			}
 
 			// Check return code and raise exception at failure indication
