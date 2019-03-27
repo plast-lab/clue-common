@@ -56,7 +56,7 @@ class Executor {
 			if (!invo.outputFile) {
 				// If there is no output file, reat the inputsream before waiting for the process.
 				// This is necessary to ensure that the process does not block while the stream having reached its buffer size.
-				while (process.isAlive)
+				while (process.isAlive())
 					process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
 			}
 			
