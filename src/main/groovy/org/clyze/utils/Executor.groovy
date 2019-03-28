@@ -50,7 +50,7 @@ class Executor {
 		Runtime.getRuntime().addShutdownHook(shutdownThread)
 
 		// Special handling for macOS.
-		boolean macOS = System.getProperty("os.name").toLowerCase().indexOf("mac") > 0;
+		boolean macOS = System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0;
 		try {
 			if (isMonitoringEnabled)
 				executorService.submit({ doSampling(process) })
