@@ -27,14 +27,26 @@ dependencies {
     testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+release {
+    //use defaults, see https://github.com/researchgate/gradle-release
+}
+
+tasks.release.doLast {
+    println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
+}
+
+afterReleaseBuild.dependsOn publish
+
 if (project.hasProperty('artifactory_user')) {
     publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
-
         repositories {
             maven {
                 credentials {
@@ -46,14 +58,4 @@ if (project.hasProperty('artifactory_user')) {
             }
         }
     }
-
-    release {
-        //use defaults, see https://github.com/researchgate/gradle-release
-    }
-
-    tasks.release.doLast {
-        println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
-    }
-
-    afterReleaseBuild.dependsOn publish
 }
