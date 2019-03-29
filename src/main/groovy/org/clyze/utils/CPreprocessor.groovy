@@ -13,13 +13,12 @@ import java.nio.file.Files
 class CPreprocessor {
     protected Log logger
 
-
     List<String> macroCli
     Executor executor
     boolean emitLineMarkers
 
     CPreprocessor(Analysis analysis, Executor executor) {
-        this.logger = LogFactory.getLog(getClass())
+        this(executor)
         macroCli = analysis.options.values()
                 .findAll { AnalysisOption option ->
             option.forPreprocessor && option.value
@@ -32,8 +31,14 @@ class CPreprocessor {
             }
         }
         logger.debug "Preprocessor: " + macroCli
+    }
+
+    CPreprocessor(Executor executor) {
+        this.logger = LogFactory.getLog(getClass())
+        this.logOutput = false
         this.executor = executor
-        emitLineMarkers = false
+        this.emitLineMarkers = false
+        macroCli = [] as List<String>
     }
 
     CPreprocessor enableLineMarkers() {
