@@ -50,12 +50,11 @@ class Executor {
 		Runtime.getRuntime().addShutdownHook(shutdownThread)
 
 		// Special handling for macOS.
-		boolean macOS = System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0;
 		try {
 			if (isMonitoringEnabled)
 				executorService.submit({ doSampling(process) })
 
-			if (macOS && !invo.outputFile) {
+			if (OS.macOS && !invo.outputFile) {
 				// If there is no output file, reat the inputsream before waiting for the process.
 				// This is necessary to ensure that the process does not block while the stream having reached its buffer size.
 				while (process.isAlive())
@@ -68,7 +67,7 @@ class Executor {
 			if (invo.outputFile) {
 				// If an outputFile is present, read its contents
 				invo.outputFile.readLines().each { outputLineProcessor(it.trim()) }
-			} else if (!macOS) {
+			} else if (!OS.macOS) {
 				// Else read the from process stream
 				process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
 			}
