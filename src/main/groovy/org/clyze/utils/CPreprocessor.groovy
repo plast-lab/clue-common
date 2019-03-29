@@ -16,6 +16,7 @@ class CPreprocessor {
     List<String> macroCli
     Executor executor
     boolean emitLineMarkers
+    boolean logOutput
 
     CPreprocessor(Analysis analysis, Executor executor) {
         this(executor)
@@ -51,6 +52,11 @@ class CPreprocessor {
         return this
     }
 
+    CPreprocessor enableLogOutput() {
+        logOutput = true
+        return this
+    }
+
     CPreprocessor preprocessIfExists(String output, String input, String... includes) {
         if (new File(input).isFile())
             preprocess(output, input, includes)
@@ -71,7 +77,7 @@ class CPreprocessor {
         cmd << input
         includes.each { cmd += ['-include', it as String] }
         cmd << output
-        executor.execute(cmd)
+        executor.execute(cmd) { if (logOutput) { logger.info it } }
         return this
     }
 
