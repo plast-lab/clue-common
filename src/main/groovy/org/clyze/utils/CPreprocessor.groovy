@@ -70,8 +70,7 @@ class CPreprocessor {
     }
 
     CPreprocessor preprocess(String output, String input, String... includes) {
-        // "Hack" for MacOS. The default cpp executable is not working correctly
-        def cmd = OS.macOS ? ['mcpp'] : ['cpp']
+        def cmd = [ getCPP() ]
         if (!emitLineMarkers) cmd << '-P'
         cmd += macroCli
         cmd << input
@@ -79,6 +78,10 @@ class CPreprocessor {
         cmd << output
         executor.execute(cmd) { if (logOutput) { logger.info it } }
         return this
+    }
+
+    String getCPP() {
+        return System.getenv("DOOP_CPP") ?: 'cpp'
     }
 
     // Preprocess input file and put contents *in the beginning* of the output file.
