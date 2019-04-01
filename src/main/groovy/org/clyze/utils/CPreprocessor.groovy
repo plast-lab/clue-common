@@ -73,9 +73,21 @@ class CPreprocessor {
         def cmd = [ getCPP() ]
         if (!emitLineMarkers) cmd << '-P'
         cmd += macroCli
+        if (OS.macOS) {
+            cmd += [ '-Isouffle-logic/main' ]
+        }
+        includes.each {
+            if (OS.macOS) {
+                def lastSlash = it.lastIndexOf(File.separator)
+                if (lastSlash != -1) {
+                    cmd += [ "-I${it.substring(0, lastSlash)}" as String ]
+                }
+            }
+            cmd += ['-include', it as String]
+        }
         cmd << input
-        includes.each { cmd += ['-include', it as String] }
         cmd << output
+        logger.debug "cpp command: ${cmd.join(' ')}"
         executor.execute(cmd) { if (logOutput) { logger.info it } }
         return this
     }
