@@ -57,8 +57,15 @@ class Executor {
 			if (OS.macOS && !invo.outputFile) {
 				// If there is no output file, reat the inputsream before waiting for the process.
 				// This is necessary to ensure that the process does not block while the stream having reached its buffer size.
-				while (process.isAlive())
-					process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
+				while (process.isAlive()) {
+					try {
+						process.inputStream.readLines().each { outputLineProcessor(it.trim()) }
+					} catch (IOException ex) {
+						// This exception is usually thrown, unless
+						// the input stream generated too much information.
+						log.debug "Warning: ${ex.message}"
+					}
+				}
 			}
 			
 			// Wait for process to terminate
