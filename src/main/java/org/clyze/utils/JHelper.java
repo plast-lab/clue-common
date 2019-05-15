@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -58,7 +59,7 @@ public class JHelper {
                 log.debug("Reading URL entries from current class loader...");
             URL[] classpath = ((URLClassLoader)cl).getURLs();
             if (log != null)
-                log.debug("Creating a new URL class loader with classpath = ${classpath}");
+                log.debug("Creating a new URL class loader with classpath = " + Arrays.toString(classpath));
             return new URLClassLoader(classpath, (ClassLoader)null);
         } else {
             return cl;
