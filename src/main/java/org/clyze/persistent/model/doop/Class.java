@@ -43,6 +43,12 @@ public class Class extends SymbolWithDoopId {
 
 	private long sizeInBytes;
 
+	/**
+	 * An array of fully qualified type names (classes, interfaces) that
+	 * this type (class, enum or interface) extends or implements.
+	 */
+	private String[] superTypes;
+
 	public Class() {}
 
 	public Class(String id) {
@@ -199,7 +205,15 @@ public class Class extends SymbolWithDoopId {
 		this.sizeInBytes = sizeInBytes;
 	}
 
-    protected void saveTo(Map<String, Object> map) {
+	public String[] getSuperTypes() {
+		return superTypes;
+	}
+
+	public void setSuperTypes(String[] superTypes) {
+		this.superTypes = superTypes;
+	}
+
+	protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		map.put("name", this.name);
 		map.put("artifactName", this.artifactName);
@@ -216,6 +230,7 @@ public class Class extends SymbolWithDoopId {
 		map.put("isPrivate", this.isPrivate);
 		map.put("declaringSymbolDoopId", this.declaringSymbolDoopId);
 		map.put("sizeInBytes", this.sizeInBytes);
+		map.put("superTypes", superTypes == null ? "" : String.join(",", superTypes));
 	}
 
 	protected void loadFrom(Map<String, Object> map){
@@ -235,5 +250,6 @@ public class Class extends SymbolWithDoopId {
 		this.isPrivate             = (Boolean) map.get("isPrivate");
 		this.declaringSymbolDoopId = (String) map.get("declaringSymbolDoopId");
 		this.sizeInBytes           = ((Number) map.get("sizeInBytes")).longValue();
+		this.superTypes            = ((String) map.get("superTypes")).split(",");
 	}	
 }
