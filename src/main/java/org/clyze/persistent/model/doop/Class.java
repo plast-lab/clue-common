@@ -1,5 +1,7 @@
 package org.clyze.persistent.model.doop;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -44,10 +46,10 @@ public class Class extends SymbolWithDoopId {
 	private long sizeInBytes;
 
 	/**
-	 * An array of fully qualified type names (classes, interfaces) that
+	 * A list of fully qualified type names (classes, interfaces) that
 	 * this type (class, enum or interface) extends or implements.
 	 */
-	private String[] superTypes;
+	private List<String> superTypes = new ArrayList<>();
 
 	public Class() {}
 
@@ -205,11 +207,11 @@ public class Class extends SymbolWithDoopId {
 		this.sizeInBytes = sizeInBytes;
 	}
 
-	public String[] getSuperTypes() {
+	public List<String> getSuperTypes() {
 		return superTypes;
 	}
 
-	public void setSuperTypes(String[] superTypes) {
+	public void setSuperTypes(List<String> superTypes) {
 		this.superTypes = superTypes;
 	}
 
@@ -230,9 +232,10 @@ public class Class extends SymbolWithDoopId {
 		map.put("isPrivate", this.isPrivate);
 		map.put("declaringSymbolDoopId", this.declaringSymbolDoopId);
 		map.put("sizeInBytes", this.sizeInBytes);
-		map.put("superTypes", superTypes == null ? "" : String.join(",", superTypes));
+		map.put("superTypes", this.superTypes);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void loadFrom(Map<String, Object> map){
 		super.loadFrom(map);
 		this.name                  = (String) map.get("name");
@@ -250,6 +253,6 @@ public class Class extends SymbolWithDoopId {
 		this.isPrivate             = (Boolean) map.get("isPrivate");
 		this.declaringSymbolDoopId = (String) map.get("declaringSymbolDoopId");
 		this.sizeInBytes           = ((Number) map.get("sizeInBytes")).longValue();
-		this.superTypes            = ((String) map.get("superTypes")).split(",");
+		this.superTypes            = (List<String>) map.get("superTypes");
 	}	
 }
