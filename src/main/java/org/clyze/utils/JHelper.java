@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -89,4 +90,43 @@ public class JHelper {
             throw new RuntimeException("Cannot convert encoding " + encoding + " to UTF-8");
         }
     }
+
+    /**
+     * Runs a standalone JAR using 'java'.
+     *
+     * @param classpath   the classpath to use
+     * @param jar         the JAR to run
+     * @param args        the command line arguments to pass
+     * @param tag         a text prefix to mark output lines
+     * @param debug       if true, print debug information
+     */
+    public static void runJar(String[] classpath, String jar, String[] args,
+                              String tag, boolean debug) throws IOException {
+        String javaHome = System.getProperty("java.home");
+        if (javaHome == null)
+            throw new RuntimeException("Could not determine JAVA_HOME to run JAR: " + jar);
+
+        // Try to find 'java' in known locations.
+        File java = new File(javaHome, "java");
+        if (!java.exists()) {
+            java = new File(javaHome, "bin/java");
+            if (!java.exists())
+                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run JAR: " + jar);
+        }
+
+        LinkedList<String> cmd = new LinkedList<>();
+        cmd.add(java.getAbsolutePath());
+        if (classpath.length > 0) {
+            cmd.add("-cp");
+            cmd.add(String.join(":", classpath));
+        }
+        cmd.add("-jar");
+        cmd.add(jar);
+        for (String arg : args)
+            cmd.add(arg);
+        if (debug)
+            System.err.println("Running JAR: " + String.join(" ", cmd));
+        runWithOutput(cmd.toArray(new String[]{}), tag);
+    }
+
 }
