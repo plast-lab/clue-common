@@ -102,16 +102,44 @@ public class JHelper {
      */
     public static void runJar(String[] classpath, String jar, String[] args,
                               String tag, boolean debug) throws IOException {
+	runJava(classpath, new String[] {"-jar", jar}, args, tag, debug);
+    }
+
+    /**
+     * Runs a Java class using 'java'.
+     *
+     * @param classpath   the classpath to use
+     * @param klass       the fully qualified name of the class to run
+     * @param args        the command line arguments to pass
+     * @param tag         a text prefix to mark output lines
+     * @param debug       if true, print debug information
+     */
+    public static void runClass(String[] classpath, String klass, String[] args,
+				String tag, boolean debug) throws IOException {
+	runJava(classpath, new String[] {klass}, args, tag, debug);
+    }
+
+    /**
+     * Runs a Java program using 'java'.
+     *
+     * @param classpath   the classpath to use
+     * @param program     program
+     * @param args        the command line arguments to pass
+     * @param tag         a text prefix to mark output lines
+     * @param debug       if true, print debug information
+     */
+    public static void runJava(String[] classpath, String[] program, String[] args,
+			       String tag, boolean debug) throws IOException {
         String javaHome = System.getProperty("java.home");
         if (javaHome == null)
-            throw new RuntimeException("Could not determine JAVA_HOME to run JAR: " + jar);
+            throw new RuntimeException("Could not determine JAVA_HOME to run: " + program);
 
         // Try to find 'java' in known locations.
         File java = new File(javaHome, "java");
         if (!java.exists()) {
             java = new File(javaHome, "bin/java");
             if (!java.exists())
-                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run JAR: " + jar);
+                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run: " + program);
         }
 
         LinkedList<String> cmd = new LinkedList<>();
@@ -120,12 +148,12 @@ public class JHelper {
             cmd.add("-cp");
             cmd.add(String.join(":", classpath));
         }
-        cmd.add("-jar");
-        cmd.add(jar);
+        for (String p : program)
+            cmd.add(p);
         for (String arg : args)
             cmd.add(arg);
         if (debug)
-            System.err.println("Running JAR: " + String.join(" ", cmd));
+            System.err.println("Running program: " + String.join(" ", cmd));
         runWithOutput(cmd.toArray(new String[]{}), tag);
     }
 
