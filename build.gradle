@@ -10,7 +10,7 @@ targetCompatibility = '1.8'
 project.group = 'org.clyze'
 
 wrapper {
-    gradleVersion = '4.9'
+    gradleVersion = '5.4.1'
 }
 
 repositories {
@@ -23,7 +23,7 @@ dependencies {
             'commons-logging:commons-logging:1.1',              // Logging wrapper
             'log4j:log4j:1.2.14',                               // Logging implementation
             'org.apache.ivy:ivy:2.4.0',                         // Apache Ivy (for downloading inputs from Maven repos)
-            'org.codehaus.groovy:groovy-all:2.5.5',
+            'org.codehaus.groovy:groovy-all:2.5.7',
             'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
     testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
