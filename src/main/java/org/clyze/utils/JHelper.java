@@ -35,7 +35,9 @@ public class JHelper {
      * @param prefix    the prefix
      */
     public static void runWithOutput(String[] cmd, String prefix) throws IOException {
-        Process proc = Runtime.getRuntime().exec(cmd);
+        ProcessBuilder builder = new ProcessBuilder(cmd);
+        builder.redirectErrorStream(true);
+        Process proc = builder.start();
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         stdInput.lines().forEach(s -> printWithPrefix(s, prefix));
         BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
