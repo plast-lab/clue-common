@@ -1,5 +1,6 @@
 package org.clyze.utils
 
+import groovy.transform.TypeChecked
 import groovy.util.logging.Log4j
 import org.apache.log4j.*
 import org.apache.log4j.helpers.NullEnumeration;
@@ -10,6 +11,7 @@ import java.lang.reflect.Method
  * Various helper methods.
  */
 @Log4j
+@TypeChecked
 class Helper {
 
 	/**
