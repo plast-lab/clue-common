@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.mozilla.universalchardet.UniversalDetector;
@@ -33,19 +34,42 @@ public class JHelper {
      *
      * @param cmd       the command to run
      * @param prefix    the prefix
+     * @param processor a line processor (can be null)
      */
-    public static void runWithOutput(String[] cmd, String prefix) throws IOException {
+    public static void runWithOutput(String[] cmd, String prefix, Consumer<String> processor) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(cmd);
         builder.redirectErrorStream(true);
         Process proc = builder.start();
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        stdInput.lines().forEach(s -> printWithPrefix(s, prefix));
+        stdInput.lines().forEach(s -> processWithPrefix(s, prefix, processor));
         BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-        stdError.lines().forEach(s -> printWithPrefix(s, prefix));
+        stdError.lines().forEach(s -> processWithPrefix(s, prefix, processor));
     }
 
-    private static void printWithPrefix(String s, String prefix) {
+    /**
+     * Executes a command, printing all standard output/error messages
+     * prefixed by a custom string.
+     *
+     * @param cmd       the command to run
+     * @param prefix    the prefix
+     * @param processor a line processor (can be null)
+     */
+    public static void runWithOutput(String[] cmd, String prefix) throws IOException {
+        runWithOutput(cmd, prefix, null);
+    }
+
+    /**
+     * Prints a line, prepending a prefix. An optional processor to
+     * consume the line may also be given.
+     *
+     * @param s         the line
+     * @param prefix    the prefix to print before the line
+     * @param processor a line processor (can be null)
+     */
+    private static void processWithPrefix(String s, String prefix, Consumer<String> processor) {
         System.out.println(prefix + ": " + s);
+        if (processor != null)
+            processor.accept(s);
     }
 
     /**
@@ -104,7 +128,7 @@ public class JHelper {
      */
     public static void runJar(String[] classpath, String jar, String[] args,
                               String tag, boolean debug) throws IOException {
-	runJava(classpath, new String[] {"-jar", jar}, args, tag, debug);
+        runJava(classpath, new String[] {"-jar", jar}, args, tag, debug, null);
     }
 
     /**
@@ -115,10 +139,11 @@ public class JHelper {
      * @param args        the command line arguments to pass
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
+     * @param processor   a line processor (can be null)
      */
     public static void runClass(String[] classpath, String klass, String[] args,
-				String tag, boolean debug) throws IOException {
-	runJava(classpath, new String[] {klass}, args, tag, debug);
+                                String tag, boolean debug, Consumer<String> processor) throws IOException {
+        runJava(classpath, new String[] {klass}, args, tag, debug, processor);
     }
 
     /**
@@ -129,9 +154,10 @@ public class JHelper {
      * @param args        the command line arguments to pass
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
+     * @param processor   a line processor (can be null)
      */
     public static void runJava(String[] classpath, String[] program, String[] args,
-			       String tag, boolean debug) throws IOException {
+                               String tag, boolean debug, Consumer<String> processor) throws IOException {
         String javaHome = System.getProperty("java.home");
         if (javaHome == null)
             throw new RuntimeException("Could not determine JAVA_HOME to run: " + program);
@@ -156,7 +182,7 @@ public class JHelper {
             cmd.add(arg);
         if (debug)
             System.err.println("Running program: " + String.join(" ", cmd));
-        runWithOutput(cmd.toArray(new String[]{}), tag);
+        runWithOutput(cmd.toArray(new String[]{}), tag, processor);
     }
 
 }
