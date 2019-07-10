@@ -6,7 +6,7 @@ import org.clyze.persistent.model.SymbolWithDoopId;
 import java.util.Map;
 import java.util.Objects;
 
-public class Field extends SymbolWithDoopId {
+public class Field extends AnnotateableSymbolWithDoopId {
 
 	private String name;
 

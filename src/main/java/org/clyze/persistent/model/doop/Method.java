@@ -8,7 +8,7 @@ import java.util.Objects;
 import org.clyze.persistent.model.Position;
 import org.clyze.persistent.model.SymbolWithDoopId;
 
-public class Method extends SymbolWithDoopId {
+public class Method extends AnnotateableSymbolWithDoopId {
 
 	private String name;
 

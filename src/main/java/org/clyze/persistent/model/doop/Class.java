@@ -11,7 +11,7 @@ import org.clyze.persistent.model.SymbolWithDoopId;
 /**
  * Symbol used for classes, interfaces and enums
  */
-public class Class extends SymbolWithDoopId {
+public class Class extends AnnotateableSymbolWithDoopId {
 
 	/**
 	 * The symbol name (package name not included)
