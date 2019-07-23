@@ -6,8 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -121,53 +120,65 @@ public class JHelper {
      * Runs a standalone JAR using 'java'.
      *
      * @param classpath   the classpath to use
+     * @param jvmArgs     the JVM arguments to use
      * @param jar         the JAR to run
      * @param args        the command line arguments to pass
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
      */
-    public static void runJar(String[] classpath, String jar, String[] args,
-                              String tag, boolean debug) throws IOException {
-        runJava(classpath, new String[] {"-jar", jar}, args, tag, debug, null);
+    public static void runJar(String[] classpath, String[] jvmArgs, String jar,
+                              String[] args, String tag, boolean debug) throws IOException {
+        List<String> jvmArgs0 = new LinkedList<>();
+        for (String j : jvmArgs)
+            jvmArgs0.add(j);
+        jvmArgs0.add("-jar");
+        jvmArgs0.add(jar);
+        runJava(classpath, jvmArgs0.toArray(new String[0]), args, tag, debug, null);
     }
 
     /**
      * Runs a Java class using 'java'.
      *
      * @param classpath   the classpath to use
+     * @param jvmArgs     the JVM arguments to use
      * @param klass       the fully qualified name of the class to run
      * @param args        the command line arguments to pass
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
      * @param processor   a line processor (can be null)
      */
-    public static void runClass(String[] classpath, String klass, String[] args,
+    public static void runClass(String[] classpath, String[] jvmArgs, String klass, String[] args,
                                 String tag, boolean debug, Consumer<String> processor) throws IOException {
-        runJava(classpath, new String[] {klass}, args, tag, debug, processor);
+        List<String> jvmArgs0 = new LinkedList<>();
+        for (String j : jvmArgs)
+            jvmArgs0.add(j);
+        jvmArgs0.add(klass);
+        runJava(classpath, jvmArgs0.toArray(new String[0]), args, tag, debug, processor);
     }
 
     /**
      * Runs a Java program using 'java'.
      *
      * @param classpath   the classpath to use
-     * @param program     program
+     * @param jvmArgs     the JVM arguments to use (including Java program)
      * @param args        the command line arguments to pass
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
      * @param processor   a line processor (can be null)
      */
-    public static void runJava(String[] classpath, String[] program, String[] args,
-                               String tag, boolean debug, Consumer<String> processor) throws IOException {
+    public static void runJava(String[] classpath, String[] jvmArgs,
+                               String[] args, String tag, boolean debug,
+                               Consumer<String> processor) throws IOException {
         String javaHome = System.getProperty("java.home");
         if (javaHome == null)
-            throw new RuntimeException("Could not determine JAVA_HOME to run: " + program);
+            throw new RuntimeException("Could not determine JAVA_HOME to run: " + jvmArgs);
 
         // Try to find 'java' in known locations.
         File java = new File(javaHome, "java");
         if (!java.exists()) {
             java = new File(javaHome, "bin/java");
             if (!java.exists())
-                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run: " + program);
+                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run: " + jvmArgs);
         }
 
         LinkedList<String> cmd = new LinkedList<>();
@@ -176,8 +187,8 @@ public class JHelper {
             cmd.add("-cp");
             cmd.add(String.join(":", classpath));
         }
-        for (String p : program)
-            cmd.add(p);
+        for (String j : jvmArgs)
+            cmd.add(j);
         for (String arg : args)
             cmd.add(arg);
         if (debug)
