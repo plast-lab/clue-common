@@ -125,15 +125,17 @@ public class JHelper {
      * @param args        the command line arguments to pass
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
+     * @param processor   a line processor (can be null)
      */
     public static void runJar(String[] classpath, String[] jvmArgs, String jar,
-                              String[] args, String tag, boolean debug) throws IOException {
+                              String[] args, String tag, boolean debug,
+                              Consumer<String> processor) throws IOException {
         List<String> jvmArgs0 = new LinkedList<>();
         for (String j : jvmArgs)
             jvmArgs0.add(j);
         jvmArgs0.add("-jar");
         jvmArgs0.add(jar);
-        runJava(classpath, jvmArgs0.toArray(new String[0]), args, tag, debug, null);
+        runJava(classpath, jvmArgs0.toArray(new String[0]), args, tag, debug, processor);
     }
 
     /**
