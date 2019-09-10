@@ -39,6 +39,13 @@ public class JHelper {
         ProcessBuilder builder = new ProcessBuilder(cmd);
         builder.redirectErrorStream(true);
         Process proc = builder.start();
+
+        // Kill process if this VM shuts down.
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.err.println("Destroying process: " + String.join(" ", cmd));
+                    proc.destroyForcibly();
+        }));
+
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         stdInput.lines().forEach(s -> processWithPrefix(s, prefix, processor));
         BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
