@@ -42,7 +42,7 @@ public class JHelper {
 
         // Kill process if this VM shuts down.
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.err.println("Destroying process: " + String.join(" ", cmd));
+                    // System.err.println("Destroying process: " + String.join(" ", cmd));
                     proc.destroyForcibly();
         }));
 
