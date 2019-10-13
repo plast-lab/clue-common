@@ -1,7 +1,6 @@
 package org.clyze.persistent.model.doop;
 
 import java.util.Map;
-import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
 import org.clyze.persistent.model.SymbolWithDoopId;
@@ -78,8 +77,8 @@ public class HeapAllocation extends SymbolWithDoopId {
 		map.put("isArray", this.isArray);
 	}
 
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		this.allocatedTypeDoopId    = (String) map.get("allocatedTypeDoopId");
 		this.allocatingMethodDoopId = (String) map.get("allocatingMethodDoopId");		
 		this.inIIB                  = (Boolean) map.get("inIIB");

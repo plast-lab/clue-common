@@ -41,7 +41,7 @@ public abstract class Element extends ItemImpl {
 		map.put("rootElemId", rootElemId);
 	}
 
-	protected void loadFrom(Map<String, Object> map){				
+	public void fromMap(Map<String, Object> map){
 		this.rootElemId = (String) map.get("rootElemId");
 	}
 }

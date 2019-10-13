@@ -21,7 +21,7 @@ public abstract class ItemImpl implements Item {
 	@Override
 	public ItemImpl fromJSON(String json) {
 		Map<String, Object> map = new Gson().fromJson(json, Map.class);
-		loadFrom(map);
+		fromMap(map);
 		return this;
 	}
 
@@ -36,8 +36,6 @@ public abstract class ItemImpl implements Item {
 		saveTo(map);		
 		return map;
 	}
-
-	protected abstract void loadFrom(Map<String, Object> map);
 
 	protected abstract void saveTo(Map<String, Object> map);
 }

@@ -84,8 +84,8 @@ public class StringConstant extends Symbol {
         return Objects.hash(super.hashCode(), fieldDoopId, value);
     }
 
-    protected void loadFrom(Map<String, Object> map){
-        super.loadFrom(map);
+    public void fromMap(Map<String, Object> map){
+        super.fromMap(map);
         this.fieldDoopId = (String) map.get("fieldDoopId");
         this.value       = (String) map.get("value");
     }

@@ -45,7 +45,7 @@ public class Package extends ItemImpl {
 		map.put("artifactIds", this.artifactIds);
 	}
 
-	protected void loadFrom(Map<String, Object> map){
+	public void fromMap(Map<String, Object> map){
 		this.id                 = (String) map.get("id");
 		this.name               = (String) map.get("name");
 		this.fullyQualifiedName = (String) map.get("fullyQualifiedName");

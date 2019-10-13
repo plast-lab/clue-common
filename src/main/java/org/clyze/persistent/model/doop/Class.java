@@ -3,10 +3,8 @@ package org.clyze.persistent.model.doop;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.SymbolWithDoopId;
 
 /**
  * Symbol used for classes, interfaces and enums
@@ -236,8 +234,8 @@ public class Class extends AnnotateableSymbolWithDoopId {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		this.name                  = (String) map.get("name");
 		this.artifactName          = (String) map.get("artifactName");
 		this.packageName           = (String) map.get("packageName");

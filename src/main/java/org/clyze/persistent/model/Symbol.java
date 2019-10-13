@@ -67,8 +67,8 @@ public abstract class Symbol extends Element {
 		map.put("sourceFileName", sourceFileName);
 	}
 
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		Map<String, Object> position = (Map<String, Object>)map.get("position");
 		if (position != null) {
 			this.position = new Position(

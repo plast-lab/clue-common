@@ -1,10 +1,8 @@
 package org.clyze.persistent.model.doop;
 
 import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.SymbolWithDoopId;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class Field extends AnnotateableSymbolWithDoopId {
 
@@ -76,8 +74,8 @@ public class Field extends AnnotateableSymbolWithDoopId {
 		map.put("declaringClassDoopId", this.declaringClassDoopId);		
 	}
 
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		this.name                 = (String) map.get("name");
 		this.type                 = (String) map.get("type");
 		this.isStatic             = (Boolean) map.get("isStatic");

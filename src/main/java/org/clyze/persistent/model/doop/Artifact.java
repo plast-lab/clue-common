@@ -62,7 +62,7 @@ public class Artifact extends ItemImpl {
 		map.put("parentArtifactId", this.parentArtifactId);
 	}
 
-	protected void loadFrom(Map<String, Object> map){
+	public void fromMap(Map<String, Object> map){
 		this.id               = (String) map.get("id");
 		this.name             = (String) map.get("name");
 		this.kind             = ArtifactKind.valueOf((String) map.get("kind"));

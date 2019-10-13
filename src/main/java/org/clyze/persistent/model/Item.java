@@ -28,4 +28,6 @@ public interface Item {
 	 * @return The object state as a map [item property => property value]
 	 */
 	Map<String, Object> toMap();
+
+	void fromMap(Map<String, Object> map);
 }

@@ -1,7 +1,6 @@
 package org.clyze.persistent.model.doop;
 
 import java.util.Map;
-import java.util.Objects;
 
 import org.clyze.persistent.model.Position;
 import org.clyze.persistent.model.SymbolWithDoopId;
@@ -64,8 +63,8 @@ public class MethodInvocation extends SymbolWithDoopId {
 		map.put("inIIB", this.inIIB);
 	}
 
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		this.name                 = (String) map.get("name");
 		this.invokingMethodDoopId = (String) map.get("invokingMethodDoopId");        
 		this.inIIB                = (Boolean) map.get("inIIB");

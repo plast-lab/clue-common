@@ -47,8 +47,8 @@ public class Usage extends SymbolWithDoopId {
 		map.put("usageKind", this.usageKind.name());		
 	}
 
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		this.usageKind = UsageKind.valueOf((String)map.get("usageKind"));		
 	}
 }

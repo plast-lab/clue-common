@@ -43,8 +43,8 @@ public abstract class SymbolWithDoopId extends Symbol {
 		map.put("doopId", this.doopId);
 	}
 
-	protected void loadFrom(Map<String, Object> map){
-		super.loadFrom(map);
+	public void fromMap(Map<String, Object> map){
+		super.fromMap(map);
 		this.doopId = (String) map.get("doopId");
 	}
 }
