@@ -10,7 +10,7 @@ class ComplexTestItem extends TestItem {
     List<String> list
     Map<String, Integer> map
 
-    protected void fromMap(Map<String, Object> map) {
+    public void fromMap(Map<String, Object> map) {
     	super.fromMap(map)
 		this.list  = map.list
 		this.map   = map.map		
