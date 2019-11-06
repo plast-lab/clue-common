@@ -99,4 +99,12 @@ public class Artifact extends ItemImpl {
 	public Set<String> getPackages() {
 		return packages;
 	}
+
+	public void setParentArtifactId(String parentArtifactId) {
+		this.parentArtifactId = parentArtifactId;
+	}
+
+	public String getParentArtifactId() {
+		return parentArtifactId;
+	}
 }
