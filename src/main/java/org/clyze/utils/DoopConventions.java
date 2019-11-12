@@ -12,6 +12,8 @@ public class DoopConventions {
 
     private static final String LOCAL_SEPARATOR = "_$$A_";
 
+    public static boolean setSeparatorFailed = false;
+
     /**
      * Call setSeparator() on Soot to set the fresh variable separator
      * (needed to discover the original names of SSA-transformed locals).
@@ -25,6 +27,7 @@ public class DoopConventions {
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             // ex.printStackTrace();
             System.err.println("Using default fresh variable separator in Soot.");
+            setSeparatorFailed = true;
         }
     }
 

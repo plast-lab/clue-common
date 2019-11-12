@@ -35,7 +35,6 @@ public enum TypeUtils {
     public static String getPackageName(String className)
     {
         int index = className.lastIndexOf('.');
-
         return (index < 0) ? "" : className.substring(0, index);
     }
 
