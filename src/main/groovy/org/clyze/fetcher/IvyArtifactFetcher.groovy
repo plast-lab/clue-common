@@ -84,7 +84,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
         ArtifactDownloadReport aarReport = reports.find { it.getType() == 'aar' }
 
         File codeLocalFile
-        def deps
+        def deps = null
         if (aarReport) {
             // Try to find the sources (they are not always the first).
             String aarName = aarReport.getLocalFile().getName()
@@ -117,9 +117,9 @@ class IvyArtifactFetcher implements ArtifactFetcher {
         return artifact
     }
 
-    private void checkArtifactFile(def file, def dep, def reports) {
+    private static void checkArtifactFile(File file, String[] dep, ArtifactDownloadReport[] reports) {
         String n = file.getName()
-        for (def d : dep) {
+        for (String d : dep) {
             if (n.contains(d))
                 return
         }
@@ -138,6 +138,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
 
     // Returns true on dependencies that crash Doop. Subclasses that
     // need more control over dependencies should override this method.
+    @SuppressWarnings("GrMethodMayBeStatic")
     private boolean badDependency(String depName) {
         false
     }

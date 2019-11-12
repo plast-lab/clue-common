@@ -12,7 +12,7 @@ class CheckSum {
 
 	static String checksum(File f, String algorithm) {
 		return f.withInputStream { InputStream input ->
-			return checksum(input, algorithm)
+			checksum(input, algorithm)
 		}
 	}
 

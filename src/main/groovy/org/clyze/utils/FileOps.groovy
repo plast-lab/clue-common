@@ -15,7 +15,7 @@ class FileOps {
 		def filter = [
 				accept: { File file, String name ->
 					String ext = FilenameUtils.getExtension(name)
-					return ext == extension
+					ext == extension
 				}
 		] as FilenameFilter
 
@@ -179,8 +179,8 @@ class FileOps {
      * @param savePath  the path to use for saving the decompressed contents
      */
     static void decompressGzipFile(String gzPath, String savePath) {
-        GZIPInputStream gis
-        FileOutputStream fos
+        GZIPInputStream gis = null
+        FileOutputStream fos = null
         try {
             FileInputStream fis = new FileInputStream(gzPath)
             gis = new GZIPInputStream(fis)

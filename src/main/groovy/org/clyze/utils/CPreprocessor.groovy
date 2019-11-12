@@ -89,7 +89,7 @@ class CPreprocessor {
         return this
     }
 
-    String getCPP() {
+    static String getCPP() {
         return System.getenv("DOOP_CPP") ?: 'cpp'
     }
 
@@ -111,7 +111,7 @@ class CPreprocessor {
 
     // Implementation method called by *includeAtEnd* and *includeAtEndIfExists* with the
     // appropriate preprocess method (*preprocess* and *preprocessIfExists* respectively) as parameter.
-    private void includeAtEnd0(String output, String input, String[] includes, Closure closure) {
+    private static void includeAtEnd0(String output, String input, String[] includes, Closure closure) {
         def tmpFile = createUniqueTmpFile()
         closure(tmpFile.getCanonicalPath(), input, includes)
         tmpFile.withInputStream { stream ->

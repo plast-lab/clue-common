@@ -12,8 +12,8 @@ class ComplexTestItem extends TestItem {
 
     public void fromMap(Map<String, Object> map) {
     	super.fromMap(map)
-		this.list  = map.list
-		this.map   = map.map		
+		this.list  = (List<String>) map.list
+		this.map   = (Map<String, Integer>) map.map
 	}
 
 	protected void saveTo(Map<String, Object> map) {

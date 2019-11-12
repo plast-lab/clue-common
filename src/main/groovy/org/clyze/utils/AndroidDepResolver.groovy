@@ -54,7 +54,7 @@ class AndroidDepResolver {
     private void registerArtifact(String group, String name, String version,
                                   String localJar, Set<String> artDeps) {
         ArtifactDesc ad = new ArtifactDesc(group, name, version)
-        Map entry = artifacts.get(ad)
+        Set<String> entry = artifacts.get(ad)
         if (entry == null) {
             Set<String> jars = new HashSet<>()
             jars << localJar
@@ -67,8 +67,8 @@ class AndroidDepResolver {
     // resolved) version of an artifact (given as group:name:version).
     private Set<String> getLatestArtifactAndDeps(String group, String name) {
         String latestVersion
-        Set<String> ret
-        artifacts.collect { ArtifactDesc ad, Set<String> jars ->
+        Set<String> ret = null
+        artifacts.each { ArtifactDesc ad, Set<String> jars ->
             boolean nameMatches = ad.group == group && ad.name == name
             if (nameMatches && (latestVersion == null ||
                                 dottedNumLessThan(latestVersion, ad.version, group, name))) {
@@ -250,7 +250,7 @@ class AndroidDepResolver {
     // dependency after this method finishes.
     private String resolveAndroidDep(String depDir, String group, String name,
                                      String version, String localPre, String pom) {
-        String savedFile
+        String savedFile = null
         String sdkHome = getSDK()
         String groupPath = group.replaceAll('\\.', '/')
         String pomPath = null
@@ -277,8 +277,8 @@ class AndroidDepResolver {
             // Search for .jar dependencies.
             final String jarPath1 = "${sdkHome}/extras/android/m2repository/${groupPath}/${name}/${version}"
             final String jarPath2 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
-            final String jarFullPath1 = "${jarPath1}/${name}-${version}.jar"
-            final String jarFullPath2 = "${jarPath2}/${name}-${version}.jar"
+//            final String jarFullPath1 = "${jarPath1}/${name}-${version}.jar"
+//            final String jarFullPath2 = "${jarPath2}/${name}-${version}.jar"
             final Map<String, String> jars =
                 [ "${jarPath1}" : "${jarPath1}/${name}-${version}.jar",
                   "${jarPath2}" : "${jarPath2}/${name}-${version}.jar"]
