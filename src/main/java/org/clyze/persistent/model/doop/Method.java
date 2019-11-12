@@ -235,6 +235,6 @@ public class Method extends AnnotateableSymbolWithDoopId {
 		}
 
 		List<String> values = (List<String>) o;
-		return values.toArray(new String[values.size()]);
+		return values.toArray(new String[0]);
 	}
 }

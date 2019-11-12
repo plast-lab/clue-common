@@ -1,11 +1,10 @@
 package org.clyze.utils;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
 import org.apache.commons.io.FileUtils;
@@ -41,10 +40,8 @@ public class JHelper {
         Process proc = builder.start();
 
         // Kill process if this VM shuts down.
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    // System.err.println("Destroying process: " + String.join(" ", cmd));
-                    proc.destroyForcibly();
-        }));
+        // System.err.println("Destroying process: " + String.join(" ", cmd));
+        Runtime.getRuntime().addShutdownHook(new Thread(proc::destroyForcibly));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         stdInput.lines().forEach(s -> processWithPrefix(s, prefix, processor));
@@ -58,7 +55,6 @@ public class JHelper {
      *
      * @param cmd       the command to run
      * @param prefix    the prefix
-     * @param processor a line processor (can be null)
      */
     public static void runWithOutput(String[] cmd, String prefix) throws IOException {
         runWithOutput(cmd, prefix, null);
@@ -105,7 +101,7 @@ public class JHelper {
         // Try to convert source file to UTF-8.
         try {
             Charset sourceEncoding = Charset.forName(encoding);
-            Charset targetEncoding = Charset.forName("UTF-8");
+            Charset targetEncoding = StandardCharsets.UTF_8;
             byte[] buf2 = IOUtils.toByteArray(new FileInputStream(filename));
             CharBuffer data = sourceEncoding.decode(ByteBuffer.wrap(buf2));
             ByteBuffer outBuf = targetEncoding.encode(data);
@@ -137,9 +133,7 @@ public class JHelper {
     public static void runJar(String[] classpath, String[] jvmArgs, String jar,
                               String[] args, String tag, boolean debug,
                               Consumer<String> processor) throws IOException {
-        List<String> jvmArgs0 = new LinkedList<>();
-        for (String j : jvmArgs)
-            jvmArgs0.add(j);
+        List<String> jvmArgs0 = new LinkedList<>(Arrays.asList(jvmArgs));
         jvmArgs0.add("-jar");
         jvmArgs0.add(jar);
         runJava(classpath, jvmArgs0.toArray(new String[0]), args, tag, debug, processor);
@@ -158,9 +152,7 @@ public class JHelper {
      */
     public static void runClass(String[] classpath, String[] jvmArgs, String klass, String[] args,
                                 String tag, boolean debug, Consumer<String> processor) throws IOException {
-        List<String> jvmArgs0 = new LinkedList<>();
-        for (String j : jvmArgs)
-            jvmArgs0.add(j);
+        List<String> jvmArgs0 = new LinkedList<>(Arrays.asList(jvmArgs));
         jvmArgs0.add(klass);
         runJava(classpath, jvmArgs0.toArray(new String[0]), args, tag, debug, processor);
     }
@@ -180,14 +172,14 @@ public class JHelper {
                                Consumer<String> processor) throws IOException {
         String javaHome = System.getProperty("java.home");
         if (javaHome == null)
-            throw new RuntimeException("Could not determine JAVA_HOME to run: " + jvmArgs);
+            throw new RuntimeException("Could not determine JAVA_HOME to run: " + Arrays.toString(jvmArgs));
 
         // Try to find 'java' in known locations.
         File java = new File(javaHome, "java");
         if (!java.exists()) {
             java = new File(javaHome, "bin/java");
             if (!java.exists())
-                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run: " + jvmArgs);
+                throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run: " + Arrays.toString(jvmArgs));
         }
 
         LinkedList<String> cmd = new LinkedList<>();
@@ -196,10 +188,8 @@ public class JHelper {
             cmd.add("-cp");
             cmd.add(String.join(":", classpath));
         }
-        for (String j : jvmArgs)
-            cmd.add(j);
-        for (String arg : args)
-            cmd.add(arg);
+        cmd.addAll(Arrays.asList(jvmArgs));
+        cmd.addAll(Arrays.asList(args));
         if (debug)
             System.err.println("Running program: " + String.join(" ", cmd));
         runWithOutput(cmd.toArray(new String[]{}), tag, processor);

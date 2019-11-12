@@ -16,19 +16,19 @@ public class Position {
 	 * This is not always the case, e.g. in a "HeapAllocation" symbol, the "new"
 	 * and the class name may be in different lines
 	 *
-	 * @param line
-	 * @param startColumn
-	 * @param endColumn
+	 * @param line            source line
+	 * @param startColumn     source start column
+	 * @param endColumn       source end column
 	 */
 	public Position(long line, long startColumn, long endColumn) {
 		this(line, line, startColumn, endColumn);
 	}
 
 	/**
-	 * @param startLine
-	 * @param endLine
-	 * @param startColumn
-	 * @param endColumn
+	 * @param startLine       source start line
+	 * @param endLine         source end line
+	 * @param startColumn     source start column
+	 * @param endColumn       source end column
 	 */
 	public Position(long startLine, long endLine, long startColumn, long endColumn) {
 		//TODO: Either this check should be performed by the caller or a new Factory method should be introduced

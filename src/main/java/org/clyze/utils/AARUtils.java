@@ -64,11 +64,11 @@ public class AARUtils {
     public static List<String> toJars(List<String> archives, boolean ignore,
                                       Set<String> tmpDirs) {
         List<String> jars = new ArrayList<>();
-        archives.forEach(s -> toJar(s, jars, archives, ignore, tmpDirs));
+        archives.forEach(s -> toJar(s, jars, ignore, tmpDirs));
         return jars;
     }
 
-    private static void toJar(String ar, List<String> jars, List<String> archives,
+    private static void toJar(String ar, List<String> jars,
                               boolean ignore, Set<String> tmpDirs) {
         if (ar.endsWith(".jar")) {
             jars.add(ar);

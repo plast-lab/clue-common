@@ -57,7 +57,7 @@ public abstract class Symbol extends Element {
     protected void saveTo(Map<String, Object> map) {
 		super.saveTo(map);
 		if (position != null) {
-			Map<String, Object> posMap = new HashMap();
+			Map<String, Object> posMap = new HashMap<>();
 			posMap.put("startLine", position.getStartLine());
 			posMap.put("endLine", position.getEndLine());
 			posMap.put("startColumn", position.getStartColumn());

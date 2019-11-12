@@ -34,8 +34,6 @@ public class AnnotateableSymbolWithDoopId extends SymbolWithDoopId {
     @SuppressWarnings("unchecked")
     public void fromMap(Map<String, Object> map){
         super.fromMap(map);
-        Set<String> annotations = new HashSet<>();
-        annotations.addAll((Collection<String>) map.get("annotationTypes"));
-        this.annotationTypes = annotations;
+        this.annotationTypes = new HashSet<>((Collection<String>) map.get("annotationTypes"));
     }
 }
