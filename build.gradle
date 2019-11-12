@@ -20,7 +20,6 @@ repositories {
 dependencies {
     compile 'com.google.code.gson:gson:2.8.0',
             'commons-io:commons-io:2.4',
-            'commons-logging:commons-logging:1.1',              // Logging wrapper
             'log4j:log4j:1.2.14',                               // Logging implementation
             'org.apache.ivy:ivy:2.4.0',                         // Apache Ivy (for downloading inputs from Maven repos)
             'org.codehaus.groovy:groovy-all:2.5.7',

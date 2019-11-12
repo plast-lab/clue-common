@@ -1,18 +1,16 @@
 package org.clyze.utils
 
 import groovy.transform.TypeChecked
+import groovy.util.logging.Log4j
 import org.apache.commons.io.FileUtils
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 import org.clyze.analysis.Analysis
 import org.clyze.analysis.AnalysisOption
 
 import java.nio.file.Files
 
 @TypeChecked
+@Log4j
 class CPreprocessor {
-    protected Log logger
-
     List<String> macroCli
     Executor executor
     boolean emitLineMarkers
@@ -31,11 +29,10 @@ class CPreprocessor {
                 "-D${option.id}=${option.value}" as String
             }
         }
-        logger.debug "Preprocessor: " + macroCli
+        log.debug "Preprocessor: " + macroCli
     }
 
     CPreprocessor(Executor executor) {
-        this.logger = LogFactory.getLog(getClass())
         this.logOutput = false
         this.executor = executor
         this.emitLineMarkers = false
@@ -87,8 +84,8 @@ class CPreprocessor {
         }
         cmd << input
         cmd << output
-        logger.debug "cpp command: ${cmd.join(' ')}"
-        executor.execute(cmd) { if (logOutput) { logger.info it } }
+        log.debug "cpp command: ${cmd.join(' ')}"
+        executor.execute(cmd) { if (logOutput) { log.info it } }
         return this
     }
 
