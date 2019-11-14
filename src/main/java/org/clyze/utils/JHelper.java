@@ -13,6 +13,8 @@ import org.mozilla.universalchardet.UniversalDetector;
 
 public class JHelper {
 
+    static final String TIME_UTIL = "/usr/bin/time";
+
     // Throws a runtime exception with a message. The message is also
     // shown in the standard output. This utility helps debugging as
     // Gradle may report a different exception (e.g. the usual
@@ -183,6 +185,8 @@ public class JHelper {
         }
 
         LinkedList<String> cmd = new LinkedList<>();
+        if (debug && (new File(TIME_UTIL)).exists())
+            cmd.add(TIME_UTIL);
         cmd.add(java.getAbsolutePath());
         if (classpath.length > 0) {
             cmd.add("-cp");
