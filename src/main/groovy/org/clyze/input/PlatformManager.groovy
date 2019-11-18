@@ -136,6 +136,8 @@ class PlatformManager {
 					files += find0("java_8", "${platformsLib}/JREs/jre1.8/lib")
 				}
 				return files
+			default:
+				log.debug "Cannot handle platform kind: ${platformKind}"
 		}
 		return [] as List
 	}
