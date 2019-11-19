@@ -2,10 +2,9 @@ package org.clyze.utils
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Log4j
+import java.lang.reflect.Method
 import org.apache.log4j.*
 import org.apache.log4j.helpers.NullEnumeration;
-
-import java.lang.reflect.Method
 
 /**
  * Various helper methods.
@@ -18,6 +17,7 @@ class Helper {
 	 * Initializes Log4j (logging framework).
 	 * Log statements are written to log file that is daily rolled.
 	 * Optionally, the log statements can be also written to the console (standard output).
+	 *
 	 * @param logLevel - the log level to use
 	 * @param logDir - the directory to place the log file
 	 * @param console - indicates whether log statements should be also written to the standard output.
@@ -43,6 +43,7 @@ class Helper {
 	/**
 	 * Initializes Log4j (logging framework).
 	 * Log statements are written to the the console (standard output).
+	 *
 	 * @param logLevel - the log level to use
 	 */
 	static void initConsoleLogging(String logLevel) throws IOException {
@@ -54,21 +55,19 @@ class Helper {
 	static boolean shouldInitializeLogging() {
 		Logger logger = Logger.getRootLogger()
 		Enumeration appenders = logger.getAllAppenders()
-		boolean noAppenders = ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
-		if (noAppenders) {
+		if ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration)) {
 			return true
-		} else {
-			boolean doopAppenderFound = false
-			// Check that the appender of initLogging() is found.
-			for (def appender : appenders) {
-				if (appender instanceof DailyRollingFileAppender) {
-					doopAppenderFound = true
-				} else if (!(appender instanceof ConsoleAppender)) {
-					System.err.println("Warning: non-Doop appender found: " + appender.class)
-				}
-			}
-			return !doopAppenderFound
 		}
+		boolean doopAppenderFound = false
+		// Check that the appender of initLogging() is found.
+		for (def appender : appenders) {
+			if (appender instanceof DailyRollingFileAppender) {
+				doopAppenderFound = true
+			} else if (!(appender instanceof ConsoleAppender)) {
+				System.err.println("Warning: non-Doop appender found: " + appender.class)
+			}
+		}
+		return !doopAppenderFound
 	}
 
 	static synchronized void tryInitLogging(String logLevel, String logDir, boolean console) throws IOException {
@@ -136,8 +135,7 @@ class Helper {
 		long now = System.currentTimeMillis()
 		try {
 			c.call()
-		}
-		catch(e) {
+		} catch(e) {
 			throw e
 		}
 		// We measure time only in error-free cases
