@@ -114,15 +114,14 @@ class PlatformManager {
 			platformsLib = ARTIFACTORY_PLATFORMS_URL
 
         List<String> platformParts = platform.split("_").toList()
-        if (platformParts.size() < 3) {
-		    return [] as List
-        }
+        int partsCount = platformParts.size()
         String platformKind = platformParts.get(0)
-        String version = platformParts.get(1)
-        String variant = platformParts.get(2)
+        String version = partsCount > 1 ? platformParts.get(1) : ""
+        String variant = partsCount > 2 ? platformParts.get(2) : ""
 		switch (platformKind) {
 			case "java":
-				def platformPath = "${platformsLib}/JREs/jre1.${variant ? "${version}_$variant" : version}/lib"
+				def vVersion = variant ? "${version}_$variant" : version
+				def platformPath = "${platformsLib}/JREs/jre1.${vVersion}/lib"
 				return find0(platform, platformPath)
 			case "android":
 				def platformSuffix = "platforms/android-${version}"
