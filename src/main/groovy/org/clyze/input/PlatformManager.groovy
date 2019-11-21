@@ -101,6 +101,7 @@ class PlatformManager {
             "android_26_stubs"      : androidTree5,
             "android_27_stubs"      : androidTree5,
             "android_28_stubs"      : androidTree6,
+            "android_29_stubs"      : androidTree6,
             // Android Dalvik equivalent
             "android_25_apks"       : [ "android_accessibilityservice.apk",
                                        "android_accounts.apk",
