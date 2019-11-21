@@ -67,11 +67,12 @@ public class JHelper {
      * consume the line may also be given.
      *
      * @param s         the line
-     * @param prefix    the prefix to print before the line
+     * @param prefix    the prefix to print before the line (can be null to omit the whole line)
      * @param processor a line processor (can be null)
      */
     private static void processWithPrefix(String s, String prefix, Consumer<String> processor) {
-        System.out.println(prefix + ": " + s);
+        if (prefix != null)
+            System.out.println(prefix + ": " + s);
         if (processor != null)
             processor.accept(s);
     }

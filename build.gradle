@@ -28,6 +28,10 @@ dependencies {
     testCompile 'org.spockframework:spock-core:1.3-groovy-2.5'
 }
 
+// compileJava {
+//     options.compilerArgs << '-Xlint:unchecked'
+// }
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
