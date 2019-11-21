@@ -11,100 +11,7 @@ class PlatformManager {
 
 	static final String ARTIFACTORY_PLATFORMS_URL = "http://centauri.di.uoa.gr:8081/artifactory/Platforms"
 
-	static final Map<String, Set<String>> ARTIFACTS_FOR_PLATFORM = [
-			// JDKs
-			"java_3"                : ["rt.jar"],
-			"java_4"                : ["rt.jar", "jce.jar", "jsse.jar"],
-			"java_5"                : ["rt.jar", "jce.jar", "jsse.jar"],
-			"java_6"                : ["rt.jar", "jce.jar", "jsse.jar"],
-			"java_7"                : ["rt.jar", "jce.jar", "jsse.jar", "tools.jar"],
-			"java_7_debug"          : ["rt.jar", "jce.jar", "jsse.jar", "tools.jar"],
-			"java_8"                : ["rt.jar", "jce.jar", "jsse.jar"],
-			"java_8_debug"          : ["rt.jar", "jce.jar", "jsse.jar"],
-			"java_8_mini"           : ["rt.jar", "jce.jar", "jsse.jar"],
-			// Android compiled from sources
-			"android_22_fulljars"   : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_25_fulljars"   : ["android.jar", "data/layoutlib.jar", "uiautomator.jar",
-			                           "optional/org.apache.http.legacy.jar"],
-			// Android API stubs (from the SDK)
-			"android_7_stubs"       : ["android.jar", "data/layoutlib.jar"],
-			"android_15_stubs"      : ["android.jar", "data/layoutlib.jar"],
-			"android_16_stubs"      : ["android.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_17_stubs"      : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_18_stubs"      : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_19_stubs"      : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_20_stubs"      : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_21_stubs"      : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_22_stubs"      : ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"],
-			"android_23_stubs"      : ["android.jar", "data/layoutlib.jar", "uiautomator.jar",
-			                           "optional/org.apache.http.legacy.jar"],
-			"android_24_stubs"      : ["android.jar", "data/layoutlib.jar", "uiautomator.jar",
-			                           "optional/org.apache.http.legacy.jar", "android-stubs-src.jar"],
-			"android_25_stubs"      : ["android.jar", "data/layoutlib.jar", "uiautomator.jar",
-			                           "optional/org.apache.http.legacy.jar", "android-stubs-src.jar"],
-			"android_26_stubs"      : ["android.jar", "data/layoutlib.jar", "uiautomator.jar",
-			                           "optional/org.apache.http.legacy.jar", "android-stubs-src.jar"],
-			// Android Dalvik equivalent
-			"android_25_apks"		: [ "android_accessibilityservice.apk",
-										"android_accounts.apk",
-										"android_animation.apk",
-										"android_annotation.apk",
-										"android_app.apk",
-										"android_appwidget.apk",
-										"android_bluetooth.apk",
-										"android_content.apk",
-										"android_database.apk",
-										"android_ddm.apk",
-										"android_drm.apk",
-										"android_filterfw.apk",
-										"android_filterpacks.apk",
-										"android_gesture.apk",
-										"android_graphics.apk",
-										"android_hardware.apk",
-										"android_hidl.apk",
-										"android_icu.apk",
-										"android_inputmethodservice.apk",
-										"android_location.apk",
-										"android_media.apk",
-										"android_mtp.apk",
-										"android_net.apk",
-										"android_nfc.apk",
-										"android_opengl.apk",
-										"android_os.apk",
-										"android_permissionpresenterservice.apk",
-										"android_preference.apk",
-										"android_print.apk",
-										"android_printservice.apk",
-										"android_provider.apk",
-										"android_renderscript.apk",
-										"android_sax.apk",
-										"android_security.apk",
-										"android_service.apk",
-										"android_speech.apk",
-										"android_system.apk",
-										"android_telecom.apk",
-										"android_telephony.apk",
-										"android_text.apk",
-										"android_transition.apk",
-										"android_util.apk",
-										"android_view.apk",
-										"android_webkit.apk",
-										"android_widget.apk",
-										"com.apk",
-										"dalvik.apk",
-										"java.apk",
-										"javax.apk",
-										"jdk.apk",
-										"libcore.apk",
-										"org.apk",
-										"sun.apk"
-									  ],
-			// Android-Robolectric
-			"android_26_robolectric": ["android.jar", "data/layoutlib.jar", "uiautomator.jar",
-			                           "optional/org.apache.http.legacy.jar", "android-stubs-src.jar"],
-			// Python
-			"python_2"              : [],
-	] as Map
+	static final Map<String, Set<String>> ARTIFACTS_FOR_PLATFORM = platformArtifacts
 
 	String platformsLib
 	String androidSdkDir
@@ -151,4 +58,108 @@ class PlatformManager {
 	static boolean allPlatformFilesExist(Collection<String> paths) {
 		return paths.findAll { !(new File(it)).exists() }.size() == 0
 	}
+
+    /**
+     * Returns the artifacts for every supported platform.
+     */
+    public static Map<String, Set<String>> getPlatformArtifacts() {
+
+        // Different versions of the Android SDK share the same file tree structure.
+        def androidTree1 = ["android.jar", "data/layoutlib.jar"]
+        def androidTree2 = ["android.jar", "data/layoutlib.jar", "uiautomator.jar"]
+        def androidTree3 = ["android.jar", "data/icu4j.jar", "data/layoutlib.jar", "uiautomator.jar"]
+        def androidTree4 = ["android.jar", "data/layoutlib.jar", "uiautomator.jar", "optional/org.apache.http.legacy.jar"]
+        def androidTree5 = ["android.jar", "data/layoutlib.jar", "uiautomator.jar", "optional/org.apache.http.legacy.jar", "android-stubs-src.jar"]
+        def androidTree6 = ["android.jar", "data/layoutlib.jar", "uiautomator.jar", "optional/android.test.base.jar", "optional/android.test.runner.jar", "optional/android.test.mock.jar", "optional/org.apache.http.legacy.jar", "android-stubs-src.jar"]
+        return [
+            // JDKs
+            "java_3"                : ["rt.jar"],
+            "java_4"                : ["rt.jar", "jce.jar", "jsse.jar"],
+            "java_5"                : ["rt.jar", "jce.jar", "jsse.jar"],
+            "java_6"                : ["rt.jar", "jce.jar", "jsse.jar"],
+            "java_7"                : ["rt.jar", "jce.jar", "jsse.jar", "tools.jar"],
+            "java_7_debug"          : ["rt.jar", "jce.jar", "jsse.jar", "tools.jar"],
+            "java_8"                : ["rt.jar", "jce.jar", "jsse.jar"],
+            "java_8_debug"          : ["rt.jar", "jce.jar", "jsse.jar"],
+            "java_8_mini"           : ["rt.jar", "jce.jar", "jsse.jar"],
+            // Android compiled from sources
+            "android_22_fulljars"   : androidTree3,
+            "android_25_fulljars"   : androidTree4,
+            // Android API stubs (from the SDK)
+            "android_7_stubs"       : androidTree1,
+            "android_15_stubs"      : androidTree1,
+            "android_16_stubs"      : androidTree2,
+            "android_17_stubs"      : androidTree3,
+            "android_18_stubs"      : androidTree3,
+            "android_19_stubs"      : androidTree3,
+            "android_20_stubs"      : androidTree3,
+            "android_21_stubs"      : androidTree3,
+            "android_22_stubs"      : androidTree3,
+            "android_23_stubs"      : androidTree4,
+            "android_24_stubs"      : androidTree5,
+            "android_25_stubs"      : androidTree5,
+            "android_26_stubs"      : androidTree5,
+            "android_27_stubs"      : androidTree5,
+            "android_28_stubs"      : androidTree6,
+            // Android Dalvik equivalent
+            "android_25_apks"       : [ "android_accessibilityservice.apk",
+                                       "android_accounts.apk",
+                                       "android_animation.apk",
+                                       "android_annotation.apk",
+                                       "android_app.apk",
+                                       "android_appwidget.apk",
+                                       "android_bluetooth.apk",
+                                       "android_content.apk",
+                                       "android_database.apk",
+                                       "android_ddm.apk",
+                                       "android_drm.apk",
+                                       "android_filterfw.apk",
+                                       "android_filterpacks.apk",
+                                       "android_gesture.apk",
+                                       "android_graphics.apk",
+                                       "android_hardware.apk",
+                                       "android_hidl.apk",
+                                       "android_icu.apk",
+                                       "android_inputmethodservice.apk",
+                                       "android_location.apk",
+                                       "android_media.apk",
+                                       "android_mtp.apk",
+                                       "android_net.apk",
+                                       "android_nfc.apk",
+                                       "android_opengl.apk",
+                                       "android_os.apk",
+                                       "android_permissionpresenterservice.apk",
+                                       "android_preference.apk",
+                                       "android_print.apk",
+                                       "android_printservice.apk",
+                                       "android_provider.apk",
+                                       "android_renderscript.apk",
+                                       "android_sax.apk",
+                                       "android_security.apk",
+                                       "android_service.apk",
+                                       "android_speech.apk",
+                                       "android_system.apk",
+                                       "android_telecom.apk",
+                                       "android_telephony.apk",
+                                       "android_text.apk",
+                                       "android_transition.apk",
+                                       "android_util.apk",
+                                       "android_view.apk",
+                                       "android_webkit.apk",
+                                       "android_widget.apk",
+                                       "com.apk",
+                                       "dalvik.apk",
+                                       "java.apk",
+                                       "javax.apk",
+                                       "jdk.apk",
+                                       "libcore.apk",
+                                       "org.apk",
+                                       "sun.apk"
+            ],
+            // Android-Robolectric
+            "android_26_robolectric": androidTree5,
+            // Python
+            "python_2"              : [],
+        ] as Map
+    }
 }
