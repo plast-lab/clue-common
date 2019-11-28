@@ -11,21 +11,25 @@ public interface Item {
 
 	/**
 	 * Set the item id
+	 *
+	 * @param id   the item id
 	 */
 	void setId(String id);	
 
 	/**
-	 * @param json The json data to populate the object
+	 * @param json   the JSON data to populate the object
+	 *
+	 * @return		 the instance that corresponds to the JSON data
 	 */
 	Item fromJSON(String json);
 
 	/**
-	 * @return The object state in json representation
+	 * @return the object state in JSON representation
 	 */
 	String toJSON();
 
 	/**
-	 * @return The object state as a map [item property => property value]
+	 * @return the object state as a map from item properties to property values
 	 */
 	Map<String, Object> toMap();
 

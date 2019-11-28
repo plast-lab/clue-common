@@ -35,6 +35,7 @@ public class JHelper {
      * @param cmd       the command to run
      * @param prefix    the prefix
      * @param processor a line processor (can be null)
+     * @throws IOException if no process can be built for the command
      */
     public static void runWithOutput(String[] cmd, String prefix, Consumer<String> processor) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(cmd);
@@ -57,6 +58,7 @@ public class JHelper {
      *
      * @param cmd       the command to run
      * @param prefix    the prefix
+     * @throws IOException if no process can be built for the command
      */
     public static void runWithOutput(String[] cmd, String prefix) throws IOException {
         runWithOutput(cmd, prefix, null);
@@ -82,6 +84,7 @@ public class JHelper {
      * detected and its contents are converted to UTF-8.
      *
      * @param filename   the path of the file to convert
+     * @throws IOException if processing the file failed
      */
     public static void ensureUTF8(String filename) throws IOException {
         // Encoding detector.
@@ -132,6 +135,7 @@ public class JHelper {
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
      * @param processor   a line processor (can be null)
+     * @throws IOException if no process can be built for the command
      */
     public static void runJar(String[] classpath, String[] jvmArgs, String jar,
                               String[] args, String tag, boolean debug,
@@ -152,6 +156,7 @@ public class JHelper {
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
      * @param processor   a line processor (can be null)
+     * @throws IOException if no process can be built for the command
      */
     public static void runClass(String[] classpath, String[] jvmArgs, String klass, String[] args,
                                 String tag, boolean debug, Consumer<String> processor) throws IOException {
@@ -169,6 +174,7 @@ public class JHelper {
      * @param tag         a text prefix to mark output lines
      * @param debug       if true, print debug information
      * @param processor   a line processor (can be null)
+     * @throws IOException if no process can be built for the command
      */
     public static void runJava(String[] classpath, String[] jvmArgs,
                                String[] args, String tag, boolean debug,
