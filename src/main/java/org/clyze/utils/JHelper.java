@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.function.Consumer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.*;
+import org.apache.log4j.helpers.NullEnumeration;
 import org.mozilla.universalchardet.UniversalDetector;
 
 public class JHelper {
@@ -204,6 +206,70 @@ public class JHelper {
         if (debug)
             System.err.println("Running program: " + String.join(" ", cmd));
         runWithOutput(cmd.toArray(new String[]{}), tag, processor);
+    }
+
+    public static synchronized void tryInitLogging(String logLevel, String logDir, boolean console) throws IOException {
+        if (shouldInitializeLogging())
+            initLogging(logLevel, logDir, console);
+        else
+            System.out.println("Logging already initialized.");
+    }
+
+    private static boolean shouldInitializeLogging() {
+        Logger logger = Logger.getRootLogger();
+        Enumeration<Appender> appenders = logger.getAllAppenders();
+        if ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
+            return true;
+
+        boolean doopAppenderFound = false;
+        // Check that the appender of initLogging() is found.
+        while (appenders.hasMoreElements()) {
+            Appender appender = appenders.nextElement();
+            if (appender instanceof DailyRollingFileAppender) {
+                doopAppenderFound = true;
+            } else if (!(appender instanceof ConsoleAppender)) {
+                System.err.println("Warning: non-Doop appender found: " + appender.getClass());
+            }
+        }
+        return !doopAppenderFound;
+    }
+
+    /**
+     * Initializes Log4j (logging framework).
+     * Log statements are written to log file that is daily rolled.
+     * Optionally, the log statements can be also written to the console (standard output).
+     *
+     * @param logLevel - the log level to use
+     * @param logDir - the directory to place the log file
+     * @param console - indicates whether log statements should be also written to the standard output.
+     */
+    private static void initLogging(String logLevel, String logDir, boolean console) throws IOException {
+        File dir = new File(logDir);
+        if (!dir.exists())
+            dir.mkdir();
+
+        String logFile = "$logDir/doop.log";
+
+        Logger root = Logger.getRootLogger();
+        root.setLevel(Level.toLevel(logLevel, Level.WARN));
+        PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n");
+        DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd");
+        root.addAppender(appender);
+
+        if (console)
+            root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")));
+    }
+
+    /**
+     * Initializes Log4j (logging framework).
+     * Log statements are written to the the console (standard output).
+     *
+     * @param logLevel - the log level to use
+     */
+    public static void initConsoleLogging(String logLevel) throws IOException {
+        Logger root = Logger.getRootLogger();
+        root.setLevel(Level.toLevel(logLevel, Level.WARN));
+        root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")));
     }
 
 }

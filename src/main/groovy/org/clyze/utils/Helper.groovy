@@ -3,8 +3,6 @@ package org.clyze.utils
 import groovy.transform.TypeChecked
 import groovy.util.logging.Log4j
 import java.lang.reflect.Method
-import org.apache.log4j.*
-import org.apache.log4j.helpers.NullEnumeration;
 
 /**
  * Various helper methods.
@@ -12,71 +10,6 @@ import org.apache.log4j.helpers.NullEnumeration;
 @Log4j
 @TypeChecked
 class Helper {
-
-	/**
-	 * Initializes Log4j (logging framework).
-	 * Log statements are written to log file that is daily rolled.
-	 * Optionally, the log statements can be also written to the console (standard output).
-	 *
-	 * @param logLevel - the log level to use
-	 * @param logDir - the directory to place the log file
-	 * @param console - indicates whether log statements should be also written to the standard output.
-	 */
-	static void initLogging(String logLevel, String logDir, boolean console) throws IOException {
-		def dir = new File(logDir)
-		if (!dir.exists())
-			dir.mkdir()
-
-		def logFile = "$logDir/doop.log"
-
-		def root = Logger.rootLogger
-		root.setLevel(Level.toLevel(logLevel, Level.WARN))
-		PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n")
-		DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd")
-		root.addAppender(appender)
-
-		if (console) {
-			root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
-		}
-	}
-
-	/**
-	 * Initializes Log4j (logging framework).
-	 * Log statements are written to the the console (standard output).
-	 *
-	 * @param logLevel - the log level to use
-	 */
-	static void initConsoleLogging(String logLevel) throws IOException {
-		def root = Logger.rootLogger
-		root.setLevel(Level.toLevel(logLevel, Level.WARN))
-		root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")))
-	}
-
-	static boolean shouldInitializeLogging() {
-		Logger logger = Logger.getRootLogger()
-		Enumeration appenders = logger.getAllAppenders()
-		if ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration)) {
-			return true
-		}
-		boolean doopAppenderFound = false
-		// Check that the appender of initLogging() is found.
-		for (def appender : appenders) {
-			if (appender instanceof DailyRollingFileAppender) {
-				doopAppenderFound = true
-			} else if (!(appender instanceof ConsoleAppender)) {
-				System.err.println("Warning: non-Doop appender found: " + appender.class)
-			}
-		}
-		return !doopAppenderFound
-	}
-
-	static synchronized void tryInitLogging(String logLevel, String logDir, boolean console) throws IOException {
-		if (shouldInitializeLogging()) {
-			initLogging(logLevel, logDir, console)
-		} else {
-			println "Logging already initialized."
-		}
-	}
 
 	/**
 	 * Executes the given Java main class using the supplied class
