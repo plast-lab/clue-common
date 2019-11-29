@@ -265,6 +265,7 @@ public class JHelper {
      * Log statements are written to the the console (standard output).
      *
      * @param logLevel - the log level to use
+     * @throws IOException on initialization error
      */
     public static void initConsoleLogging(String logLevel) throws IOException {
         Logger root = Logger.getRootLogger();
