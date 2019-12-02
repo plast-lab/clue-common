@@ -1,6 +1,4 @@
-package org.clyze.persistent.model.doop;
-
-import org.clyze.persistent.model.Position;
+package org.clyze.persistent.model;
 
 import java.util.Map;
 

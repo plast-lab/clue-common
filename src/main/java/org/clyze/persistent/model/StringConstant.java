@@ -1,10 +1,7 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.Map;
 import java.util.Objects;
-
-import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.Symbol;
 
 /**
  * This class represents a string constant; i.e. a pair of a static final String

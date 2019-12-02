@@ -1,10 +1,8 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.Map;
 import java.util.Arrays;
 import java.util.List;
-
-import org.clyze.persistent.model.Position;
 
 public class Method extends AnnotateableSymbolWithDoopId {
 

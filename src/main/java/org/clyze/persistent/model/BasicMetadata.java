@@ -1,4 +1,4 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.Set;
 import java.util.HashSet;

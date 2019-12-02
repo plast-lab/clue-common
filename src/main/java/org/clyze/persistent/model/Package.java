@@ -1,9 +1,7 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.Map;
 import java.util.List;
-
-import org.clyze.persistent.model.ItemImpl;
 
 /**
  * A package of a project.

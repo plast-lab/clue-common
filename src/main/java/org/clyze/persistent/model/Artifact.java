@@ -1,4 +1,4 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.Map;
 import java.util.Collection;

@@ -1,10 +1,8 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.clyze.persistent.model.Position;
 
 /**
  * Symbol used for classes, interfaces and enums

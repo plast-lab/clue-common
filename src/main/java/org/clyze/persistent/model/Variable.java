@@ -1,9 +1,6 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 import java.util.Map;
-
-import org.clyze.persistent.model.Position;
-import org.clyze.persistent.model.SymbolWithDoopId;
 
 public class Variable extends SymbolWithDoopId {
 

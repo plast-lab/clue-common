@@ -1,4 +1,4 @@
-package org.clyze.persistent.model.doop;
+package org.clyze.persistent.model;
 
 public enum UsageKind {
 	PACKAGE,
