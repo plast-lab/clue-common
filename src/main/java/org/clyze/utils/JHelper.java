@@ -244,17 +244,18 @@ public class JHelper {
      * @param console - indicates whether log statements should be also written to the standard output.
      */
     private static void initLogging(String logLevel, String logDir, boolean console) throws IOException {
-        File dir = new File(logDir);
-        if (!dir.exists())
-            dir.mkdir();
-
-        String logFile = "$logDir/doop.log";
-
         Logger root = Logger.getRootLogger();
         root.setLevel(Level.toLevel(logLevel, Level.WARN));
-        PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n");
-        DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd");
-        root.addAppender(appender);
+
+        if (logDir != null) {
+            File dir = new File(logDir);
+            if (!dir.exists())
+                dir.mkdir();
+            String logFile = logDir + File.separator + "doop.log";
+            PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n");
+            DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd");
+            root.addAppender(appender);
+        }
 
         if (console)
             root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")));
