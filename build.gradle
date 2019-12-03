@@ -32,24 +32,6 @@ dependencies {
 //     options.compilerArgs << '-Xlint:unchecked'
 // }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-}
-
-release {
-    //use defaults, see https://github.com/researchgate/gradle-release
-}
-
-tasks.release.doLast {
-    println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
-}
-
-afterReleaseBuild.dependsOn publish
-
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -64,6 +46,26 @@ artifacts {
     archives sourcesJar
     archives javadocJar
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact tasks.sourcesJar
+            artifact tasks.javadocJar
+        }
+    }
+}
+
+release {
+    //use defaults, see https://github.com/researchgate/gradle-release
+}
+
+tasks.release.doLast {
+    println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
+}
+
+afterReleaseBuild.dependsOn publish
 
 if (project.hasProperty('artifactory_user')) {
     publishing {
