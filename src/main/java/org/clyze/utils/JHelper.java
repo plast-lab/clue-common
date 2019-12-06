@@ -208,6 +208,35 @@ public class JHelper {
         runWithOutput(cmd.toArray(new String[]{}), tag, processor);
     }
 
+    /**
+     * Runs an external command. This method is inferior to
+     * runWithOutput() but it can be useful to run an existing command
+     * line (which is hard to split as an array).
+     *
+     * @param cmd        the command to run
+     * @param tag        a text prefix to mark output lines
+     * @param processor  a line processor (can be null)
+     * @throws IOException if there was an I/O error during command execution
+     * @throws InterruptedException if the command was interrupted
+     * @return           the exit value of the command
+     */
+    public static int runCommand(String cmd, String tag,
+                                 Consumer<String> processor)
+        throws IOException, InterruptedException {
+        Process proc = Runtime.getRuntime().exec(cmd);
+        InputStream stdIn = proc.getInputStream();
+        InputStream stdErr = proc.getErrorStream();
+        BufferedReader brIn = new BufferedReader(new InputStreamReader(stdIn));
+        BufferedReader brErr = new BufferedReader(new InputStreamReader(stdErr));
+
+        String line = null;
+        while ((line = brIn.readLine()) != null)
+            processWithPrefix(line, tag, null);
+        while ((line = brErr.readLine()) != null)
+            processWithPrefix(line, tag, null);
+        return proc.waitFor();
+    }
+
     public static synchronized void tryInitLogging(String logLevel, String logDir, boolean console) throws IOException {
         if (shouldInitializeLogging())
             initLogging(logLevel, logDir, console);
