@@ -237,9 +237,9 @@ public class JHelper {
         return proc.waitFor();
     }
 
-    public static synchronized void tryInitLogging(String logLevel, String logDir, boolean console) throws IOException {
+    public static synchronized void tryInitLogging(String logLevel, String logDir, boolean console, String logName) throws IOException {
         if (shouldInitializeLogging())
-            initLogging(logLevel, logDir, console);
+            initLogging(logLevel, logDir, console, logName);
         else
             System.out.println("Logging already initialized.");
     }
@@ -268,11 +268,12 @@ public class JHelper {
      * Log statements are written to log file that is daily rolled.
      * Optionally, the log statements can be also written to the console (standard output).
      *
-     * @param logLevel - the log level to use
-     * @param logDir - the directory to place the log file
-     * @param console - indicates whether log statements should be also written to the standard output.
+     * @param logLevel the log level to use
+     * @param logDir   the directory to place the log file
+     * @param console  indicates whether log statements should be also written to the standard output.
+     * @param logName  the file name of the log
      */
-    private static void initLogging(String logLevel, String logDir, boolean console) throws IOException {
+    private static void initLogging(String logLevel, String logDir, boolean console, String logName) throws IOException {
         Logger root = Logger.getRootLogger();
         root.setLevel(Level.toLevel(logLevel, Level.WARN));
 
@@ -280,7 +281,7 @@ public class JHelper {
             File dir = new File(logDir);
             if (!dir.exists())
                 dir.mkdir();
-            String logFile = logDir + File.separator + "doop.log";
+            String logFile = logDir + File.separator + logName;
             PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n");
             DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd");
             root.addAppender(appender);
