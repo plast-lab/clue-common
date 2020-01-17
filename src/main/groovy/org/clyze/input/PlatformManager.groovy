@@ -175,4 +175,26 @@ class PlatformManager {
             "python_2"              : [],
         ] as Map
     }
+
+    /**
+     * Find all locally installed Android SDKs.
+     *
+     * @param minVersion   the minimum Android SDK version (level)
+     * @param maxVersion   the maximum Android SDK version (level)
+     * @return             a list of version numbers
+     */
+    List<String> findInstalledAndroidSdks(int minVersion, int maxVersion) {
+        List<String> sdks = []
+        for (int version = minVersion; version <= maxVersion; version++) {
+            def platform = "android_${version}_stubs"
+            try {
+                def files = find(platform)
+                if ((files != null) && files.size() > 0) {
+                    sdks.add("" + version)
+                }
+            } catch (Throwable t) {
+            }
+        }
+        return sdks
+    }
 }
