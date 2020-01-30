@@ -188,7 +188,7 @@ class PlatformManager {
         for (int version = minVersion; version <= maxVersion; version++) {
             def platform = "android_${version}_stubs"
             try {
-                def files = find(platform)
+                def files = find(platform)?.findAll { (new File(it)).exists() }
                 if ((files != null) && files.size() > 0) {
                     sdks.add("" + version)
                 }
