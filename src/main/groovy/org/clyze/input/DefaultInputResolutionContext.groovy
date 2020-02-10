@@ -76,7 +76,7 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 	}
 
 	@Override
-	List<String> inputs() { files[InputType.INPUT] }
+	List<String> inputs() { files[InputType.INPUT] + files[InputType.INPUT_LOCAL] }
 
 	@Override
 	List<String> libraries() { files[InputType.LIBRARY] }
@@ -103,7 +103,7 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 	}
 
 	@Override
-	List<File> getAllInputs() { get0(InputType.INPUT) }
+	List<File> getAllInputs() { get0(InputType.INPUT) + get0(InputType.INPUT_LOCAL) }
 
 	@Override
 	List<File> getAllLibraries() { get0(InputType.LIBRARY) }

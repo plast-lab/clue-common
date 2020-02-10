@@ -22,8 +22,8 @@ class IvyResolver implements InputResolver {
         if (inputType == InputType.LIBRARY) {
             List<File> libs = [resolvedInput] + resolvedInputDependencies
             ctx.set(artifactId, libs, InputType.LIBRARY)
-        } else if (inputType == InputType.INPUT) {
-            ctx.set(artifactId, resolvedInput, InputType.INPUT)
+        } else if (inputType == InputType.INPUT || inputType == InputType.INPUT_LOCAL ) {
+            ctx.set(artifactId, resolvedInput, inputType)
             ctx.add(artifactId, InputType.LIBRARY) //add the same input as library dependency too
             ctx.set(artifactId, resolvedInputDependencies, InputType.LIBRARY)
         } else {
