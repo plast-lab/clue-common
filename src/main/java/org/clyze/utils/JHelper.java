@@ -246,14 +246,14 @@ public class JHelper {
 
     private static boolean shouldInitializeLogging() {
         Logger logger = Logger.getRootLogger();
-        Enumeration<Appender> appenders = logger.getAllAppenders();
+        Enumeration appenders = logger.getAllAppenders();
         if ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
             return true;
 
         boolean doopAppenderFound = false;
         // Check that the appender of initLogging() is found.
         while (appenders.hasMoreElements()) {
-            Appender appender = appenders.nextElement();
+            Appender appender = (Appender)appenders.nextElement();
             if (appender instanceof DailyRollingFileAppender) {
                 doopAppenderFound = true;
             } else if (!(appender instanceof ConsoleAppender)) {
