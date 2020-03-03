@@ -1,4 +1,5 @@
 plugins {
+    id 'java-library'
     id 'groovy'
     id 'maven-publish'
     id 'net.researchgate.release' version '2.6.0'
@@ -21,8 +22,8 @@ def groovyVersion='2.5.7'
 dependencies {
     implementation "org.codehaus.groovy:groovy:${groovyVersion}"
     implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-    implementation 'commons-io:commons-io:2.4'
-    implementation 'log4j:log4j:1.2.14'                    // Logging implementation
+    api 'commons-io:commons-io:2.4'
+    api 'log4j:log4j:1.2.14'                    // Logging implementation
     implementation 'org.apache.ivy:ivy:2.4.0'              // Apache Ivy (for downloading inputs from Maven repos)
     implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
