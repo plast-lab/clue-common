@@ -19,15 +19,14 @@ repositories {
 
 def groovyVersion='2.5.7'
 dependencies {
-    compile "org.codehaus.groovy:groovy:${groovyVersion}"
-    compile "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-    compile 'com.google.code.gson:gson:2.8.0',
-            'commons-io:commons-io:2.4',
-            'log4j:log4j:1.2.14',                               // Logging implementation
-            'org.apache.ivy:ivy:2.4.0',                         // Apache Ivy (for downloading inputs from Maven repos)
-            'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+    implementation "org.codehaus.groovy:groovy:${groovyVersion}"
+    implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
+    implementation 'commons-io:commons-io:2.4'
+    implementation 'log4j:log4j:1.2.14'                    // Logging implementation
+    implementation 'org.apache.ivy:ivy:2.4.0'              // Apache Ivy (for downloading inputs from Maven repos)
+    implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
-    testCompile 'org.spockframework:spock-core:1.3-groovy-2.5'
+    testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
 }
 
 compileJava {
