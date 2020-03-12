@@ -45,7 +45,7 @@ class AndroidDepResolver {
     }
 
     private Set<String> failedArtifacts = new HashSet<>()
-    private Set<List> ignoredArtifacts = new HashSet<>()
+    public Set<List> ignoredArtifacts = new HashSet<>()
 
     // Register an artifact given by a group:name:version tuple that
     // has been resolved to a local JAR and a set of local
