@@ -4,5 +4,6 @@ import groovy.transform.TypeChecked
 
 @TypeChecked
 class OS {
-    static boolean macOS = System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0
+    static boolean macOS = System.getProperty("os.name").toLowerCase().contains("mac")
+    static boolean win   = System.getProperty("os.name").toLowerCase().contains("windows")
 }
