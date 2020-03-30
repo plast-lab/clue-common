@@ -68,6 +68,7 @@ class Signer {
      * @param dir             the directory containing the code archive
      * @param apk             the name of the .apk file
      * @param messages        a list to return messages
+     * @param debug           if true, generate extra debug messages
      * @param keystorePath    the store file to use for signing
      * @param keystorePass    the store password
      * @param keyAlias        the key alias in the store
@@ -75,7 +76,7 @@ class Signer {
      * @return  the name of the signed file (or null on error)
      */
     static String signWithApksigner(String androidSdkHome, File dir, String apk,
-                                    List<String> messages,
+                                    List<String> messages, boolean debug,
                                     String keystorePath, String keystorePass,
                                     String keyAlias, String keyPassword) {
         if (!androidSdkHome) {
@@ -109,7 +110,8 @@ class Signer {
                 ]
                 Map<String, String> env = [:]
                 env.putAll(System.getenv())
-                messages.add("Running command: " + cmd)
+                if (debug)
+                    messages.add("Running command: " + cmd.join(" "))
                 (new Executor(environment: env)).execute(cmd)
                 return signedApk
             }
