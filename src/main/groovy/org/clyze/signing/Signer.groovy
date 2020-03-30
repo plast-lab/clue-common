@@ -65,16 +65,18 @@ class Signer {
      * Calls the 'apksigner' tool from the Android SDK to sign an .apk file.
      *
      * @param androidSdkHome  the path to the Android SDK
+     * @param dir             the directory containing the code archive
+     * @param apk             the name of the .apk file
      * @param messages        a list to return messages
-     * @param apkPath         the path of the .apk file
-     * @param storeFile       the store file to use for signing
-     * @param storePassword   the store password
+     * @param keystorePath    the store file to use for signing
+     * @param keystorePass    the store password
      * @param keyAlias        the key alias in the store
      * @param keyPassword     the key password
-     * @return  the path to the signed file (or null on error)
+     * @return  the name of the signed file (or null on error)
      */
-    static String signWithApksigner(String androidSdkHome, List<String> messages,
-                                    String apkPath, String storeFile, String storePassword,
+    static String signWithApksigner(String androidSdkHome, File dir, String apk,
+                                    List<String> messages,
+                                    String keystorePath, String keystorePass,
                                     String keyAlias, String keyPassword) {
         if (!androidSdkHome) {
             messages << 'ERROR: cannot run apksigner, empty Android SDK home'
@@ -94,15 +96,22 @@ class Signer {
                 messages.add("ERROR: No apksigner found, are build-tools installed (ANDROID_SDK=${androidSdkHome})?" as String)
             else {
                 String apkSignerBinary = apkSigners.sort().reverse().get(0)
-                String signedFile = "signed-" + apkPath
+                String signedApk = "signed-" + apk
+                String apkPathIn = (new File(dir, apk)).canonicalPath
+                String apkPathOut = (new File(dir, signedApk)).canonicalPath
                 List<String> cmd = [
-                    apkSignerBinary,
-                    'sign', '--ks', storeFile, '--ks-key-alias', keyAlias,
-                    '--ks-pass', "pass:${keyPassword}" as String,
-                    '--in', apkPath, '--out', signedFile
+                    apkSignerBinary, 'sign',
+                    '--ks', keystorePath,
+                    '--ks-pass', "pass:${keystorePass}" as String,
+                    '--ks-key-alias', keyAlias,
+                    '--key-pass', "pass:${keyPassword}" as String,
+                    '--in', apkPathIn, '--out', apkPathOut
                 ]
-                (new Executor()).execute(cmd)
-                return signedFile
+                Map<String, String> env = [:]
+                env.putAll(System.getenv())
+                messages.add("Running command: " + cmd)
+                (new Executor(environment: env)).execute(cmd)
+                return signedApk
             }
         }
         return null
