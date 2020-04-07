@@ -88,10 +88,12 @@ class Signer {
         List<String> apkSigners = []
         if (sdkDir.exists()) {
             sdkDir.eachFileRecurse (FileType.DIRECTORIES) { d ->
-                // TODO: Windows
-                File apkSigner = new File(d, 'apksigner')
-                if (apkSigner.exists())
-                    apkSigners << apkSigner.canonicalPath
+                ['apksigner', 'apksigner.bat'].each {String s ->
+                    File apkSigner = new File(d, s)
+                    messages.add("Trying apksigner: ${apkSigner}" as String)
+                    if (apkSigner.exists())
+                        apkSigners << apkSigner.canonicalPath
+                }
             }
             if (apkSigners.size() == 0)
                 messages.add("ERROR: No apksigner found, are build-tools installed (ANDROID_SDK=${androidSdkHome})?" as String)
