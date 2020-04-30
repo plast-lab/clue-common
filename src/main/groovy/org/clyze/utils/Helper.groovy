@@ -78,7 +78,13 @@ class Helper {
 	/**
 	 * Print elapsed time in seconds along with the given message.
 	 */
-	static void timingWithLogging(String message, Closure c) { log.debug(message + " took ${timing(c)} sec") }
+	static void timingWithLogging(String message, Closure c) {
+		// Do not simplify the following code or the closure may fail to run when
+		// the logger is not configured with the "debug" level.
+		long t = timing(c)
+		if (log.isDebugEnabled())
+			log.debug(message + " took ${t} sec")
+	}
 
 	/**
 	 * Read the line of a seeds file which should refer to either a method or a constructor.	 
