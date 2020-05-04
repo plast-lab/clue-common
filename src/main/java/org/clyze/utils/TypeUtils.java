@@ -1,5 +1,7 @@
 package org.clyze.utils;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -66,6 +68,51 @@ public enum TypeUtils {
 //        }
 
         cachedRaisedTypes.put(id, ret);
+        return ret;
+    }
+
+    /**
+     * Raises a JVM signature to a list of human-readable strings.
+     *
+     * @param sig   The low-level JVM signature.
+     * @return      A list of raised types (return type first, argument types follow).
+     */
+    public static List<String> raiseSignature(String sig) {
+        int lParenIdx = sig.indexOf('(');
+        int rParenIdx = sig.indexOf(')');
+
+        if (lParenIdx < 0 || rParenIdx < 0)
+            throw new RuntimeException("Malformed JVN signature found: " + sig);
+
+        List<String> ret = new LinkedList<>();
+        ret.add(raiseTypeId(sig.substring(rParenIdx + 1)));
+
+        boolean array = false;
+        int pos = lParenIdx + 1;
+        while (pos < rParenIdx) {
+            String ch = sig.substring(pos, pos + 1);
+            try {
+                ret.add(decodePrimType(ch) + (array ? "[]" : ""));
+                array = false;
+                pos++;
+                continue;
+            } catch (RuntimeException ex) {}
+            if (ch.equals("L")) {
+                int semiPos = sig.indexOf(';');
+                if (semiPos >= 0) {
+                    ret.add(raiseTypeId(sig.substring(pos, semiPos + 1)) + (array ? "[]" : ""));
+                    array = false;
+                    pos = semiPos + 1;
+                    continue;
+                }
+            } else if (ch.equals("[")) {
+                array = true;
+                pos++;
+                continue;
+            }
+            // When all else fails
+            throw new RuntimeException("Could not raise signature: " + sig + ", problem at string position " + pos);
+        }
         return ret;
     }
 
