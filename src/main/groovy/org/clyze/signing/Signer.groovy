@@ -69,6 +69,11 @@ class Signer {
      * @param apk             the name of the .apk file
      * @param messages        a list to return messages
      * @param debug           if true, generate extra debug messages
+     * @param minSdkVersion   parameter --min-sdk-version parameter (optional)
+     * @param maxSdkVersion   parameter --max-sdk-version parameter (optional)
+     * @param v1              parameter --v1-signing-enabled (optional)
+     * @param v2              parameter --v2-signing-enabled (optional)
+     * @param v3              parameter --v3-signing-enabled (optional)
      * @param keystorePath    the store file to use for signing
      * @param keystorePass    the store password
      * @param keyAlias        the key alias in the store
@@ -77,6 +82,8 @@ class Signer {
      */
     static String signWithApksigner(String androidSdkHome, File dir, String apk,
                                     List<String> messages, boolean debug,
+                                    String minSdkVersion, String maxSdkVersion,
+                                    String v1, String v2, String v3,
                                     String keystorePath, String keystorePass,
                                     String keyAlias, String keyPassword) {
         if (!androidSdkHome) {
@@ -110,6 +117,16 @@ class Signer {
                     '--key-pass', "pass:${keyPassword}" as String,
                     '--in', apkPathIn, '--out', apkPathOut
                 ]
+                if (minSdkVersion != null)
+                    cmd.addAll(['--min-sdk-version', minSdkVersion])
+                if (maxSdkVersion != null)
+                    cmd.addAll(['--max-sdk-version', maxSdkVersion])
+                if (v1 != null)
+                    cmd.addAll(['--v1-signing-enabled', v1])
+                if (v2 != null)
+                    cmd.addAll(['--v2-signing-enabled', v2])
+                if (v3 != null)
+                    cmd.addAll(['--v3-signing-enabled', v3])
                 Map<String, String> env = [:]
                 env.putAll(System.getenv())
                 if (debug)
