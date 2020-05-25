@@ -29,8 +29,10 @@ class TypeUtilsTest extends Specification {
         List<String> types4 = ['void', 'long']
         String sig5 = '()J'
         List<String> types5 = ['long']
-        String sig6 = '(J[BII)V';
+        String sig6 = '(J[BII)V'
         List<String> types6 = ['void', 'long', 'byte[]', 'int', 'int']
+        String sig7 = '(Landroid/graphics/Bitmap;ILandroid/graphics/Bitmap;II)V'
+        List<String> types7 = ['void', 'android.graphics.Bitmap', 'int', 'android.graphics.Bitmap', 'int', 'int']
 
         then:
         assertRaisedSignature(sig1, types1)
@@ -39,6 +41,7 @@ class TypeUtilsTest extends Specification {
         assertRaisedSignature(sig4, types4)
         assertRaisedSignature(sig5, types5)
         assertRaisedSignature(sig6, types6)
+        assertRaisedSignature(sig7, types7)
     }
 
     void assertRaisedSignature(String sig, List<String> checkTypes) {

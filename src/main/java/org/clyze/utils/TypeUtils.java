@@ -98,7 +98,7 @@ public enum TypeUtils {
                 continue;
             } catch (RuntimeException ex) {}
             if (ch.equals("L")) {
-                int semiPos = sig.indexOf(';');
+                int semiPos = sig.indexOf(';', pos);
                 if (semiPos >= 0) {
                     ret.add(raiseTypeId(sig.substring(pos, semiPos + 1)) + (array ? "[]" : ""));
                     array = false;
