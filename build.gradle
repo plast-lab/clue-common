@@ -18,7 +18,7 @@ repositories {
     mavenCentral()
 }
 
-def groovyVersion='2.5.7'
+def groovyVersion='2.5.10'
 dependencies {
     implementation "org.codehaus.groovy:groovy:${groovyVersion}"
     implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
