@@ -9,6 +9,7 @@ import groovy.util.logging.Log4j
 @TypeChecked
 class PlatformManager {
 
+	@SuppressWarnings('unused')
 	static final String ARTIFACTORY_PLATFORMS_URL = "http://centauri.di.uoa.gr:8081/artifactory/Platforms"
 
 	static final Map<String, Set<String>> ARTIFACTS_FOR_PLATFORM = platformArtifacts
@@ -17,9 +18,6 @@ class PlatformManager {
 	String androidSdkDir
 
 	List<String> find(String platform) {
-		if (!platformsLib)
-			platformsLib = ARTIFACTORY_PLATFORMS_URL
-
         List<String> platformParts = platform.split("_").toList()
         int partsCount = platformParts.size()
         String platformKind = platformParts.get(0)
