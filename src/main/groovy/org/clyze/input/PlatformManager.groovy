@@ -32,10 +32,14 @@ class PlatformManager {
 				return find0(platform, platformPath)
 			case "android":
 				def platformSuffix = "platforms/android-${version}"
-				def files = find0(platform, "${platformsLib}/Android/${variant}/Android/Sdk/${platformSuffix}")
-				if (!allPlatformFilesExist(files) && (variant == 'stubs') && androidSdkDir) {
-					log.info "Could not resolve platform '${platform}' via 'platformsLib', trying Android SDK in ${androidSdkDir}"
+				List<String> files = null
+				if ((variant == 'stubs') && androidSdkDir) {
+					log.info "Looking for platform in Android SDK directory: ${androidSdkDir}"
 					files = find0(platform, "${androidSdkDir}/${platformSuffix}")
+				}
+				if (files == null || !allPlatformFilesExist(files)) {
+					log.info "Could not resolve platform '${platform}' via Android SDK, trying platforms library: ${platformsLib}"
+					files = find0(platform, "${platformsLib}/Android/${variant}/Android/Sdk/${platformSuffix}")
 				}
 				if (variant == "robolectric") {
 					log.info "Using Robolectric with Java 8"
