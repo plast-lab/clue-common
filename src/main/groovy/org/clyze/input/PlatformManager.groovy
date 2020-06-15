@@ -17,7 +17,7 @@ class PlatformManager {
 	String platformsLib
 	String androidSdkDir
 
-	List<String> find(String platform) {
+	List<String> find(String platform, boolean useServer = false) {
         List<String> platformParts = platform.split("_").toList()
         int partsCount = platformParts.size()
         String platformKind = platformParts.get(0)
@@ -26,6 +26,14 @@ class PlatformManager {
 		switch (platformKind) {
 			case "java":
 				def vVersion = variant ? "${version}_$variant" : version
+				// If no platform library is given, use the server (or crash if this is not allowed).
+				if (platformsLib == null) {
+					if (useServer) {
+						platformsLib = ARTIFACTORY_PLATFORMS_URL
+					} else {
+						throw new RuntimeException("ERROR: no platforms library available, cannot find platform '${platform}'.")
+					}
+				}
 				def platformPath = "${platformsLib}/JREs/jre1.${vVersion}/lib"
 				return find0(platform, platformPath)
 			case "android":
@@ -37,7 +45,11 @@ class PlatformManager {
 				}
 				if (files == null || !allPlatformFilesExist(files)) {
 					log.info "Could not resolve platform '${platform}' via Android SDK, trying platforms library: ${platformsLib}"
-					files = find0(platform, "${platformsLib}/Android/${variant}/Android/Sdk/${platformSuffix}")
+					files = find0Platform(platform, platformsLib, variant, platformSuffix)
+				}
+				if (!allPlatformFilesExist(files) && useServer) {
+					log.info "Could not resolve platform '${platform}', trying platforms server: ${ARTIFACTORY_PLATFORMS_URL}"
+					files = find0Platform(platform, ARTIFACTORY_PLATFORMS_URL, variant, platformSuffix)
 				}
 				if (variant == "robolectric") {
 					log.info "Using Robolectric with Java 8"
@@ -48,6 +60,11 @@ class PlatformManager {
 				log.debug "Cannot handle platform kind: ${platformKind}"
 		}
 		return [] as List
+	}
+
+	static final List<String> find0Platform(String platform, String platformsLib,
+											String variant, String platformSuffix) {
+		return find0(platform, "${platformsLib}/Android/${variant}/Android/Sdk/${platformSuffix}")
 	}
 
 	static final List<String> find0(String platform, String path) {
