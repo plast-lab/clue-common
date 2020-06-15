@@ -86,9 +86,10 @@ public class JHelper {
      * detected and its contents are converted to UTF-8.
      *
      * @param filename   the path of the file to convert
+     * @param debug      if true, show debug messages
      * @throws IOException if processing the file failed
      */
-    public static void ensureUTF8(String filename) throws IOException {
+    public static void ensureUTF8(String filename, boolean debug) throws IOException {
         // Encoding detector.
         UniversalDetector detector = new UniversalDetector(null);
 
@@ -120,7 +121,8 @@ public class JHelper {
                 outDataLength++;
             }
             bufWriter.close();
-            System.out.println("Converted " + encoding + " to UTF-8: " + filename + ", " + buf2.length + " vs. " + outDataLength + "bytes");
+	    if (debug)
+		System.out.println("Converted " + encoding + " to UTF-8: " + filename + ", " + buf2.length + " vs. " + outDataLength + "bytes");
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException("Cannot convert encoding " + encoding + " to UTF-8");
