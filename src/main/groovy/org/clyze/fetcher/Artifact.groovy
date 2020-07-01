@@ -19,6 +19,7 @@ class Artifact {
     Artifact prepare() {
         String idForFileName = id.replaceAll(":", "_")
         baseOutDir = Files.createTempDirectory(idForFileName).toFile()
+        baseOutDir.deleteOnExit()
         return this
     }
 

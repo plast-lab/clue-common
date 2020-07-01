@@ -48,7 +48,9 @@ public class AARUtils {
     // this code may be used in a server context and thus never exit.
     public static String createTmpDir(Set<String> tmpDirs) {
         try {
-            String tmpDir = Files.createTempDirectory("aar").toString();
+            Path tmpDirPath = Files.createTempDirectory("aar");
+            tmpDirPath.toFile().deleteOnExit();
+            String tmpDir = tmpDirPath.toString();
             if (tmpDirs != null)
                 tmpDirs.add(tmpDir);
             return tmpDir;
