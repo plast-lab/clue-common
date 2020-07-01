@@ -3,6 +3,7 @@ plugins {
     id 'groovy'
     id 'maven-publish'
     id 'net.researchgate.release' version '2.6.0'
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 sourceCompatibility = '1.8'
@@ -79,6 +80,31 @@ if (project.hasProperty('artifactory_user')) {
                 }
                 //Always publish to the public releases repo
                 url "${artifactory_contextUrl}/libs-public-release-local"
+            }
+        }
+    }
+}
+
+// Upload to bintray with:
+//   ./gradlew clean build bintrayUpload --info
+// Needs properties: bintray_user, bintray_key.
+if (project.hasProperty('bintray_user') && project.hasProperty('bintray_key')) {
+    bintray {
+        user = bintray_user
+        key = bintray_key
+        publications = ['mavenJava']
+        configurations = ['archives']
+        pkg {
+            repo = 'plast-lab'
+            name = 'clue-common'
+            desc = 'Common functionality for static analysis tools developed by the PLAST research group.'
+            licenses = ['MIT']
+            labels = ['groovy', 'java']
+            vcsUrl = 'https://bitbucket.org/yanniss/clue-common.git'
+            version {
+                name = project.version
+                released = new Date()
+                vcsTag = project.version
             }
         }
     }
