@@ -23,4 +23,10 @@ abstract class Analysis implements Runnable {
 	 * Generic query entry-point
 	 */
 	abstract void processRelation(String relation, Closure outputLineProcessor)
+
+	/**
+	 * Returns the id of the analysis
+	 * @return the analysis id
+	 */
+	abstract String getId()
 }
