@@ -28,7 +28,7 @@ public class VersionInfo {
 				while ((line = br.readLine()) != null)
 					if (line != null && !line.equals(""))
 						hash = line;
-			} catch (IOException ex) { }
+			} catch (IOException ignored) { }
 		}
 
 		if (hash == null && version == null)
