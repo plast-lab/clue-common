@@ -188,9 +188,11 @@ public class JHelper {
             throw new RuntimeException("Could not determine JAVA_HOME to run: " + Arrays.toString(jvmArgs));
 
         // Try to find 'java' in known locations.
-        File java = new File(javaHome, "java");
+
+        String javaBin = OS.win ? "java.exe" : "java";
+        File java = new File(javaHome, javaBin);
         if (!java.exists()) {
-            java = new File(javaHome, "bin/java");
+            java = new File(new File(javaHome, "bin"), javaBin);
             if (!java.exists())
                 throw new RuntimeException("Could not find 'java' in JAVA_HOME, cannot run: " + Arrays.toString(jvmArgs));
         }
