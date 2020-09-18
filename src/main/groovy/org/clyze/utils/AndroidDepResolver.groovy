@@ -96,7 +96,7 @@ class AndroidDepResolver {
                     return false
                 }
             } catch (RuntimeException ex) {
-                println "Warning: could not compare versions ${ver1} and ${ver2} for artifact ${group}:${name}"
+                println "Warning: could not compare versions ${ver1} and ${ver2} for artifact ${group}:${name} (${ex.message})"
                 return false
             }
         }
@@ -324,7 +324,7 @@ class AndroidDepResolver {
             download("${mavenPrefix}.aar", savedFile)
         } catch (FileNotFoundException ex) {
             // Download JAR file.
-            logVMessage("AAR not found for ${name}-${version}, looking for JAR...")
+            logVMessage("AAR not found for ${name}-${version}, looking for JAR... [${ex.message}]")
             savedFile = "${localPre}.jar"
             download("${mavenPrefix}.jar", savedFile)
         }

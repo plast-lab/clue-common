@@ -9,6 +9,8 @@ import groovy.util.logging.Log4j
 @TypeChecked
 class PlatformManager {
 
+	private static final boolean DEBUG = false
+
 	@SuppressWarnings('unused')
 	static final String ARTIFACTORY_PLATFORMS_URL = "http://centauri.di.uoa.gr:8081/artifactory/Platforms"
 
@@ -212,6 +214,8 @@ class PlatformManager {
                     sdks.add("" + version)
                 }
             } catch (Throwable t) {
+				if (DEBUG)
+					t.printStackTrace()
             }
         }
         return sdks

@@ -11,6 +11,8 @@ import java.lang.reflect.Method
 @TypeChecked
 class Helper {
 
+	private static boolean DEBUG = false
+
 	/**
 	 * Executes the given Java main class using the supplied class
 	 * loader. Returns false if the method throws an exception.
@@ -25,7 +27,9 @@ class Helper {
         try {
             mainMethod.invoke(null, [params] as Object[])
             return true
-        } catch (all) {
+        } catch (ex) {
+			if (DEBUG)
+				ex.printStackTrace()
             return false
         }
 	}

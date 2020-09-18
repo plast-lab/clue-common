@@ -29,6 +29,8 @@ public enum TypeUtils {
     private static final String BYTE = "byte";
     private static final String BYTE_JVM = "B";
 
+    private static final boolean DEBUG = false;
+
     private static final Map<String, String> cachedRaisedTypes = new ConcurrentHashMap<>();
 
     private static final Pattern slashPat = Pattern.compile("/", Pattern.LITERAL);
@@ -96,7 +98,10 @@ public enum TypeUtils {
                 array = false;
                 pos++;
                 continue;
-            } catch (RuntimeException ex) {}
+            } catch (RuntimeException ex) {
+                if (DEBUG)
+                    ex.printStackTrace();
+            }
             if (ch.equals("L")) {
                 int semiPos = sig.indexOf(';', pos);
                 if (semiPos >= 0) {
