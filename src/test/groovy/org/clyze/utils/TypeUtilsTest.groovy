@@ -19,7 +19,7 @@ class TypeUtilsTest extends Specification {
 
     def "RaiseSignature"() {
         when:
-        String sig1 = '(Landroid/graphics/Bitmap;IIZ)V';
+        String sig1 = '(Landroid/graphics/Bitmap;IIZ)V'
         List<String> types1 = ['void', 'android.graphics.Bitmap', 'int', 'int', 'boolean']
         String sig2 = '(Ljava/nio/ByteBuffer;)Lcom/facebook/animated/gif/GifImage;'
         List<String> types2 = ['com.facebook.animated.gif.GifImage', 'java.nio.ByteBuffer']
@@ -45,7 +45,7 @@ class TypeUtilsTest extends Specification {
     }
 
     void assertRaisedSignature(String sig, List<String> checkTypes) {
-        List<String> types = TypeUtils.raiseSignature(sig);
+        List<String> types = TypeUtils.raiseSignature(sig)
         assert types.size() == checkTypes.size()
         for (int i = 0; i < types.size(); i++)
             assert types.get(i) == checkTypes.get(i)

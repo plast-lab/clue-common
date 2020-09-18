@@ -233,7 +233,7 @@ public class JHelper {
         BufferedReader brIn = new BufferedReader(new InputStreamReader(stdIn));
         BufferedReader brErr = new BufferedReader(new InputStreamReader(stdErr));
 
-        String line = null;
+        String line;
         while ((line = brIn.readLine()) != null)
             processWithPrefix(line, tag, null);
         while ((line = brErr.readLine()) != null)
@@ -250,7 +250,7 @@ public class JHelper {
 
     private static boolean shouldInitializeLogging() {
         Logger logger = Logger.getRootLogger();
-        Enumeration appenders = logger.getAllAppenders();
+        Enumeration<?> appenders = logger.getAllAppenders();
         if ((appenders == null) || (!appenders.hasMoreElements()) || (appenders instanceof NullEnumeration))
             return true;
 

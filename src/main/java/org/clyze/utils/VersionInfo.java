@@ -23,10 +23,10 @@ public class VersionInfo {
 		String hash = null;
 		InputStream gitHashIS = c.getClassLoader().getResourceAsStream("git-hash.txt");
 		if (gitHashIS != null) {
-			String line = null;
+			String line;
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(gitHashIS))) {
 				while ((line = br.readLine()) != null)
-					if (line != null && !line.equals(""))
+					if (!line.equals(""))
 						hash = line;
 			} catch (IOException ignored) { }
 		}

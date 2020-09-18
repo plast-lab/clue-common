@@ -116,12 +116,12 @@ class FileOps {
 				e.printStackTrace()
 				System.exit(0)
 				if (retries++ > 3) {
-					System.err.println("Cannot copy ${src} to ${dest}: ${e.message}");
+					System.err.println("Cannot copy ${src} to ${dest}: ${e.message}")
 					throw e
 				} else {
 					// Wait for I/O to settle.
 					final int sleepTime = 2000
-					System.err.println("Retrying copy due of ${src} to ${dest} ms due to error: ${e.message}");
+					System.err.println("Retrying copy due of ${src} to ${dest} ms due to error: ${e.message}")
 					Thread.sleep(sleepTime)
 				}
 			}
@@ -191,10 +191,10 @@ class FileOps {
                 fos.write(buffer, 0, len)
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace()
         } finally {
-            fos?.close();
-            gis?.close();
+            fos?.close()
+            gis?.close()
         }
     }
 }

@@ -16,7 +16,7 @@ import org.apache.ivy.plugins.parser.xml.XmlModuleDescriptorWriter
 
 class IvyArtifactFetcher implements ArtifactFetcher {
 
-    Artifact fetch(String id, ArtifactFetcher.Repo repo, boolean ignoreSources) {
+    Artifact fetch(String id, Repo repo, boolean ignoreSources) {
 
         String[] dep = id.split(":")
         if (dep.size() < 2) {
@@ -31,7 +31,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
             Object doInIvyContext(Ivy ivy, IvyContext context) {
 
                 DependencyResolver resolver
-                if (repo == ArtifactFetcher.Repo.MAVEN_CENTRAL ) {
+                if (repo == Repo.MAVEN_CENTRAL ) {
                     resolver = new URLResolver()
                     resolver.setM2compatible(true)
                     resolver.addArtifactPattern('http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact](-[revision]).[ext]')

@@ -83,7 +83,7 @@ class PlatformManager {
     /**
      * Returns the artifacts for every supported platform.
      */
-    public static Map<String, Set<String>> getPlatformArtifacts() {
+    static Map<String, Set<String>> getPlatformArtifacts() {
 
         // Different versions of the Android SDK share the same file tree structure.
         def androidTree1 = ["android.jar", "data/layoutlib.jar"]

@@ -30,7 +30,7 @@ class Signer {
     static String signWithJarsigner(File dir, String archive, String sigAlg,
                                     String digestAlg, String keystorePath,
                                     String keystorePass, String keystoreAlias) {
-        String javaHome = System.getProperty("java.home");
+        String javaHome = System.getProperty("java.home")
         if (javaHome == null) {
             log.debug "Cannot sign ${archive}: Java home not found."
             return null

@@ -18,13 +18,15 @@ class AndroidDepResolver {
     // returns the most recent version. This logic is followed only
     // for artifacts with groups belonging to 'localAndroidDeps'.
     private boolean useLatestVersion = false
-    public void setUseLatestVersion(boolean u) { this.useLatestVersion = u }
+
+    void setUseLatestVersion(boolean u) { this.useLatestVersion = u }
 
     // If true, then the latest versions are not resolved when
     // requested but the artifact group:name is pushed in a stack and
     // can be resolved later by getLatestDelayedArtifacts().
     private boolean resolveLatestLast = false
-    public void setResolveLatestLast(boolean r) { this.resolveLatestLast = r }
+
+    void setResolveLatestLast(boolean r) { this.resolveLatestLast = r }
 
     // The list of delayed artifacts for resolution. The 'version'
     // field in each element is assumed to be null.
@@ -37,7 +39,8 @@ class AndroidDepResolver {
         public String group
         public String name
         public String version
-        public ArtifactDesc(String group, String name, String version) {
+
+        ArtifactDesc(String group, String name, String version) {
             this.group   = group
             this.name    = name
             this.version = version
@@ -117,7 +120,7 @@ class AndroidDepResolver {
         "com.google.android.gms"
     ]
 
-    public Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
+    Set<String> resolveDependency(String appBuildHome, String group, String name, String version) {
         if (ignoredGroups.contains(group)) {
             logMessage("Ignoring dependency group: ${group}")
             return null
@@ -227,7 +230,7 @@ class AndroidDepResolver {
         delayedArtifacts << new ArtifactDesc(group, name, null)
     }
 
-    public Set<String> getLatestDelayedArtifacts() {
+    Set<String> getLatestDelayedArtifacts() {
         logVMessage("Resolving delayed artifacts...")
         Set<String> ret = new HashSet<>()
         delayedArtifacts.each { ArtifactDesc ad ->
@@ -359,7 +362,7 @@ class AndroidDepResolver {
 
     // Find the location of the Android SDK. Assumes it is property
     // 'sdk.dir' in file 'local.properties' located in 'rootDir'.
-    public void findSDK(String rootDir) {
+    void findSDK(String rootDir) {
         def localProp = "local.properties"
         def localProperties = new File(rootDir, localProp)
         if (localProperties.exists()) {
