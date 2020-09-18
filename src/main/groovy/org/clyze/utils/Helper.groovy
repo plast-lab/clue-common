@@ -46,7 +46,7 @@ class Helper {
 	 * @param cl          the classloader
 	 * @param mainClass   the main class
 	 * @param params      the parameters of the main class
-	 * @throws            an exception (see description above)
+	 * @throws Exception  (see description above)
 	 */
 	static boolean execJavaNoCatch(ClassLoader cl, String mainClass, String[] params) throws Exception {
 		Class theClass = Class.forName(mainClass, true, cl)
