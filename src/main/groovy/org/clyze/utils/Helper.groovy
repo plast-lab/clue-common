@@ -1,6 +1,6 @@
 package org.clyze.utils
 
-import groovy.transform.TypeChecked
+import groovy.transform.CompileStatic
 import groovy.util.logging.Log4j
 import java.lang.reflect.Method
 
@@ -8,7 +8,7 @@ import java.lang.reflect.Method
  * Various helper methods.
  */
 @Log4j
-@TypeChecked
+@CompileStatic
 class Helper {
 
 	private static boolean DEBUG = false

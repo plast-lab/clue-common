@@ -1,8 +1,12 @@
 package org.clyze.utils
 
+import groovy.transform.CompileStatic
+
 import static groovy.io.FileType.FILES
 import java.security.MessageDigest
 
+@SuppressWarnings('unused')
+@CompileStatic
 class CheckSum {
 
 	static String checksum(String s, String algorithm) {

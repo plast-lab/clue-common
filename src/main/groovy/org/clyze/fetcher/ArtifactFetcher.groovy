@@ -1,5 +1,8 @@
 package org.clyze.fetcher
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 interface ArtifactFetcher {
 
 	enum Repo {

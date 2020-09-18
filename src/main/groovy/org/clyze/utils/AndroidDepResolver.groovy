@@ -263,10 +263,10 @@ class AndroidDepResolver {
         final String aarPath1 = "${sdkHome}/extras/android/m2repository/${groupPath}/${name}/${version}"
         final String aarPath2 = "${sdkHome}/extras/google/m2repository/${groupPath}/${name}/${version}"
         final String aarPath3 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
-        final Map<String, File> aars =
-            [ "${aarPath1}" : new File("${aarPath1}/${name}-${version}.aar"),
-              "${aarPath2}" : new File("${aarPath2}/${name}-${version}.aar"),
-              "${aarPath3}" : new File("${aarPath3}/${name}-${version}.aar")]
+        final Map<String, File> aars = new HashMap<>()
+        aars.put(aarPath1, new File("${aarPath1}/${name}-${version}.aar"))
+        aars.put(aarPath2, new File("${aarPath2}/${name}-${version}.aar"))
+        aars.put(aarPath3, new File("${aarPath3}/${name}-${version}.aar"))
 
         // Search for .aar dependencies.
         def aarCandidate = aars.find { it.value.exists() }
@@ -282,9 +282,9 @@ class AndroidDepResolver {
             final String jarPath2 = "${sdkHome}/extras/m2repository/${groupPath}/${name}/${version}"
 //            final String jarFullPath1 = "${jarPath1}/${name}-${version}.jar"
 //            final String jarFullPath2 = "${jarPath2}/${name}-${version}.jar"
-            final Map<String, String> jars =
-                [ "${jarPath1}" : "${jarPath1}/${name}-${version}.jar",
-                  "${jarPath2}" : "${jarPath2}/${name}-${version}.jar"]
+            final Map<String, String> jars = new HashMap<>()
+            jars.put(jarPath1, "${jarPath1}/${name}-${version}.jar")
+            jars.put(jarPath2, "${jarPath2}/${name}-${version}.jar")
             def jarCandidate = jars.find { (new File(it.value)).exists() }
             if (jarCandidate) {
                 String jarDir = jarCandidate.key

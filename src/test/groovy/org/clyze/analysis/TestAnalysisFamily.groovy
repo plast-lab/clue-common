@@ -1,5 +1,8 @@
 package org.clyze.analysis
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class TestAnalysisFamily implements AnalysisFamily {
     @Override
     String getName() {
@@ -22,11 +25,11 @@ class TestAnalysisFamily implements AnalysisFamily {
                 id:'option2',
                 value: true
             )
-        ]
+        ] as List<AnalysisOption>
     }
 
     @Override
     Map<String, AnalysisOption> supportedOptionsAsMap() {
-        return [ option1 : 'option1', option2 : true ]
+        return [ option1 : 'option1', option2 : true ] as Map<String, AnalysisOption>
     }
 }

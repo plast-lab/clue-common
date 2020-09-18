@@ -1,10 +1,12 @@
 package org.clyze.utils
 
+import groovy.transform.CompileStatic
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import java.nio.file.*
 import java.util.zip.*
 
+@CompileStatic
 class FileOps {
 
 	private static final FileFilter ALL_FILES_AND_DIRECTORIES = [

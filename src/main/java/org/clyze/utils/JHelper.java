@@ -284,6 +284,7 @@ public class JHelper {
         if (logDir != null) {
             File dir = new File(logDir);
             if (!dir.exists())
+                //noinspection ResultOfMethodCallIgnored
                 dir.mkdir();
             String logFile = logDir + File.separator + logName;
             PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n");
@@ -300,9 +301,8 @@ public class JHelper {
      * Log statements are written to the the console (standard output).
      *
      * @param logLevel - the log level to use
-     * @throws IOException on initialization error
      */
-    public static void initConsoleLogging(String logLevel) throws IOException {
+    public static void initConsoleLogging(String logLevel) {
         Logger root = Logger.getRootLogger();
         root.setLevel(Level.toLevel(logLevel, Level.WARN));
         root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")));
