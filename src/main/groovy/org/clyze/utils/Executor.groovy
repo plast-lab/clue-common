@@ -1,14 +1,13 @@
 package org.clyze.utils
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import groovy.transform.TypeChecked
 import groovy.util.logging.Log4j
-
 import java.util.concurrent.Executors
 
+@CompileStatic
 @Log4j
 @TupleConstructor
-@TypeChecked
 class Executor {
 
 	static final Closure STDOUT_PRINTER = { String line -> println line }

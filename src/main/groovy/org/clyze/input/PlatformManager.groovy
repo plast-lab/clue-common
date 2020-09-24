@@ -1,12 +1,12 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import groovy.transform.TypeChecked
 import groovy.util.logging.Log4j
 
+@CompileStatic
 @Log4j
 @TupleConstructor
-@TypeChecked
 class PlatformManager {
 
 	private static final boolean DEBUG = false
