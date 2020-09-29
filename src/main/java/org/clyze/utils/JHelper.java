@@ -235,9 +235,9 @@ public class JHelper {
 
         String line;
         while ((line = brIn.readLine()) != null)
-            processWithPrefix(line, tag, null);
+            processWithPrefix(line, tag, processor);
         while ((line = brErr.readLine()) != null)
-            processWithPrefix(line, tag, null);
+            processWithPrefix(line, tag, processor);
         return proc.waitFor();
     }
 
