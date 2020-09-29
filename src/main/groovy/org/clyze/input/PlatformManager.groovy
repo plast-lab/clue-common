@@ -21,6 +21,8 @@ class PlatformManager {
 
 	String platformsLib
 	String androidSdkDir
+	/* A directory to use for caching generated platform JARs. */
+	String cacheDir
 
 	List<String> find(String platform, boolean useServer = false) {
         List<String> platformParts = platform.split("_").toList()
@@ -106,6 +108,9 @@ class PlatformManager {
             "java_8"                : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_8_debug"          : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_8_mini"           : ["rt.jar", "jce.jar", "jsse.jar"],
+	    "java_9"                : ["rt.jar"],
+	    "java_10"               : ["rt.jar"],
+	    "java_11"               : ["rt.jar"],
             // Android compiled from sources
             "android_22_fulljars"   : androidTree3,
             "android_25_fulljars"   : androidTree4,
@@ -227,11 +232,10 @@ class PlatformManager {
 	/**
 	 * Return a JAR that contains all platform classes from Java 9+ installations.
 	 * @param platformId  the name of the platform (such as 'java_9')
-	 * @param cacheDir    a directory to use for caching JARs (so that subsequent calls are cheaper)
 	 * @param jmodsDir    the 'jmods' directory of the target Java installation
 	 * @return            the path to the platform JAR
 	 */
-	static File getJava9PlusJar(String platformId, String cacheDir, File jmodsDir) {
+	File getJava9PlusJar(String platformId, File jmodsDir) {
 		File rtJar = Paths.get(cacheDir, platformId, 'rt.jar').toFile()
 		if (!rtJar.exists()) {
 			File jarOutDir = rtJar.parentFile
