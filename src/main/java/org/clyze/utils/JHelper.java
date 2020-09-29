@@ -308,4 +308,34 @@ public class JHelper {
         root.addAppender(new ConsoleAppender(new PatternLayout("%m%n")));
     }
 
+    /**
+     * Checks if the Java runtime is 9+.
+     *
+     * @return true if the runtime supports Java 9+
+     */
+    public static boolean java9Plus() {
+        return !(System.getProperty("java.version").startsWith("1."));
+        // Old method.
+        // try {
+        //     Class c = Class.forName("java.lang.Runtime$Version");
+        //     return true;
+        // } catch (ClassNotFoundException ex) {
+        //     return false;
+        // }
+    }
+
+    public static int getJavaVersion() {
+        String ver = System.getProperty("java.version");
+        if (ver.startsWith("1."))
+            return Integer.valueOf(ver.substring(2, ver.indexOf('.', 3)));
+        else
+            return Integer.valueOf(ver.substring(0, ver.indexOf('.')));
+    }
+
+    public static String getJavaHome() {
+        String javaHome = System.getenv("JAVA_HOME");
+        if (javaHome != null)
+            return javaHome;
+        return System.getProperty("java.home");
+    }
 }

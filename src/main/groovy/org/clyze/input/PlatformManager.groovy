@@ -3,6 +3,9 @@ package org.clyze.input
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.util.logging.Log4j
+import java.nio.file.Paths
+import org.apache.commons.io.FileUtils
+import org.clyze.utils.JHelper
 
 @CompileStatic
 @Log4j
@@ -220,4 +223,37 @@ class PlatformManager {
         }
         return sdks
     }
+
+	/**
+	 * Return a JAR that contains all platform classes from Java 9+ installations.
+	 * @param platformId  the name of the platform (such as 'java_9')
+	 * @param cacheDir    a directory to use for caching JARs (so that subsequent calls are cheaper)
+	 * @param jmodsDir    the 'jmods' directory of the target Java installation
+	 * @return            the path to the platform JAR
+	 */
+	static File getJava9PlusJar(String platformId, String cacheDir, File jmodsDir) {
+		File rtJar = Paths.get(cacheDir, platformId, 'rt.jar').toFile()
+		if (!rtJar.exists()) {
+			File jarOutDir = rtJar.parentFile
+			if (!jarOutDir.exists())
+				jarOutDir.mkdirs()
+			File tmpDir = File.createTempDir()
+			if (!jmodsDir.exists())
+				throw new RuntimeException("ERROR: 'jmods' directory does not exist: ${jmodsDir}")
+			jmodsDir.eachFile { File f ->
+				if (f.name.endsWith('.jmod')) {
+					String fPath = f.canonicalPath
+					println "Processing: ${fPath}"
+					String[] jmodCmd = ['jmod', 'extract', '--dir', tmpDir.canonicalPath, fPath]
+					JHelper.runWithOutput(jmodCmd, 'JMOD')
+				}
+			}
+			String rtJarPath = rtJar.canonicalPath
+			String[] jarCmd = ['jar', '-cf', rtJarPath, '-C', "${tmpDir}/classes", '.']
+			JHelper.runWithOutput(jarCmd, 'JAR')
+			println "Generated platform JAR for '${platformId}': ${rtJarPath}"
+			FileUtils.deleteQuietly(tmpDir)
+		}
+		return rtJar
+	}
 }
