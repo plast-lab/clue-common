@@ -41,7 +41,8 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 javadoc {
-    options.addBooleanOption('html5', true)
+    if (!System.getProperty('java.version').startsWith('1.'))
+        options.addBooleanOption('html5', true)
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
