@@ -9,7 +9,6 @@ class PlatformManagerTest extends Specification {
     @IgnoreIf({ !JHelper.java9Plus() })
     def "Java 9+ platform generation"() {
         when:
-        File tmpDir = File.createTempDir()
         File jmodsDir = new File(JHelper.getJavaHome(), 'jmods')
         String platformId = 'java_' + JHelper.getJavaVersion()
         PlatformManager pm = new PlatformManager(cacheDir: 'build/platform-cache')
