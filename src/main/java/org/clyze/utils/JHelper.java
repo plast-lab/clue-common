@@ -325,11 +325,14 @@ public class JHelper {
     }
 
     public static int getJavaVersion() {
-        String ver = System.getProperty("java.version");
+        return Integer.parseInt(getJavaVersion(System.getProperty("java.version")));
+    }
+
+    public static String getJavaVersion(String ver) {
         if (ver.startsWith("1."))
-            return Integer.parseInt(ver.substring(2, ver.indexOf('.', 3)));
+            return ver.substring(2, ver.indexOf('.', 3));
         else
-            return Integer.parseInt(ver.substring(0, ver.indexOf('.')));
+            return ver.substring(0, ver.indexOf('.'));
     }
 
     public static String getJavaHome() {

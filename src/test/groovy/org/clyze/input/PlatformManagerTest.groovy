@@ -12,9 +12,9 @@ class PlatformManagerTest extends Specification {
         File jmodsDir = new File(JHelper.getJavaHome(), 'jmods')
         String platformId = 'java_' + JHelper.getJavaVersion()
         PlatformManager pm = new PlatformManager(cacheDir: 'build/platform-cache')
-        File rtJar = pm.getJava9PlusJar(platformId, jmodsDir)
+        File rtJar = pm.getJava9PlusJar(platformId, jmodsDir, false)
         // Call again to get the cached JAR.
-        File rtJarCached = pm.getJava9PlusJar(platformId, jmodsDir)
+        File rtJarCached = pm.getJava9PlusJar(platformId, jmodsDir, true)
         println "rtJar = ${rtJar.canonicalPath}, rtJarCached = ${rtJarCached.canonicalPath}"
 
         then:

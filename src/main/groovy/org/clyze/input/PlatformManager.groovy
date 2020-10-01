@@ -24,7 +24,14 @@ class PlatformManager {
 	/* A directory to use for caching generated platform JARs. */
 	String cacheDir
 
-	List<String> find(String platform, boolean useServer = false) {
+	/**
+	 * Find the files of an analysis platform.
+	 * @param platform      the platform name (such as "java_8")
+	 * @param useServer     if true, an external platforms server may be used to download files
+	 * @param useLocalJava  a local Java installation to use for retrieving platform files (optional)
+	 * @return
+	 */
+	List<String> find(String platform, boolean useServer = false, String useLocalJava = null) {
         List<String> platformParts = platform.split("_").toList()
         int partsCount = platformParts.size()
         String platformKind = platformParts.get(0)
@@ -32,17 +39,20 @@ class PlatformManager {
         String variant = partsCount > 2 ? platformParts.get(2) : ""
 		switch (platformKind) {
 			case "java":
-				def vVersion = variant ? "${version}_$variant" : version
-				// If no platform library is given, use the server (or crash if this is not allowed).
-				if (platformsLib == null) {
-					if (useServer) {
-						platformsLib = ARTIFACTORY_PLATFORMS_URL
-					} else {
-						throw new RuntimeException("ERROR: no platforms library available, cannot find platform '${platform}'.")
+				// Special case: generate "rt.jar" for Java 9+ from local installation.
+				if (useLocalJava) {
+					try {
+						int javaVersion = Integer.parseInt(version)
+						if (javaVersion >= 9) {
+							String rtJar = getJava9PlusJar(platform, new File(useLocalJava, 'jmods'), false).canonicalPath
+							return [rtJar] as List<String>
+						}
+					} catch (Exception ex) {
+						log.debug "Could not parse Java platform version: ${version}"
 					}
 				}
-				def platformPath = "${platformsLib}/JREs/jre1.${vVersion}/lib"
-				return find0(platform, platformPath)
+				String vVersion = variant ? "${version}_$variant" : version
+				return find0(platform, getJavaPlatformPath(platform, vVersion, useServer, useLocalJava))
 			case "android":
 				def platformSuffix = "platforms/android-${version}"
 				List<String> files = null
@@ -67,6 +77,46 @@ class PlatformManager {
 				log.debug "Cannot handle platform kind: ${platformKind}"
 		}
 		return [] as List
+	}
+
+	private String getJavaPlatformPath(String platform, String vVersion, boolean useServer, String useJavaPath) {
+		// Special case: a Java installation path has been provided.
+		if (useJavaPath) {
+			File javaPath = new File(useJavaPath)
+			if (javaPath.exists()) {
+				File releaseFile = new File(javaPath, 'release')
+				if (releaseFile.exists()) {
+					Properties releaseProps = new Properties()
+					releaseProps.load(new FileInputStream(releaseFile.canonicalPath))
+					String javaVersion = releaseProps.getProperty('JAVA_VERSION')
+					if (javaVersion) {
+						javaVersion = javaVersion.trim()
+						javaVersion = javaVersion.startsWith('"') ? javaVersion.substring(1) : javaVersion
+						javaVersion = javaVersion.endsWith('"') ? javaVersion.substring(0, javaVersion.length() - 1) : javaVersion
+						println "Using local Java platform ${javaVersion}"
+						try {
+							String releaseVer = JHelper.getJavaVersion(javaVersion)
+							if (!releaseVer.equals(vVersion))
+								log.warn "WARNING: requested Java platform ${vVersion} but local platform is ${releaseVer}"
+						} catch (Exception ex) {
+							log.warn "WARNING: could not parse Java version: ${javaVersion}"
+						}
+					}
+
+				}
+				return new File(javaPath, 'lib').canonicalPath
+			} else
+				log.warn "WARNING: Java library does not exist: ${javaPath}"
+		}
+		// If no platforms library is provided, use the server (or crash if this is not allowed).
+		if (platformsLib == null) {
+			if (useServer) {
+				platformsLib = ARTIFACTORY_PLATFORMS_URL
+			} else {
+				throw new RuntimeException("ERROR: no platforms library available, cannot find platform '${platform}'.")
+			}
+		}
+		return "${platformsLib}/JREs/jre1.${vVersion}/lib"
 	}
 
 	static final List<String> find0Platform(String platform, String platformsLib,
@@ -108,9 +158,9 @@ class PlatformManager {
             "java_8"                : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_8_debug"          : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_8_mini"           : ["rt.jar", "jce.jar", "jsse.jar"],
-	    "java_9"                : ["rt.jar"],
-	    "java_10"               : ["rt.jar"],
-	    "java_11"               : ["rt.jar"],
+            "java_9"                : ["rt.jar"],
+            "java_10"               : ["rt.jar"],
+            "java_11"               : ["rt.jar"],
             // Android compiled from sources
             "android_22_fulljars"   : androidTree3,
             "android_25_fulljars"   : androidTree4,
@@ -233,11 +283,12 @@ class PlatformManager {
 	 * Return a JAR that contains all platform classes from Java 9+ installations.
 	 * @param platformId  the name of the platform (such as 'java_9')
 	 * @param jmodsDir    the 'jmods' directory of the target Java installation
+	 * @param useCached   if true, a cached local version may be used
 	 * @return            the path to the platform JAR
 	 */
-	File getJava9PlusJar(String platformId, File jmodsDir) {
+	File getJava9PlusJar(String platformId, File jmodsDir, boolean useCached = true) {
 		File rtJar = Paths.get(cacheDir, platformId, 'rt.jar').toFile()
-		if (!rtJar.exists()) {
+		if (!useCached || !rtJar.exists()) {
 			File jarOutDir = rtJar.parentFile
 			if (!jarOutDir.exists())
 				jarOutDir.mkdirs()
