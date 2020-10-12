@@ -117,10 +117,17 @@ class Executor {
 	}
 
 	void doSampling(Process process) {
-		// Get PID via "reflection" hack
-		def fld = process.class.getDeclaredField("pid")
-		fld.setAccessible(true)
-		def pid = fld.get(process)
+		// Get PID via "reflection" hack (Java 8) or via pid() method (Java 9+).
+		long pid
+		if (JHelper.java9Plus()) {
+			def meth = process.class.getDeclaredMethod("pid")
+			pid = meth.invoke(process) as long
+		} else {
+			def fld = process.class.getDeclaredField("pid")
+			fld.setAccessible(true)
+			pid = fld.get(process) as int
+		}
+
 
 		def monitorFile = new File(currWorkingDir, "monitoring.txt")
 		def monitorFileLatest = new File(currWorkingDir, "monitoring.latest.txt")
