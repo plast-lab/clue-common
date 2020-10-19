@@ -84,7 +84,7 @@ public enum TypeUtils {
         int rParenIdx = sig.indexOf(')');
 
         if (lParenIdx < 0 || rParenIdx < 0)
-            throw new RuntimeException("Malformed JVN signature found: " + sig);
+            throw new RuntimeException("Malformed JVM signature found: " + sig);
 
         List<String> ret = new LinkedList<>();
         ret.add(raiseTypeId(sig.substring(rParenIdx + 1)));
