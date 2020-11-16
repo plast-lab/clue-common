@@ -1,5 +1,6 @@
 package org.clyze.analysis
 
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -7,12 +8,15 @@ import spock.lang.Specification
  */
 class AnalysisFamiliesSpec extends Specification {
 
+    @Shared String TEST_ID = 'test'
+
     def "AnalysisFamilies registration works"() {
         setup:
         AnalysisFamilies.register(new TestAnalysisFamily())
 
         expect:
-        AnalysisFamilies.isRegistered('test')
+        AnalysisFamilies.isRegistered(TEST_ID)
+        AnalysisFamilies.getRegisteredFamilies().keySet().contains(TEST_ID)
     }
 
     def "AnalysisFamilies lookup works"() {
@@ -21,8 +25,8 @@ class AnalysisFamiliesSpec extends Specification {
         assert o.value == value
 
         where:
-        family | option   | value
-        'test' | 'option1'| 'option1'
-        'test' | 'option2'| true
+        family  | option   | value
+        TEST_ID | 'option1'| 'option1'
+        TEST_ID | 'option2'| true
     }
 }

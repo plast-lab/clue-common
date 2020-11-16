@@ -32,4 +32,9 @@ class TestAnalysisFamily implements AnalysisFamily {
     Map<String, AnalysisOption> supportedOptionsAsMap() {
         return [ option1 : 'option1', option2 : true ] as Map<String, AnalysisOption>
     }
+
+    @Override
+    void cleanDeploy() {
+        println "Test clean() invoked."
+    }
 }

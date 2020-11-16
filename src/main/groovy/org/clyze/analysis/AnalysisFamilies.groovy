@@ -1,14 +1,21 @@
 package org.clyze.analysis
 
+import groovy.transform.CompileStatic
+
 import java.util.concurrent.ConcurrentHashMap
 
 /**
  * A simple registry of the the available analysis families.
  * The class supports family registration and lookup in a case-insensitive fashion.
  */
+@CompileStatic
 class AnalysisFamilies {
 
 	private static final Map<String, AnalysisFamily> families = new ConcurrentHashMap()
+
+	static Map<String, AnalysisFamily> getRegisteredFamilies() {
+		return families
+	}
 
 	/**
 	 * Registers the given family, performing its initialization.
