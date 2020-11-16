@@ -1,10 +1,12 @@
 package org.clyze.analysis
 
 import groovy.transform.AutoClone
+import groovy.transform.CompileStatic
 
 import static groovy.transform.AutoCloneStyle.COPY_CONSTRUCTOR
 
 @AutoClone(style = COPY_CONSTRUCTOR)
+@CompileStatic
 class AnalysisOption<T> {
 	
 	/**

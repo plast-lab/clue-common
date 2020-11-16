@@ -1,15 +1,17 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Log4j
 import org.clyze.analysis.InputType
 
+@CompileStatic
 @Log4j
 class ChainResolver implements InputResolver {
 
 	private final List<InputResolver> resolvers
 
 	ChainResolver(InputResolver... resolvers) {
-		this.resolvers = resolvers
+		this.resolvers = resolvers.toList()
 	}
 
 	String name() { "chain" }

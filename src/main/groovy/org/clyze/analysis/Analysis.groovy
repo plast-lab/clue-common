@@ -1,8 +1,10 @@
 package org.clyze.analysis
 
 import groovy.transform.Canonical
+import groovy.transform.CompileStatic
 
 @Canonical
+@CompileStatic
 abstract class Analysis implements Runnable {
 	/**
 	 * The family of the analysis (e.g. doop or cclyzer)

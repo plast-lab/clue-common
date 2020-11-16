@@ -1,11 +1,13 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import org.clyze.analysis.InputType
 import org.clyze.utils.FileOps
 
 /**
  * Resolves the input as a directory that contains jar files.
  */
+@CompileStatic
 class DirectoryResolver implements InputResolver {
 
 	String name() { "directory" }

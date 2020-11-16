@@ -1,5 +1,6 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
@@ -8,6 +9,7 @@ import org.clyze.analysis.InputType
 /**
  * Resolves the input as a URL.
  */
+@CompileStatic
 @TupleConstructor
 class URLResolver implements InputResolver {
 

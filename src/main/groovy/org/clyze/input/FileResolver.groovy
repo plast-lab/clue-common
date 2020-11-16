@@ -1,5 +1,6 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.clyze.analysis.InputType
 import org.clyze.utils.FileOps
@@ -7,6 +8,7 @@ import org.clyze.utils.FileOps
 /**
  * Resolves the input as a local file.
  */
+@CompileStatic
 @TupleConstructor
 class FileResolver implements InputResolver {
 

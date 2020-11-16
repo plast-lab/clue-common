@@ -1,5 +1,8 @@
 package org.clyze.analysis
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 enum InputType {
     INPUT("input", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.MAVEN_ARTIFACT]),
     INPUT_LOCAL("local input", [ResolverType.LOCAL_FILE]),

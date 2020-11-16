@@ -1,10 +1,12 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import org.clyze.analysis.InputType
 
 /**
  * A resolver for inputs.
  */
+@CompileStatic
 interface InputResolver {
 
 	String name()

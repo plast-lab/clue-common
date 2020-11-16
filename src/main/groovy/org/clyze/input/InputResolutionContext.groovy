@@ -1,11 +1,13 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import org.clyze.analysis.InputType
 
 /**
  * The input resolution mechanism.
  * Resolves inputFiles (given as strings) to a set of files.
  */
+@CompileStatic
 interface InputResolutionContext {
 
 	/**

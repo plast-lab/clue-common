@@ -1,8 +1,11 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
+
 /**
  * A resolved input.
  */
+@CompileStatic
 class ResolvedInput implements Input {
 	private final String input
 	private final Set<File> files

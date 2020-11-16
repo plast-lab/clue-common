@@ -1,5 +1,7 @@
 package org.clyze.analysis
 
+import groovy.transform.CompileStatic
+
 /**
  * An analysis family (e.g. doop, cclyzer, etc.).
  *
@@ -8,6 +10,7 @@ package org.clyze.analysis
  *
  * The supportedOptions() method should be idempotent, once the init() call has succeeded.
  */
+@CompileStatic
 interface AnalysisFamily {
 
 	/** The name of the AnalysisFamily. */
