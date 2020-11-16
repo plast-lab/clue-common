@@ -60,7 +60,7 @@ class AnalysisFamilies {
 	 * Gets the supported options of the given family.
 	 * Throws an error if the family is not registered.
 	 */
-	static List<AnalysisOption> supportedOptionsOf(String name) throws RuntimeException {
+	static List<AnalysisOption<?>> supportedOptionsOf(String name) throws RuntimeException {
 		AnalysisFamily family = get(name)
 		if (family) {
 			return family.supportedOptions()

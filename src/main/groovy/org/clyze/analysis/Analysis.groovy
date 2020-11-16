@@ -14,7 +14,7 @@ abstract class Analysis implements Runnable {
 	/**
 	 * The options of the analysis
 	 */
-	Map<String, AnalysisOption> options
+	Map<String, AnalysisOption<?>> options
 
 	/**
 	 * Optional closure for handling monitoring of the analysis

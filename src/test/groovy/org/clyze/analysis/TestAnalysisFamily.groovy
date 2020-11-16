@@ -15,7 +15,7 @@ class TestAnalysisFamily implements AnalysisFamily {
     }
 
     @Override
-    List<AnalysisOption> supportedOptions() {
+    List<AnalysisOption<?>> supportedOptions() {
         return [
             new AnalysisOption<String>(
                 id:'option1',
@@ -25,12 +25,12 @@ class TestAnalysisFamily implements AnalysisFamily {
                 id:'option2',
                 value: true
             )
-        ] as List<AnalysisOption>
+        ] as List<AnalysisOption<?>>
     }
 
     @Override
-    Map<String, AnalysisOption> supportedOptionsAsMap() {
-        return [ option1 : 'option1', option2 : true ] as Map<String, AnalysisOption>
+    Map<String, AnalysisOption<?>> supportedOptionsAsMap() {
+        return [ option1 : 'option1', option2 : true ] as Map<String, AnalysisOption<?>>
     }
 
     @Override

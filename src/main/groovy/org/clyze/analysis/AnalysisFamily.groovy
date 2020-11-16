@@ -20,10 +20,10 @@ interface AnalysisFamily {
 	void init() throws RuntimeException
 
 	/** The list of options supported by the analysis. */
-	List<AnalysisOption> supportedOptions()
+	List<AnalysisOption<?>> supportedOptions()
 
 	/** The list of options supported by the analysis, exposed as a map. */
-	Map<String, AnalysisOption> supportedOptionsAsMap()
+	Map<String, AnalysisOption<?>> supportedOptionsAsMap()
 
 	/** Clean-up functionality for deployment initialization. */
 	void cleanDeploy()
