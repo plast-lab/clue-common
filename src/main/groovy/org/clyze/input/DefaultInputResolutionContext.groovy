@@ -1,5 +1,6 @@
 package org.clyze.input
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Log4j
 import org.clyze.analysis.InputType
 
@@ -7,6 +8,7 @@ import org.clyze.analysis.InputType
  * The default implementation of the input resolution mechanism.
  */
 @Log4j
+@CompileStatic
 class DefaultInputResolutionContext implements InputResolutionContext {
 
 	// The default resolver. Needs temporary directory for downloaded files.
@@ -34,7 +36,7 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 	boolean transitive = true
 
 	Map<InputType, List<String>> files = [:].withDefault { [] }
-	Map<InputType, Map<String, ResolvedInput>> resolvedFiles = [:].withDefault { [:] }
+	Map<InputType, Map<String, ResolvedInput>> resolvedFiles = [:].withDefault { [:] as Map<String, ResolvedInput>}
 
 	DefaultInputResolutionContext(ChainResolver resolver) {
 		this.resolver = resolver
@@ -44,7 +46,7 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 	void add(String input, InputType inputType) { files[inputType] << input }
 
 	@Override
-	void add(List<String> inputs, InputType inputType) { files[inputType] += inputs }
+	void add(List<String> inputs, InputType inputType) { files[inputType].addAll(inputs) }
 
 	@Override
 	void set(String input, File file, InputType inputType) {
@@ -63,7 +65,7 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 	void resolve() {
 		// Iterate over a local immutable copy, since the resolver may
 		// modify the contents of the files field.
-		Map map = [:]
+		Map<InputType, Collection<String>> map = [:]
 		files.each { inputType, paths -> map.put(inputType, paths) }
 		map.each { inputType, paths ->
 			paths.each { path ->
@@ -87,8 +89,11 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 	@Override
 	List<String> heapDLs() { files[InputType.HEAPDL] }
 
+	@Override
+	List<String> sourceFiles() { files[InputType.SOURCES] }
+
 	private List<File> get0(InputType inputType) {
-		def resolvedList = []
+		List<File> resolvedList = []
 		files[inputType].each { path ->
 			log.debug "Getting $path ($inputType)"
 			def resolved = resolvedFiles[inputType][path]
@@ -99,7 +104,7 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 				throw new RuntimeException("Unresolved $path ($inputType)")
 			}
 		}
-		resolvedList
+		return resolvedList
 	}
 
 	@Override
@@ -113,6 +118,9 @@ class DefaultInputResolutionContext implements InputResolutionContext {
 
 	@Override
 	List<File> getAllHeapDLs() { get0(InputType.HEAPDL) }
+
+	@Override
+	List<File> getAllSourceFiles() { get0(InputType.SOURCES) }
 
 	@Override
 	List<File> getAll() { files.keySet().collect { inputType -> get0(inputType) }.flatten() as List<File> }

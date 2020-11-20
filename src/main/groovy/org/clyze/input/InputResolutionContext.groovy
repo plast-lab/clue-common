@@ -77,6 +77,8 @@ interface InputResolutionContext {
 	 */
 	List<String> heapDLs()
 
+	List<String> sourceFiles()
+
 	/**
 	 * Get the setInput of files that correspond to the inputFiles of this context.
 	 * If an input is found to be unresolved --it has no file(s)-- an exception is thrown.
@@ -88,6 +90,8 @@ interface InputResolutionContext {
 	List<File> getAllPlatformFiles()
 
 	List<File> getAllHeapDLs()
+
+	List<File> getAllSourceFiles()
 
 	List<File> getAll()
 }

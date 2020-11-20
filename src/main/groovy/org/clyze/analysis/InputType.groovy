@@ -9,6 +9,7 @@ enum InputType {
     LIBRARY("library", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.MAVEN_ARTIFACT]),
     PLATFORM("platform", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
     HEAPDL("heap dump", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
+    SOURCES("sources", [ResolverType.LOCAL_FILE, ResolverType.URL]),
     MISC("misc", [ResolverType.LOCAL_FILE, ResolverType.URL]),
 
     private final String title
