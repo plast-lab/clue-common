@@ -139,7 +139,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
     // Returns true on dependencies that crash Doop. Subclasses that
     // need more control over dependencies should override this method.
     @SuppressWarnings("GrMethodMayBeStatic")
-    private boolean badDependency(String depName) {
+    protected boolean badDependency(String depName) {
         false
     }
 }
