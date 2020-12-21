@@ -54,7 +54,7 @@ class Executor {
 				executorService.submit({ doSampling(process) })
 
 			if (OS.macOS && !invo.outputFile) {
-				// If there is no output file, reat the inputsream before waiting for the process.
+				// If there is no output file, read the inputstream before waiting for the process.
 				// This is necessary to ensure that the process does not block while the stream having reached its buffer size.
 				while (process.isAlive()) {
 					try {

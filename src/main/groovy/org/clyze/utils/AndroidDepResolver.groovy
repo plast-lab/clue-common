@@ -315,7 +315,7 @@ class AndroidDepResolver {
     }
 
     // Resolve an external dependency as a local file. AAR libraries
-    // are downloadad and their classes.jar extracted; JARs are
+    // are downloaded and their classes.jar extracted; JARs are
     // downloaded.
     private static String resolveExtDep(String depDir, String group, String name,
                                         String version, String localPre, String pom) {
