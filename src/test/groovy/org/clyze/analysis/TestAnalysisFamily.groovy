@@ -10,6 +10,11 @@ class TestAnalysisFamily implements AnalysisFamily {
     }
 
     @Override
+    boolean requiresSources() {
+        return false
+    }
+
+    @Override
     void init() throws RuntimeException {
 
     }
