@@ -1,7 +1,5 @@
 package org.clyze.utils
 
-import org.apache.commons.io.FileUtils
-import org.clyze.fetcher.Artifact
 import org.clyze.fetcher.ArtifactFetcher
 import org.clyze.fetcher.IvyArtifactFetcher
 import spock.lang.Specification
@@ -16,10 +14,7 @@ class ContainerUtilsTest extends Specification {
         Set<String> tmpDirs = [] as Set<String>
         List<String> jars = ContainerUtils.toJars([aar.canonicalPath], false, tmpDirs)
         println "JAR: ${jars.get(0)}"
-        tmpDirs.forEach {
-            println "Deleting temporary directory: ${it}"
-            FileUtils.deleteDirectory(new File(it))
-        }
+        JHelper.cleanUp(tmpDirs)
 
         then:
         assert jars.size() == 1
