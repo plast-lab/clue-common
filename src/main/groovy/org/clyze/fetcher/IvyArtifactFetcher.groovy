@@ -1,7 +1,9 @@
 package org.clyze.fetcher
 
+import groovy.transform.CompileStatic
 import org.apache.ivy.Ivy
 import org.apache.ivy.core.IvyContext
+import org.apache.ivy.core.settings.IvySettings
 import org.apache.ivy.plugins.resolver.BintrayResolver
 import org.apache.ivy.plugins.resolver.DependencyResolver
 import org.apache.ivy.plugins.resolver.URLResolver
@@ -13,6 +15,7 @@ import org.apache.ivy.core.report.ResolveReport
 import org.apache.ivy.core.resolve.ResolveOptions
 import org.apache.ivy.plugins.parser.xml.XmlModuleDescriptorWriter
 
+@CompileStatic
 class IvyArtifactFetcher implements ArtifactFetcher {
 
     Artifact fetch(String id, Repo repo, boolean ignoreSources) {
@@ -114,7 +117,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
             report      : report,
             jar         : codeLocalFile,
             sourcesJar  : ignoreSources ? null : srcReport?.getLocalFile(),
-            dependencies: deps.collect { it.getLocalFile().canonicalPath }
+            dependencies: deps.collect { ArtifactDownloadReport it -> it.getLocalFile().canonicalPath } as Set<String>
         )
         return artifact
     }

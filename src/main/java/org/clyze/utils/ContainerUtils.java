@@ -12,7 +12,13 @@ import java.util.zip.ZipFile;
 
 import static org.clyze.utils.JHelper.throwRuntimeException;
 
-public class AARUtils {
+/**
+ * Utilities for handling archives containing bytecode such as
+ * AAR files.
+ */
+public final class ContainerUtils {
+
+    private ContainerUtils() {}
 
     // Decompress AAR and find its classes.jar, which is then saved
     // using the value of parameter 'targetJar'. Any other .jar
@@ -43,9 +49,13 @@ public class AARUtils {
         }
     }
 
-    // Create temporary directory and add it to 'tmpDirs' (so that it
-    // can be later deleted). Preferred to File.deleteOnExit(), since
-    // this code may be used in a server context and thus never exit.
+    /**
+     * Create temporary directory and add it to 'tmpDirs' (so that it
+     * can be later deleted). Preferred to File.deleteOnExit(), since
+     * this code may be used in a server context and thus never exit.
+     * @param tmpDirs  an optional set to receive the new path
+     * @return         the new temporary path
+     */
     public static String createTmpDir(Set<String> tmpDirs) {
         try {
             Path tmpDirPath = Files.createTempDirectory("aar");
@@ -60,9 +70,13 @@ public class AARUtils {
         }
     }
 
-    // Transforms a set of Java archives: JAR archives are returned,
-    // while AARs are searched for JAR entries, which are returned.
-    // Parameter 'tmpDirs' collects any temporary directories created.
+    /**
+     * Transforms a set of Java archives: JAR archives are returned,
+     * while AARs are searched for JAR entries, which are returned.
+     * @param archives   a list of archive paths
+     * @param ignore     if true, non-JAR/AAR files will be ignored
+     * @param tmpDirs    collects any temporary directories created
+     */
     public static List<String> toJars(List<String> archives, boolean ignore,
                                       Set<String> tmpDirs) {
         List<String> jars = new ArrayList<>();
@@ -70,6 +84,16 @@ public class AARUtils {
         return jars;
     }
 
+    /**
+     * Transforms an AAR file to a JAR.
+     * @param ar           a file path
+     * @param jars         the list of JAR file paths to update
+     * @param ignore       if true, archives that are not in JAR/AAR format will
+     *                     be omitted; if false, these archives still end up in
+     *                     the "jars" list
+     * @param tmpDirs      an optional list of temporary directories (for manual
+     *                     resource control)
+     */
     private static void toJar(String ar, List<String> jars,
                               boolean ignore, Set<String> tmpDirs) {
         if (ar.endsWith(".jar")) {
