@@ -33,7 +33,9 @@ class IvyArtifactFetcher implements ArtifactFetcher {
                 if (repo == Repo.MAVEN_CENTRAL ) {
                     resolver = new URLResolver()
                     resolver.setM2compatible(true)
-                    resolver.addArtifactPattern('http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact](-[revision]).[ext]')
+                    for (String e : ['.[ext]', '.aar']) {
+                        resolver.addArtifactPattern('https://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact](-[revision])' + e)
+                    }
                 }
                 else {
                     resolver = new BintrayResolver()
@@ -56,7 +58,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
 
                 XmlModuleDescriptorWriter.write(md, ivyfile)
 
-                String[] confs = ['default']
+                String[] confs = [ResolveOptions.RESOLVEMODE_DEFAULT]
                 ResolveOptions resolveOptions = new ResolveOptions().
                         setConfs(confs).
                         setTransitive(true)//.setArtifactFilter(FilterHelper.getArtifactTypeFilter(ARTIFACT_TYPES))
@@ -76,6 +78,7 @@ class IvyArtifactFetcher implements ArtifactFetcher {
             }
         }
 
+        println ("Report types: " + (reports.collect { ArtifactDownloadReport r -> r.getType() } as Set<String>))
         ArtifactDownloadReport srcReport = reports.find { it.getType() == 'source' }
         // Java: the first jar is the Artifact
         ArtifactDownloadReport jarReport = reports.find { it.getType() == 'jar' || it.getType() == 'maven-plugin' || it.getType() == 'bundle' }
@@ -97,9 +100,9 @@ class IvyArtifactFetcher implements ArtifactFetcher {
             // deps = reports.findAll { (it.getType() == 'jar' || it.getType() == 'bundle') && it != aarReport }
         } else if (jarReport) {
             codeLocalFile = jarReport.getLocalFile()
-            deps = reports.findAll { (it.getType() == 'jar' || it.getType() == 'bundle') && it != jarReport && (!badDependency(it.getLocalFile().getName())) }
+            deps = reports.findAll { supportedArtifact(it) && it != jarReport && (!badDependency(it.getLocalFile().getName())) }
             if (!srcReport && !ignoreSources) {
-                throw new RuntimeException("No sources for ${id}")
+                throw new RuntimeException("No sources for ${id}: ${deps}")
             }
         } else {
             throw new RuntimeException("No binaries for ${id}")
@@ -114,6 +117,10 @@ class IvyArtifactFetcher implements ArtifactFetcher {
             dependencies: deps.collect { it.getLocalFile().canonicalPath }
         )
         return artifact
+    }
+
+    private static boolean supportedArtifact(ArtifactDownloadReport report) {
+        return ['jar', 'bundle', 'aar'].contains(report.getType())
     }
 
     private static void checkArtifactFile(File file, String[] dep, ArtifactDownloadReport[] reports) {
