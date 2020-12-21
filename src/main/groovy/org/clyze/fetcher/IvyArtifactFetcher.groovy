@@ -3,7 +3,6 @@ package org.clyze.fetcher
 import groovy.transform.CompileStatic
 import org.apache.ivy.Ivy
 import org.apache.ivy.core.IvyContext
-import org.apache.ivy.core.settings.IvySettings
 import org.apache.ivy.plugins.resolver.BintrayResolver
 import org.apache.ivy.plugins.resolver.DependencyResolver
 import org.apache.ivy.plugins.resolver.URLResolver

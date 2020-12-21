@@ -13,19 +13,31 @@ import org.apache.log4j.*;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.mozilla.universalchardet.UniversalDetector;
 
+/**
+ * This class contains utilities that do not depend on Groovy and thus can be
+ * code that does not include the Groovy runtime (such as plain Java programs).
+ */
 public class JHelper {
 
     static final String TIME_UTIL = "/usr/bin/time";
 
-    // Throws a runtime exception with a message. The message is also
-    // shown in the standard output. This utility helps debugging as
-    // Gradle may report a different exception (e.g. the usual
-    // IllegalStateException "buildToolsVersion is not specified").
+    private JHelper() {}
+
+    /**
+     * Throws a runtime exception with a message. The message is also
+     * shown in the standard output. This utility helps debugging as
+     * Gradle may report a different exception (e.g. the common
+     * IllegalStateException "buildToolsVersion is not specified").
+     */
     public static void throwRuntimeException(String errMsg) {
         System.out.println(errMsg);
         throw new RuntimeException(errMsg);
     }
 
+    /**
+     * Deletes a set of paths. Used for manual garbage collection of temporary resources.
+     * @param tmpDirs    a set of directory paths
+     */
     public static void cleanUp(Set<String> tmpDirs) {
         tmpDirs.forEach(tmpDir -> FileUtils.deleteQuietly(new File(tmpDir)));
     }
@@ -241,6 +253,14 @@ public class JHelper {
         return proc.waitFor();
     }
 
+    /**
+     * Attempts to initialize logging (if it has not already been initialized).
+     * @param logLevel the log level to use
+     * @param logDir   the directory to place the log file
+     * @param console  indicates whether log statements should be also written to the standard output.
+     * @param logName  the file name of the log
+     * @throws IOException  on log appender configuration
+     */
     public static synchronized void tryInitLogging(String logLevel, String logDir, boolean console, String logName) throws IOException {
         if (shouldInitializeLogging())
             initLogging(logLevel, logDir, console, logName);
@@ -276,6 +296,7 @@ public class JHelper {
      * @param logDir   the directory to place the log file
      * @param console  indicates whether log statements should be also written to the standard output.
      * @param logName  the file name of the log
+     * @throws IOException  on log appender configuration
      */
     private static void initLogging(String logLevel, String logDir, boolean console, String logName) throws IOException {
         Logger root = Logger.getRootLogger();
@@ -324,10 +345,21 @@ public class JHelper {
         // }
     }
 
+    /**
+     * Returns the Java version as a single number. Versions "1.x" become "x",
+     * while versions "x.y" become "x".
+     * @return      the Java version as a number
+     */
     public static int getJavaVersion() {
         return Integer.parseInt(getJavaVersion(System.getProperty("java.version")));
     }
 
+    /**
+     * Translates a Java version to a single number. Versions "1.x" become "x",
+     * while versions "x.y" become "x".
+     * @param ver   the Java version reported by the JVM
+     * @return      the Java version as a number
+     */
     public static String getJavaVersion(String ver) {
         if (ver.startsWith("1."))
             return ver.substring(2, ver.indexOf('.', 3));
@@ -335,6 +367,12 @@ public class JHelper {
             return ver.substring(0, ver.indexOf('.'));
     }
 
+    /**
+     * Returns the path to the Java installation that runs this code. Currently,
+     * the environment variable "JAVA_HOME" and the system property "java.home"
+     * are checked (in this order).
+     * @return    the path to the Java installation
+     */
     public static String getJavaHome() {
         String javaHome = System.getenv("JAVA_HOME");
         if (javaHome != null)

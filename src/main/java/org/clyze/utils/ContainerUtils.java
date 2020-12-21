@@ -13,8 +13,8 @@ import java.util.zip.ZipFile;
 import static org.clyze.utils.JHelper.throwRuntimeException;
 
 /**
- * Utilities for handling archives containing bytecode such as
- * AAR files.
+ * This class provides functionality for handling archives containing bytecode
+ * such as AAR files.
  */
 public final class ContainerUtils {
 
