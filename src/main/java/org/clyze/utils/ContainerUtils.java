@@ -76,6 +76,7 @@ public final class ContainerUtils {
      * @param archives   a list of archive paths
      * @param ignore     if true, non-JAR/AAR files will be ignored
      * @param tmpDirs    collects any temporary directories created
+     * @return           a list of paths
      */
     public static List<String> toJars(List<String> archives, boolean ignore,
                                       Set<String> tmpDirs) {

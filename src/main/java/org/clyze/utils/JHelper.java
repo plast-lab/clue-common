@@ -28,6 +28,7 @@ public class JHelper {
      * shown in the standard output. This utility helps debugging as
      * Gradle may report a different exception (e.g. the common
      * IllegalStateException "buildToolsVersion is not specified").
+     * @param errMsg  the error message of the exception
      */
     public static void throwRuntimeException(String errMsg) {
         System.out.println(errMsg);
