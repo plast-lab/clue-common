@@ -16,9 +16,6 @@ interface AnalysisFamily {
 	/** The name of the AnalysisFamily. */
 	String getName()
 
-	/** True if analyses of this family require sources. */
-	boolean requiresSources()
-
 	/** Initialize the family. Required to be called once per instance. */
 	void init() throws RuntimeException
 
