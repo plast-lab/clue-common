@@ -1,6 +1,7 @@
 package org.clyze.utils;
 
 import org.apache.commons.io.IOUtils;
+import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -89,7 +90,7 @@ public final class ContainerUtils {
      * Transforms an AAR file to a JAR.
      * @param ar           a file path
      * @param jars         the list of JAR file paths to update
-     * @param ignore       if true, archives that are not in JAR/AAR format will
+     * @param ignore       if true, archives that are not in JAR/AAR/WAR format will
      *                     be omitted; if false, these archives still end up in
      *                     the "jars" list
      * @param tmpDirs      an optional list of temporary directories (for manual
@@ -99,28 +100,64 @@ public final class ContainerUtils {
                               boolean ignore, Set<String> tmpDirs) {
         if (ar.endsWith(".jar")) {
             jars.add(ar);
-        } else if (ar.endsWith(".aar")) {
-            try {
-                String tmpDir = createTmpDir(tmpDirs);
-                String jar = tmpDir + "/" + basename(ar, ".aar") + ".jar";
-                Set<String> extraJars = new HashSet<>();
-                unpackClassesJarFromAAR(new File(ar), jar, extraJars, tmpDirs);
-                // println "Extracted ${jar} from ${ar}"
-                jars.add(jar);
-                if (extraJars.size() > 0) {
-                    // println "Extracted ${extraJars} from ${ar}"
-                    jars.addAll(extraJars);
-                }
-            } catch (Exception ex) {
-                System.out.println("Error while handling " + ar);
-                ex.printStackTrace();
-            }
-        } else {
+        } else if (ar.endsWith(".aar"))
+            processFatArchive(ar, ".aar", jars, tmpDirs);
+        else if (ar.endsWith(".war"))
+            processFatArchive(ar, ".war", jars, tmpDirs);
+        else {
             if (ignore)
                 System.out.println("Ignoring file of unknown type: " + ar);
             else
                 jars.add(ar);
         }
+    }
+
+    private static void processFatArchive(String ar, String ext, List<String> jars,
+                                          Set<String> tmpDirs) {
+        try {
+            String tmpDir = createTmpDir(tmpDirs);
+            String jar = tmpDir + "/" + basename(ar, ext) + ".jar";
+            Set<String> extraJars = new HashSet<>();
+            // Use a simple if-then-else instead of configurable lambdas/processors
+            // since the processor logic may throw exceptions.
+            if (ext.equals(".aar"))
+                unpackClassesJarFromAAR(new File(ar), jar, extraJars, tmpDirs);
+            else if (ext.equals(".war"))
+                unpackClassesAndJarsFromWAR(new File(ar), jar, extraJars, tmpDirs);
+            // println "Extracted ${jar} from ${ar}"
+            jars.add(jar);
+            if (extraJars.size() > 0) {
+                // println "Extracted ${extraJars} from ${ar}"
+                jars.addAll(extraJars);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error while handling " + ar);
+            ex.printStackTrace();
+        }
+    }
+
+    private static void unpackClassesAndJarsFromWAR(File war, String jar,
+                                                    Set<String> extraJars, Set<String> tmpDirs) {
+        File tmpDir = new File(createTmpDir(tmpDirs));
+        ZipUtil.unpack(war, tmpDir);
+        File webInfClasses = new File(new File(tmpDir, "WEB-INF"), "classes");
+        if (webInfClasses.exists())
+            ZipUtil.pack(webInfClasses, new File(jar));
+        else
+            System.out.println("WARNING: no path " + webInfClasses);
+        File webInfLibs = new File(new File(tmpDir, "WEB-INF"), "lib");
+        if (webInfLibs.exists()) {
+            File[] files = webInfLibs.listFiles();
+            if (files != null)
+                for (File file : files)
+                    try {
+                        if (file.getName().endsWith(".jar"))
+                            extraJars.add(file.getCanonicalPath());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+        } else
+            System.out.println("WARNING: no path " + webInfClasses);
     }
 
     private static String basename(String path, String ext) {
