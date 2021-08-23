@@ -59,7 +59,7 @@ public final class ContainerUtils {
      */
     public static String createTmpDir(Set<String> tmpDirs) {
         try {
-            Path tmpDirPath = Files.createTempDirectory("aar");
+            Path tmpDirPath = Files.createTempDirectory("ar");
             tmpDirPath.toFile().deleteOnExit();
             String tmpDir = tmpDirPath.toString();
             if (tmpDirs != null)
