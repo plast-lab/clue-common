@@ -7,8 +7,9 @@ class ContainerUtilsTest extends Specification {
         when:
         File aar = new File(ContainerUtilsTest.classLoader.getResource('assertj-android-cardview-v7-1.2.0.aar').toURI())
         println "AAR: ${aar.canonicalPath}"
-        Set<String> tmpDirs = [] as Set<String>
-        List<String> jars = ContainerUtils.toJars([aar.canonicalPath], false, tmpDirs)
+        Set<String> tmpDirs = new HashSet<>()
+        Set<String> jarLibs = new HashSet<>()
+        List<String> jars = ContainerUtils.toJars([aar.canonicalPath], false, jarLibs, tmpDirs)
         println "JAR: ${jars.get(0)}"
         JHelper.cleanUp(tmpDirs)
 
@@ -21,13 +22,15 @@ class ContainerUtilsTest extends Specification {
         when:
         File war = new File(ContainerUtilsTest.classLoader.getResource('daytrader-ee7-web.war').toURI())
         println "WAR: ${war.canonicalPath}"
-        Set<String> tmpDirs = [] as Set<String>
-        List<String> jars = ContainerUtils.toJars([war.canonicalPath], false, tmpDirs)
-        println "JAR: ${jars.get(0)} (total: ${jars})"
+        Set<String> tmpDirs = new HashSet<>()
+        Set<String> jarLibs = new HashSet<>()
+        List<String> jars = ContainerUtils.toJars([war.canonicalPath], false, jarLibs, tmpDirs)
+        println "JAR: ${jars.get(0)} (total: ${jars} / ${jarLibs})"
         JHelper.cleanUp(tmpDirs)
 
         then:
-        assert jars.size() == 2
+        assert jars.size() == 1
+        assert jarLibs.size() == 1
         assert jars.get(0).endsWith('.jar')
     }
 }
