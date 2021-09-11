@@ -148,24 +148,67 @@ public final class ContainerUtils {
         }
         File tmpDir = new File(tmpDirPath);
         ZipUtil.unpack(war, tmpDir);
-        File webInfClasses = new File(new File(tmpDir, "WEB-INF"), "classes");
-        if (webInfClasses.exists())
-            ZipUtil.pack(webInfClasses, new File(jar));
-        else
-            System.out.println("WARNING: no path " + webInfClasses);
-        File webInfLibs = new File(new File(tmpDir, "WEB-INF"), "lib");
+        File webInfClassesZip = zipWebInfClasses(tmpDir, jar);
+        if (webInfClassesZip == null)
+            System.out.println("WARNING: no classes path");
+        Collection<File> libs = collectWebInfLibJars(tmpDir);
+        if (libs.isEmpty()) {
+            System.out.println("WARNING: no lib path");
+        }
+        else {
+            for (File lib: libs) {
+                try {
+                    jarLibs.add(lib.getCanonicalPath());
+                }
+                catch(IOException e) {
+                    System.out.println("WARNING: Could not retrieve jar lib " + lib.getName());
+                }
+            }
+        }
+    }
+
+    /**
+     * Collects the jar files contained in the WEB-INF/lib sub-directory of the given directory.
+     *
+     * @param explodedWarDir The directory containing the exploded WAR file
+     * @return a collection of the jar files retrieved (non-null, maybe empty)
+     */
+    public static Collection<File> collectWebInfLibJars(File explodedWarDir) {
+        File webInfLibs = new File(explodedWarDir, "WEB-INF/lib");
         if (webInfLibs.exists()) {
+            ArrayList<File> jarLibs = new ArrayList<>();
             File[] files = webInfLibs.listFiles();
-            if (files != null)
-                for (File file : files)
-                    try {
-                        if (file.getName().endsWith(".jar"))
-                            jarLibs.add(file.getCanonicalPath());
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.getName().endsWith(".jar")) {
+                        jarLibs.add(file);
                     }
-        } else
-            System.out.println("WARNING: no path " + webInfClasses);
+                }
+            }
+            return jarLibs;
+        }
+        else {
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Creates a jar file with the contents of the WEB-INF/classes sub-directory of the given directory.
+     *
+     * @param explodedWarDir The directory containing the exploded WAR file
+     * @param zipTargetPath The path of the new jar file
+     * @return The file created or null (if no WEB-INF/classes sub-directory was found)
+     */
+    public static File zipWebInfClasses(File explodedWarDir, String zipTargetPath) {
+        File webInfClasses = new File(explodedWarDir,"WEB-INF/classes");
+        if (webInfClasses.exists()) {
+            File zipTarget = new File(zipTargetPath);
+            ZipUtil.pack(webInfClasses, zipTarget);
+            return zipTarget;
+        }
+        else {
+            return null;
+        }
     }
 
     private static String basename(String path, String ext) {
