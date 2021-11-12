@@ -3,6 +3,7 @@ plugins {
     id 'groovy'
     id 'maven-publish'
     id 'net.researchgate.release' version '2.8.1'
+    id 'com.jfrog.artifactory' version '4.24.21'
 }
 
 sourceCompatibility = '1.8'
@@ -85,4 +86,19 @@ if (project.hasProperty('artifactory_user')) {
             }
         }
     }
+}
+
+// To configure, set jfrog_user/jfrog_password in [~/.gradle,.]/gradle.properties.
+// Upload with: ./gradlew artifactoryPublish
+artifactoryPublish {
+    skip = false //Skip build info analysis and publishing (false by default)
+    contextUrl = 'http://clyze.jfrog.io/artifactory'
+    publications ('mavenJava')
+    properties = ['qa.level': 'basic']
+    clientConfig.publisher.repoKey = 'default-maven-local'
+    clientConfig.publisher.username = jfrog_user
+    clientConfig.publisher.password = jfrog_password
+
+    // Minimum file size in KB for which the plugin performs checksum deploy optimization. Default: 10. Set to 0 to disable uploading files with checksum that already exists in Artifactory.
+    clientConfig.publisher.minChecksumDeploySizeKb = 10
 }
