@@ -12,7 +12,7 @@ targetCompatibility = '1.8'
 project.group = 'org.clyze'
 
 wrapper {
-    gradleVersion = '7.3.3'
+    gradleVersion = '8.7'
 }
 
 repositories {
@@ -91,15 +91,15 @@ if (project.hasProperty('artifactory_user')) {
 
 // To configure, set jfrog_user/jfrog_password in [~/.gradle,.]/gradle.properties.
 // Upload with: ./gradlew artifactoryPublish
-artifactoryPublish {
-    skip = false //Skip build info analysis and publishing (false by default)
-    contextUrl = 'http://clyze.jfrog.io/artifactory'
-    publications ('mavenJava')
-    properties = ['qa.level': 'basic']
-    clientConfig.publisher.repoKey = 'default-maven-local'
-    clientConfig.publisher.username = jfrog_user
-    clientConfig.publisher.password = jfrog_password
+// artifactoryPublish {
+//     skip = false //Skip build info analysis and publishing (false by default)
+//     contextUrl = 'http://clyze.jfrog.io/artifactory'
+//     publications ('mavenJava')
+//     properties = ['qa.level': 'basic']
+//     clientConfig.publisher.repoKey = 'default-maven-local'
+//     clientConfig.publisher.username = jfrog_user
+//     clientConfig.publisher.password = jfrog_password
 
-    // Minimum file size in KB for which the plugin performs checksum deploy optimization. Default: 10. Set to 0 to disable uploading files with checksum that already exists in Artifactory.
-    clientConfig.publisher.minChecksumDeploySizeKb = 10
-}
+//     // Minimum file size in KB for which the plugin performs checksum deploy optimization. Default: 10. Set to 0 to disable uploading files with checksum that already exists in Artifactory.
+//     clientConfig.publisher.minChecksumDeploySizeKb = 10
+// }
