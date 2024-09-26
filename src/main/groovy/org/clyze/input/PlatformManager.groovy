@@ -170,9 +170,9 @@ class PlatformManager {
             "java_18"               : ["rt.jar"],
             "java_19"               : ["rt.jar"],
             "java_20"               : ["rt.jar"],
-            "java_21"               : ["jrt-fs.jar"],
-            "java_22"               : ["jrt-fs.jar"],
-            "java_23"               : ["jrt-fs.jar"],
+            "java_21"               : ["rt.jar"],
+            "java_22"               : ["rt.jar"],
+            "java_23"               : ["rt.jar"],
             // Android compiled from sources
             "android_22_fulljars"   : androidTree3,
             "android_25_fulljars"   : androidTree4,
