@@ -158,6 +158,7 @@ class PlatformManager {
             "java_8"                : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_8_debug"          : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_8_mini"           : ["rt.jar", "jce.jar", "jsse.jar"],
+            "java_8_sound-modulo"   : ["rt.jar", "jce.jar", "jsse.jar"],
             "java_9"                : ["rt.jar"],
             "java_10"               : ["rt.jar"],
             "java_11"               : ["rt.jar"],
