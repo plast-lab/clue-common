@@ -10,7 +10,7 @@ enum InputType {
     PLATFORM("platform", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
     HEAPDL("heap dump", [ResolverType.LOCAL_FILE, ResolverType.URL, ResolverType.ZIP]),
     SOURCES("sources", [ResolverType.LOCAL_FILE, ResolverType.URL]),
-    MISC("misc", [ResolverType.LOCAL_FILE, ResolverType.URL]),
+    MISC("misc", [ResolverType.LOCAL_FILE, ResolverType.URL])
 
     private final String title
     private final Set<ResolverType> resolvers

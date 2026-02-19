@@ -7,6 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility methods for working with type ids and JVM signatures.
+ */
 public enum TypeUtils {
     ;
 
@@ -121,6 +124,11 @@ public enum TypeUtils {
         return ret;
     }
 
+    /**
+     * Decodes a primitive type id (e.g. 'I') to a human-readable string (e.g. 'int').
+     * @param id
+     * @return
+     */
     private static String decodePrimType(String id) {
         switch (id) {
             case BOOLEAN_JVM : return BOOLEAN;
@@ -136,16 +144,32 @@ public enum TypeUtils {
         }
     }
 
+    /**
+     * Checks if a string is a primitive type.
+     * @param s the string to check
+     * @return true if the string is a primitive type, false otherwise
+     */
     public static boolean isPrimitiveType(String s) {
         return (s.equals(BOOLEAN) || s.equals(INT) || s.equals(LONG) ||
                 s.equals(DOUBLE) || s.equals(VOID) || s.equals(FLOAT) ||
                 s.equals(CHAR) || s.equals(SHORT) || s.equals(BYTE));
     }
 
+    /**
+     * Checks if a type is a low-level type (i.e. an array or an object type).
+     * @param first the first character of the type id (e.g. 'L' for object types, '[' for array types)
+     * @param s the type id string
+     * @return true if the type is a low-level type, false otherwise
+     */
     public static boolean isLowLevelType(char first, String s) {
         return first == '[' || (first == 'L' && s.endsWith(";"));
     }
 
+    /**
+     * Replaces slashes with dots in a string.
+     * @param s the string to process
+     * @return the processed string
+     */
     public static String replaceSlashesWithDots(CharSequence s) {
         return slashPat.matcher(s).replaceAll(dotRepl);
     }

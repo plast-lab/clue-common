@@ -2,34 +2,36 @@ plugins {
     id 'java-library'
     id 'groovy'
     id 'maven-publish'
-    id 'net.researchgate.release' version '2.8.1'
-    id 'com.jfrog.artifactory' version '4.24.21'
+    // id 'net.researchgate.release' version '3.1.0'
+    id 'com.jfrog.artifactory' version '6.0.4'
 }
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
 
 project.group = 'org.clyze'
 
 wrapper {
-    gradleVersion = '8.7'
+    gradleVersion = '9.3.1'
 }
 
 repositories {
     mavenCentral()
 }
 
-def groovyVersion='3.0.9'
-dependencies {
-    implementation "org.codehaus.groovy:groovy:${groovyVersion}"
-    implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-    api 'commons-io:commons-io:2.11.0'          // Apache 2.0
-    api 'log4j:log4j:1.2.17'                    // Logging implementation, Apache 2.0
-    api 'org.apache.ivy:ivy:2.5.0'              // Apache Ivy (for downloading inputs from Maven repos), Apache 2.0
-    api 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'  // MPL 1.1
-    api 'org.zeroturnaround:zt-zip:1.14'        // Apache 2.0
+def groovyVersion='5.0.4'
+def spockVersion='2.4-groovy-5.0'
 
-    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+dependencies {
+    implementation "org.apache.groovy:groovy:${groovyVersion}"
+    implementation "org.apache.groovy:groovy-xml:${groovyVersion}"
+    api 'commons-io:commons-io:2.21.0'                  // Apache 2.21.0
+    api 'org.apache.logging.log4j:log4j-core:2.25.3'    // Logging implementation, Apache 2.0
+    api 'org.apache.logging.log4j:log4j-api:2.25.3'
+    api 'org.apache.logging.log4j:log4j-1.2-api:2.25.3'
+    api 'org.apache.ivy:ivy:2.5.3'                      // Apache Ivy (for downloading inputs from Maven repos), Apache 2.0
+    api 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'  // MPL 1.1
+    api 'org.zeroturnaround:zt-zip:1.17'        // Apache 2.0
+
+    testImplementation "org.spockframework:spock-core:${spockVersion}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:6.0.3"
 }
 
 compileJava {
@@ -50,9 +52,8 @@ test {
     useJUnitPlatform()
 }
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+tasks.named("assemble") {
+    dependsOn(sourcesJar, javadocJar)
 }
 
 publishing {
@@ -63,31 +64,31 @@ publishing {
     }
 }
 
-release {
-    //use defaults, see https://github.com/researchgate/gradle-release
-}
+// release {
+//     //use defaults, see https://github.com/researchgate/gradle-release
+// }
 
-tasks.release.doLast {
-    println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
-}
+// tasks.release.doLast {
+//     println "WARNING: Releasing clue-common affects both public doop and doop-nexgen, please check that everything works."
+// }
 
-afterReleaseBuild.dependsOn publish
+// afterReleaseBuild.dependsOn publish
 
-if (project.hasProperty('artifactory_user')) {
-    publishing {
-        repositories {
-            maven {
-                credentials {
-                    username artifactory_user
-                    password artifactory_password
-                }
-                //Always publish to the public releases repo
-                url "${artifactory_contextUrl}/libs-public-release-local"
-                allowInsecureProtocol true
-            }
-        }
-    }
-}
+// if (project.hasProperty('artifactory_user')) {
+//     publishing {
+//         repositories {
+//             maven {
+//                 credentials {
+//                     username=artifactory_user
+//                     password=artifactory_password
+//                 }
+//                 //Always publish to the public releases repo
+//                 url="${artifactory_contextUrl}/libs-public-release-local"
+//                 allowInsecureProtocol=true
+//             }
+//         }
+//     }
+// }
 
 // To configure, set jfrog_user/jfrog_password in [~/.gradle,.]/gradle.properties.
 // Upload with: ./gradlew artifactoryPublish

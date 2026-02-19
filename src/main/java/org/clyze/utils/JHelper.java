@@ -279,7 +279,7 @@ public class JHelper {
         // Check that the appender of initLogging() is found.
         while (appenders.hasMoreElements()) {
             Appender appender = (Appender)appenders.nextElement();
-            if (appender instanceof DailyRollingFileAppender) {
+            if (appender instanceof RollingFileAppender) {
                 doopAppenderFound = true;
             } else if (!(appender instanceof ConsoleAppender)) {
                 System.err.println("Warning: non-Doop appender found: " + appender.getClass());
@@ -310,7 +310,7 @@ public class JHelper {
                 dir.mkdir();
             String logFile = logDir + File.separator + logName;
             PatternLayout layout = new PatternLayout("%d [%t] %-5p %c - %m%n");
-            DailyRollingFileAppender appender = new DailyRollingFileAppender(layout, logFile, "'.'yyyy-MM-dd");
+            RollingFileAppender appender = new RollingFileAppender(layout, logFile, true);
             root.addAppender(appender);
         }
 

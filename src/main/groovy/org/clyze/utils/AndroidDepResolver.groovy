@@ -1,5 +1,6 @@
 package org.clyze.utils
 
+import groovy.xml.XmlSlurper
 import static org.clyze.utils.JHelper.throwRuntimeException
 
 // This class takes care of resolving dependencies on Android, using
