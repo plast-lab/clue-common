@@ -15,8 +15,8 @@ class PlatformManager {
 	private static final boolean DEBUG = false
 
 	@SuppressWarnings('unused')
-	static final String ARTIFACTORY_PLATFORMS_URL = "http://centauri.di.uoa.gr:8081/artifactory/Platforms"
-
+	// static final String ARTIFACTORY_PLATFORMS_URL = "http://centauri.di.uoa.gr:8081/artifactory/Platforms"
+    static final String ARTIFACTORY_PLATFORMS_URL = "https://github.com/plast-lab/doop-benchmarks/raw/refs/heads/main/"
 	static final Map<String, Set<String>> ARTIFACTS_FOR_PLATFORM = platformArtifacts
 
 	String platformsLib
